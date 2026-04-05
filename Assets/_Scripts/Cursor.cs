@@ -1,17 +1,30 @@
+using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-public class FollowMouse : MonoBehaviour
+public class MouseFollower : MonoBehaviour
 {
-    void Start()
+    public float followSpeed = 50f; // Speed of following the mouse
+    private Rigidbody2D rb;
+
+    private void Start()
     {
-        // Hide the default cursor
+        rb = GetComponent<Rigidbody2D>();
+        rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous; // Prevents fast movement from clipping
+        rb.interpolation = RigidbodyInterpolation2D.Interpolate; // Smooth movement
+    }
+
+    private void Update()
+    {
         Cursor.visible = false;
     }
-    void LateUpdate()
+
+    private void FixedUpdate()
     {
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mousePos.z = 0f;
-        transform.position = mousePos;
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        rb.MovePosition(Vector2.Lerp(rb.position, mousePosition, followSpeed * Time.fixedDeltaTime));
+
+        // Zero out velocity so collision force is always consistent
+        rb.linearVelocity = Vector2.zero;
+        rb.angularVelocity = 0f;
     }
 }
