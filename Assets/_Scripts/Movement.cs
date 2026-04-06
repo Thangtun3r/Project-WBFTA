@@ -48,40 +48,67 @@ namespace _Scripts
 
         private void Update()
         {
-            // Mouse edge detection with proportional movement
-            Vector2 mousePos = Input.mousePosition;
             Vector2 moveInput = Vector2.zero;
 
-            // Left edge
+            if (_moveAction != null && _moveAction.enabled)
+            {
+                Vector2 actionVal = _moveAction.ReadValue<Vector2>();
+                if (actionVal.sqrMagnitude > 0f)
+                {
+                    moveInput = actionVal;
+                }
+            }
+
+            if (moveInput == Vector2.zero)
+            {
+                if (Keyboard.current != null)
+                {
+                    if (Keyboard.current.wKey.isPressed) moveInput.y += 1f;
+                    if (Keyboard.current.sKey.isPressed) moveInput.y -= 1f;
+                    if (Keyboard.current.aKey.isPressed) moveInput.x -= 1f;
+                    if (Keyboard.current.dKey.isPressed) moveInput.x += 1f;
+                    if (moveInput.sqrMagnitude > 1f) moveInput = moveInput.normalized;
+                }
+                else
+                {
+                    if (Input.GetKey(KeyCode.W)) moveInput.y += 1f;
+                    if (Input.GetKey(KeyCode.S)) moveInput.y -= 1f;
+                    if (Input.GetKey(KeyCode.A)) moveInput.x -= 1f;
+                    if (Input.GetKey(KeyCode.D)) moveInput.x += 1f;
+                    if (moveInput.sqrMagnitude > 1f) moveInput = moveInput.normalized;
+                }
+            }
+
+            Vector2 mousePos = Input.mousePosition;
+            Vector2 mouseMove = Vector2.zero;
+
             if (mousePos.x < edgeThreshold)
             {
                 float normalizedDist = mousePos.x / edgeThreshold;
-                moveInput.x = -(1f - normalizedDist);
+                mouseMove.x = -(1f - normalizedDist);
             }
-            // Right edge
             else if (mousePos.x > Screen.width - edgeThreshold)
             {
                 float normalizedDist = (Screen.width - mousePos.x) / edgeThreshold;
-                moveInput.x = 1f - normalizedDist;
+                mouseMove.x = 1f - normalizedDist;
             }
 
-            // Bottom edge
             if (mousePos.y < edgeThreshold)
             {
                 float normalizedDist = mousePos.y / edgeThreshold;
-                moveInput.y = -(1f - normalizedDist);
+                mouseMove.y = -(1f - normalizedDist);
             }
-            // Top edge
             else if (mousePos.y > Screen.height - edgeThreshold)
             {
                 float normalizedDist = (Screen.height - mousePos.y) / edgeThreshold;
-                moveInput.y = 1f - normalizedDist;
+                mouseMove.y = 1f - normalizedDist;
             }
 
-            // Calculate target position
-            Vector3 moveDirection = new Vector3(moveInput.x, moveInput.y, 0f) * moveSpeed;
-            
-            // Apply damped movement
+            Vector2 totalInput = moveInput + mouseMove;
+            if (totalInput.sqrMagnitude > 1f) totalInput = totalInput.normalized;
+
+            Vector3 moveDirection = new Vector3(totalInput.x, totalInput.y, 0f) * moveSpeed;
+
             transform.position = Vector3.SmoothDamp(transform.position, transform.position + moveDirection, ref _velocity, dampTime);
         }
     }
