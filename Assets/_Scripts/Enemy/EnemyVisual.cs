@@ -12,7 +12,7 @@ namespace _Scripts.Enemy
         [Header("Juice Settings")]
         [SerializeField] private float shakeDuration = 0.2f;
         [SerializeField] private float shakeStrength = 15f;
-        [SerializeField] private Color damageColor = Color.red;
+        [SerializeField] private Color damageColor = Color.white;
         [SerializeField] private float flashDuration = 0.1f;
 
         private Color _baseColor;
