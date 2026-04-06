@@ -1,20 +1,32 @@
 using UnityEngine;
 
+namespace _Scripts.Enemy
+{
     public abstract class BaseEnemy : MonoBehaviour, IDamagable
     {
-        private float _health;
+        [Header("Base Stats")]
+        [SerializeField] protected float maxHealth = 100f;
+        protected float currentHealth;
+
+        protected virtual void Awake()
+        {
+            currentHealth = maxHealth;
+        }
 
         public virtual void TakeDamage(float damage)
         {
-            _health -= damage;
-            if (_health <= 0)
+            currentHealth -= damage;
+            
+            if (currentHealth <= 0)
             {
                 Die();
             }
         }
 
-        public void Die()
+        public virtual void Die()
         {
-            Destroy(this.gameObject);
+            // You can add death particle instubs here later!
+            Destroy(gameObject);
         }
     }
+}

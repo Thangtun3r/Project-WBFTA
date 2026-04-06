@@ -1,24 +1,27 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace _Scripts.Enemy
 {
+    [RequireComponent(typeof(EnemyVisuals))]
     public class DefaultEnemy : BaseEnemy
     {
-        [Header("Visuals & Stats")]
-        [SerializeField] private SpriteRenderer enemyVisual;
-        [SerializeField] private float _health;
-        
         [Header("Movement Settings")]
         [SerializeField] private float moveSpeed = 3f;
         [SerializeField] private float stoppingDistance = 1.5f;
 
         private Transform _playerTransform;
-        private Coroutine _flashCoroutine;
+        private EnemyVisuals _visuals;
+        private Collider2D _enemyCollider;
+
+        protected override void Awake()
+        {
+            base.Awake();
+            _visuals = GetComponent<EnemyVisuals>();
+            _enemyCollider = GetComponent<Collider2D>();
+        }
 
         private void Start()
         {
-            // Find the player once at the start
             GameObject player = GameObject.FindWithTag("Player");
             if (player != null)
             {
@@ -36,54 +39,52 @@ namespace _Scripts.Enemy
 
         private void FollowPlayer()
         {
-            // Calculate distance to player
             float distance = Vector2.Distance(transform.position, _playerTransform.position);
 
-            // Only move if the enemy is further away than the stopping distance
             if (distance > stoppingDistance)
             {
-                // Move toward the player position
                 transform.position = Vector2.MoveTowards(
                     transform.position, 
                     _playerTransform.position, 
                     moveSpeed * Time.deltaTime
                 );
                 
-                // Optional: Flip the sprite to face the player
                 FlipVisual();
             }
         }
 
         private void FlipVisual()
         {
-            if (_playerTransform.position.x < transform.position.x)
-                enemyVisual.flipX = true; // Facing left
-            else
-                enemyVisual.flipX = false; // Facing right
+            bool shouldFlip = _playerTransform.position.x < transform.position.x;
+            _visuals.Flip(shouldFlip);
         }
 
         public override void TakeDamage(float damage)
         {
-            if (enemyVisual != null)
-            {
-                Color currentDefault = Color.white; // Usually better to define a base color or use the existing one
-                if (_flashCoroutine != null) { StopCoroutine(_flashCoroutine); }
-                _flashCoroutine = StartCoroutine(FlashWhiteRoutine(0.15f, Color.white)); // Assuming white is default
-            }
+            currentHealth -= damage;
             
-            _health -= damage;
-            if (_health <= 0)
+            if (currentHealth > 0)
             {
-                Die();
+                _visuals.PlayHitEffects();
+            }
+            else
+            {
+                PerformDeath();
             }
         }
 
-        private IEnumerator FlashWhiteRoutine(float duration, Color originalColor)
+        private void PerformDeath()
         {
-            enemyVisual.color = Color.red; // Changed to red for damage feedback
-            yield return new WaitForSeconds(duration);
-            enemyVisual.color = originalColor;
-            _flashCoroutine = null;
+            // 1. Turn off gameplay mechanics so it can't move or be hit again
+            moveSpeed = 0f;
+            if (_enemyCollider != null) _enemyCollider.enabled = false;
+
+            // 2. Play the burst and hide the body
+            _visuals.PlayDeathEffects();
+            _visuals.HideVisual();
+
+            // 3. Wait 2 seconds for the particles to finish, THEN clean it up
+            Destroy(gameObject, 2f); 
         }
     }
 }
