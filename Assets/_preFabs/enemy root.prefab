@@ -160,7 +160,7 @@ MonoBehaviour:
   shakeDuration: 0.1
   shakeStrength: 7
   damageColor: {r: 1, g: 1, b: 1, a: 1}
-  flashDuration: 0.1
+  flashDuration: 0.08
 --- !u!50 &6870156137129823143
 Rigidbody2D:
   serializedVersion: 5
@@ -173,8 +173,8 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 22.09
+  m_Mass: 122.1
+  m_LinearDamping: 84.2
   m_AngularDamping: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}

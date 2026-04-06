@@ -5,10 +5,11 @@ public class MouseFollower : MonoBehaviour
 {
     public float followSpeed = 50f; // Speed of following the mouse
     private Rigidbody2D rb;
+    public GameObject cursor;
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        rb = cursor.GetComponent<Rigidbody2D>();
         rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous; // Prevents fast movement from clipping
         rb.interpolation = RigidbodyInterpolation2D.Interpolate; // Smooth movement
     }
