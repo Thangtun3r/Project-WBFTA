@@ -14,6 +14,7 @@ public class FloatingDamagePool : MonoBehaviour
         {
             FloatingDamageText obj = Instantiate(prefab, transform);
             obj.gameObject.SetActive(false);
+        
             pool.Enqueue(obj);
         }
     }
@@ -41,6 +42,7 @@ public class FloatingDamagePool : MonoBehaviour
     
         bool isCrit = Random.value > 0.8f; 
         textObj.Setup(actualDamage, isCrit);
+
 
         // 6. Push back to the end of the queue
         pool.Enqueue(textObj);

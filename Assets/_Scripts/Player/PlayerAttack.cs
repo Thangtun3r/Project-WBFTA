@@ -5,13 +5,18 @@ using System;
     public class PlayerAttack : MonoBehaviour
     {
         [SerializeField] private float damageAmount = 10f;
-        
+        [SerializeField] private float attackGraceTime = 0.2f;
+
         // Updated Action to pass the damage value as well
         public event Action<Vector2, float> OnHitTarget; 
+
+        private float _lastAttackTime = -Mathf.Infinity;
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
             if (collision == null || collision.collider == null) return;
+
+            if (Time.time - _lastAttackTime < attackGraceTime) return;
             
             var damagable = collision.collider.GetComponent<IDamagable>() ?? 
                             collision.collider.GetComponentInParent<IDamagable>();
@@ -19,6 +24,7 @@ using System;
             if (damagable != null) 
             {
                 damagable.TakeDamage(damageAmount);
+                _lastAttackTime = Time.time;
                 
                 // Your original contact point logic
                 Vector2 contactPoint = collision.contacts[0].point;

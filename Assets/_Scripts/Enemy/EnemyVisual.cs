@@ -14,38 +14,45 @@ namespace _Scripts.Enemy
         [SerializeField] private float shakeStrength = 15f;
         [SerializeField] private Color damageColor = Color.white;
         [SerializeField] private float flashDuration = 0.1f;
-        [SerializeField] private float spawnScaleDuration = 0.5f;
+
+        [Header("Scale Tween")]
+        [SerializeField] private Transform scaleTarget;
+        [SerializeField] private float showScaleDuration = 0.2f;
+        [SerializeField] private float hideScaleDuration = 0.15f;
+        [SerializeField] private Ease showScaleEase = Ease.OutBack;
+        [SerializeField] private Ease hideScaleEase = Ease.InBack;
 
         private Color _baseColor;
-        private Vector3 _defaultScale;
+        private Transform _scaleTarget;
+
+        private Transform ScaleTarget => _scaleTarget != null ? _scaleTarget : enemyVisual != null ? enemyVisual.transform : transform;
 
         private void Awake()
         {
+            _scaleTarget = scaleTarget != null ? scaleTarget : enemyVisual != null ? enemyVisual.transform : transform;
+
             if (enemyVisual != null)
             {
-                // Register the default size and color exactly as they are set in the Inspector
-                _defaultScale = enemyVisual.transform.localScale;
                 _baseColor = enemyVisual.color;
             }
+
         }
 
         private void OnEnable()
         {
-            if (enemyVisual != null)
+            if (enemyVisual != null && ScaleTarget != null)
             {
                 // Reset visual state for pooling safety
-                enemyVisual.enabled = true;
-                enemyVisual.transform.DOKill();
-                enemyVisual.color = _baseColor;
+                enemyVisual.DOKill();
+                ScaleTarget.DOKill();
                 
-                // 1. Set scale to zero immediately
-                enemyVisual.transform.localScale = Vector3.zero;
-
-                // 2. Scale up to the registered default size
-                // SetUpdate(true) ensures this plays even if the game is paused
-                enemyVisual.transform.DOScale(_defaultScale, spawnScaleDuration)
-                    .SetEase(Ease.OutBack)
-                    .SetUpdate(true);
+                enemyVisual.color = _baseColor;
+                enemyVisual.enabled = true;
+                enemyVisual.transform.localRotation = Quaternion.identity;
+                ScaleTarget.localScale = Vector3.zero;
+                ScaleTarget
+                    .DOScale(Vector3.one, showScaleDuration)
+                    .SetEase(showScaleEase);
             }
         }
 
@@ -53,14 +60,15 @@ namespace _Scripts.Enemy
         {
             if (enemyVisual == null) return;
 
-            // Kill existing tweens to prevent stuttering during rapid hits
+            // Kill existing tweens on the visual child to prevent stuttering
             enemyVisual.transform.DOKill(true); 
             enemyVisual.transform.localRotation = Quaternion.identity; 
             
-            // Shake Rotation
+            // Shake Rotation (Still applied to the visual child)
             enemyVisual.transform.DOShakeRotation(shakeDuration, new Vector3(0, 0, shakeStrength));
 
-            // Color Flash (Yoyo loops from base to damage color and back)
+            // Color Flash
+            enemyVisual.DOKill();
             enemyVisual.DOColor(damageColor, flashDuration)
                 .SetLoops(2, LoopType.Yoyo)
                 .OnComplete(() => enemyVisual.color = _baseColor);
@@ -68,6 +76,17 @@ namespace _Scripts.Enemy
 
         public void PlayDeathEffects()
         {
+            if (enemyVisual != null && ScaleTarget != null)
+            {
+                enemyVisual.DOKill();
+                ScaleTarget.DOKill();
+                enemyVisual.enabled = true;
+                ScaleTarget
+                    .DOScale(Vector3.zero, hideScaleDuration)
+                    .SetEase(hideScaleEase)
+                    .OnComplete(() => enemyVisual.enabled = false);
+            }
+
             if (deathParticles != null)
             {
                 deathParticles.Play();
@@ -78,6 +97,7 @@ namespace _Scripts.Enemy
         {
             if (enemyVisual != null)
             {
+                enemyVisual.DOKill();
                 enemyVisual.enabled = false;
             }
         }

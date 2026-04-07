@@ -17,15 +17,16 @@ public class MouseFollower : MonoBehaviour
     private void Update()
     {
         Cursor.visible = false;
-    }
-
-    private void FixedUpdate()
-    {
-        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         rb.MovePosition(Vector2.Lerp(rb.position, mousePosition, followSpeed * Time.fixedDeltaTime));
 
         // Zero out velocity so collision force is always consistent
         rb.linearVelocity = Vector2.zero;
         rb.angularVelocity = 0f;
+    }
+
+    private void FixedUpdate()
+    {
+       
     }
 }

@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace _Scripts.Enemy
 {
-    [RequireComponent(typeof(EnemyVisuals))]
+
     public class DefaultEnemy : BaseEnemy
     {
         [Header("Movement Settings")]
@@ -12,6 +13,8 @@ namespace _Scripts.Enemy
         private Transform _playerTransform;
         private EnemyVisuals _visuals;
         private Collider2D _enemyCollider;
+        private HashSet<Collider2D> _playerBlockingColliders = new HashSet<Collider2D>();
+        private Vector2 _moveDirection;
 
         protected override void Awake()
         {
@@ -31,10 +34,22 @@ namespace _Scripts.Enemy
 
         private void Update()
         {
-            if (_playerTransform != null)
+            if (_playerTransform == null)
+                return;
+
+            UpdateMoveDirection();
+
+            if (_playerBlockingColliders.Count == 0)
             {
                 FollowPlayer();
             }
+        }
+
+        private void UpdateMoveDirection()
+        {
+            Vector2 toPlayer = _playerTransform.position - transform.position;
+            float distance = toPlayer.magnitude;
+            _moveDirection = distance > stoppingDistance ? toPlayer.normalized : Vector2.zero;
         }
 
         private void FollowPlayer()
@@ -44,19 +59,71 @@ namespace _Scripts.Enemy
             if (distance > stoppingDistance)
             {
                 transform.position = Vector2.MoveTowards(
-                    transform.position, 
-                    _playerTransform.position, 
+                    transform.position,
+                    _playerTransform.position,
                     moveSpeed * Time.deltaTime
                 );
-                
-                FlipVisual();
             }
         }
 
-        private void FlipVisual()
+        private void OnCollisionEnter2D(Collision2D collision)
         {
-            bool shouldFlip = _playerTransform.position.x < transform.position.x;
-            _visuals.Flip(shouldFlip);
+            if (!IsBlockingPlayerCollision(collision))
+                return;
+
+            _playerBlockingColliders.Add(collision.collider);
+        }
+
+        private void OnCollisionStay2D(Collision2D collision)
+        {
+            if (collision == null || collision.collider == null) return;
+            if (!collision.collider.CompareTag("Player")) return;
+
+            if (IsCollisionBlockingMovement(collision))
+            {
+                _playerBlockingColliders.Add(collision.collider);
+            }
+            else
+            {
+                _playerBlockingColliders.Remove(collision.collider);
+            }
+        }
+
+        private void OnCollisionExit2D(Collision2D collision)
+        {
+            if (collision == null || collision.collider == null) return;
+            if (!collision.collider.CompareTag("Player")) return;
+
+            _playerBlockingColliders.Remove(collision.collider);
+        }
+
+        private bool IsBlockingPlayerCollision(Collision2D collision)
+        {
+            if (collision == null || collision.collider == null) return false;
+            if (!collision.collider.CompareTag("Player")) return false;
+            return IsCollisionBlockingMovement(collision);
+        }
+
+        private bool IsCollisionBlockingMovement(Collision2D collision)
+        {
+            if (_moveDirection == Vector2.zero)
+                return false;
+
+            if (collision.contacts.Length > 0)
+            {
+                foreach (var contact in collision.contacts)
+                {
+                    if (Vector2.Dot(_moveDirection, -contact.normal) > 0.5f)
+                        return true;
+                }
+            }
+
+            if (collision.relativeVelocity.sqrMagnitude > 0.001f)
+            {
+                return Vector2.Dot(collision.relativeVelocity.normalized, _moveDirection) > 0.5f;
+            }
+
+            return false;
         }
 
         public override void TakeDamage(float damage)
@@ -83,8 +150,22 @@ namespace _Scripts.Enemy
             _visuals.PlayDeathEffects();
             _visuals.HideVisual();
 
-            // 3. Wait 2 seconds for the particles to finish, THEN clean it up
-            Destroy(gameObject, 2f); 
+            // 3. Wait 2 seconds for the particles to finish, THEN return it to the pool
+            StartCoroutine(ReturnToPoolAfterDelay(2f));
+        }
+
+        private System.Collections.IEnumerator ReturnToPoolAfterDelay(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            Spawner spawner = FindObjectOfType<Spawner>();
+            if (spawner != null)
+            {
+                spawner.ReturnToPool(gameObject);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }
