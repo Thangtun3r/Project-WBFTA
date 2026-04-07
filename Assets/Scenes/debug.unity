@@ -339,6 +339,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Player.PlayerAttack
   damageAmount: 500
+  attackGraceTime: 0.001
 --- !u!114 &63283469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7456,13 +7457,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: Default Enemy
       objectReference: {fileID: 0}
-    - target: {fileID: 2869208683092143134, guid: f7a5fa5037516374fa7095d660fdb41b, type: 3}
-      propertyPath: m_Interpolate
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 3526367780042481598, guid: f7a5fa5037516374fa7095d660fdb41b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -20.98
       objectReference: {fileID: 0}
     - target: {fileID: 3526367780042481598, guid: f7a5fa5037516374fa7095d660fdb41b, type: 3}
       propertyPath: m_LocalPosition.y

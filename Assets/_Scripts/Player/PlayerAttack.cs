@@ -5,7 +5,7 @@ using System;
     public class PlayerAttack : MonoBehaviour
     {
         [SerializeField] private float damageAmount = 10f;
-        [SerializeField] private float attackGraceTime = 0.2f;
+        [SerializeField] private float attackGraceTime = 0.005f;    
 
         // Updated Action to pass the damage value as well
         public event Action<Vector2, float> OnHitTarget; 

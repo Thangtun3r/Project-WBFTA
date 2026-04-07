@@ -90,10 +90,22 @@ Assets/TextMesh Pro/Examples & Extras/Scripts/
 Assets/_Scripts/Enemy/
  BaseEnemy.cs
  DefaultEnemy.cs
+ Enemy FSM/
+  EnemyFSM.CS
+  States/
+   AttackState.cs
+   ChaseState.cs
+   DeadState.cs
+   PatrolState.cs
+ EnemyConfig.cs
  EnemyVisual.cs
+ IEnemyAttack.cs
 Assets/_Scripts/
  FlaotingDamangePool.cs
  FloatingDamageText.cs
+ FSM/
+  BaseState.cs
+  StateMachine.cs
  IDamagable.cs
  Player/
   Cursor.cs

@@ -19,14 +19,18 @@ namespace _Scripts.Enemy
             
             if (currentHealth <= 0)
             {
-                Die();
+                OnDeath();
             }
         }
 
         public virtual void Die()
         {
-            // You can add death particle instubs here later!
-            Destroy(gameObject);
+        }
+
+        protected virtual void OnDeath()
+        {
+            // Override in subclasses to handle death state transition
+            Die();
         }
     }
 }

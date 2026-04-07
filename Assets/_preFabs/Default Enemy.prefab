@@ -9,13 +9,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3526367780042481598}
+  - component: {fileID: 7690559397805257357}
   - component: {fileID: 6950090293580656731}
   - component: {fileID: 8766825156057594251}
   - component: {fileID: 2869208683092143134}
   - component: {fileID: 8202303356952751611}
   m_Layer: 0
   m_Name: Default Enemy
-  m_TagString: Untagged
+  m_TagString: 'Enemy '
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -36,6 +37,24 @@ Transform:
   - {fileID: 1484874183448757925}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7690559397805257357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1362645100913559232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed1344da46c603f4ca9493be21cdf88c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Enemy.EnemyFSM
+  Config: {fileID: 11400000, guid: c543e6e3b8d2bd7438dcc68a57ae2902, type: 2}
+  visuals: {fileID: 0}
+  enemyCollider: {fileID: 0}
+  player: {fileID: 0}
+  attackExitBuffer: 0.2
+  deathReturnDelay: 3
 --- !u!114 &6950090293580656731
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -49,8 +68,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Enemy.DefaultEnemy
   maxHealth: 300
-  moveSpeed: 5
-  stoppingDistance: 1.5
 --- !u!114 &8766825156057594251
 MonoBehaviour:
   m_ObjectHideFlags: 0
