@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: DefaultEnemy
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Enemy.EnemyConfig
   moveSpeed: 3
-  stopDistance: 5.61
-  detectionRange: 16.9
-  attackRange: 4.31
+  acceleration: 12
+  deceleration: 15
+  stopDistance: 3.59
+  detectionRange: 48.1
+  attackRange: 4.18
