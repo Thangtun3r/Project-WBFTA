@@ -1,26 +1,41 @@
-using System.Diagnostics;
+using UnityEngine;
+using System;
+using _Scripts.Enemy.Modules;
 
-public class [FTName]State : BaseState<EnemyState>
+namespace _Scripts.Enemy
 {
-    private EnemyFSM enemyFSM;
-
-    public [FTName]State(EnemyFSM fsm) : base(EnemyState.[FTName])
+    public class [FTName]State : BaseState<EnemyFSM.EnemyState>
     {
-        enemyFSM = fsm;
-    }
+        // Add required module interfaces here (e.g., ITargetSensor, IMovement)
+        private readonly Action<EnemyFSM.EnemyState> changeState;
 
-    public override void EnterState()
-    {
+        public [FTName]State(Action<EnemyFSM.EnemyState> changeState) : base(EnemyFSM.EnemyState.[FTName])
+        {
+            // add more modules to the constructor as needed and assign them to private fields
+            this.changeState = changeState;
+        }
 
-    }
+        public override void EnterState()
+        {
+            // Called once when entering the state
+        }
 
-    public override void UpdateState()
-    {
+        public override void UpdateState()
+        {
+            // Called every frame. 
+            // Use modules for execution and trigger changeState() based on conditions.
+            
+            /* Example:
+            if (someCondition)
+            {
+                changeState(EnemyFSM.EnemyState.AnotherState);
+            }
+            */
+        }
 
-    }
-
-    public override void ExitState()
-    {
-
+        public override void ExitState()
+        {
+            // Called once when exiting the state
+        }
     }
 }

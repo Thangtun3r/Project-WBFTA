@@ -51,7 +51,7 @@ namespace _Scripts.Enemy
                 enemyVisual.transform.localRotation = Quaternion.identity;
                 ScaleTarget.localScale = Vector3.zero;
                 ScaleTarget
-                    .DOScale(Vector3.one, showScaleDuration)
+                    .DOScale(new Vector3(0.8f, 0.8f, 0.8f), showScaleDuration)
                     .SetEase(showScaleEase);
             }
         }

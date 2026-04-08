@@ -1,14 +1,20 @@
 using UnityEngine;
+using System;
+using _Scripts.Enemy.Modules;
 
 namespace _Scripts.Enemy
 {
     public class ChaseState : BaseState<EnemyFSM.EnemyState>
     {
-        private readonly EnemyFSM enemyFSM;
+        private readonly ITargetSensor sensor;
+        private readonly IMovement movement;
+        private readonly Action<EnemyFSM.EnemyState> changeState;
 
-        public ChaseState(EnemyFSM fsm) : base(EnemyFSM.EnemyState.Chase)
+        public ChaseState(ITargetSensor sensor, IMovement movement, Action<EnemyFSM.EnemyState> changeState) : base(EnemyFSM.EnemyState.Chase)
         {
-            enemyFSM = fsm;
+            this.sensor = sensor;
+            this.movement = movement;
+            this.changeState = changeState;
         }
 
         public override void EnterState()
@@ -18,48 +24,35 @@ namespace _Scripts.Enemy
 
         public override void UpdateState()
         {
-            if (enemyFSM.player == null || enemyFSM.Config == null)
+            if (sensor == null || movement == null || !sensor.HasTarget)
             {
                 return;
             }
 
-            float dist = Vector2.Distance(enemyFSM.transform.position, enemyFSM.player.position);
-            
             // Return to Patrol if player goes out of detection range
-            if (dist > enemyFSM.Config.detectionRange)
+            if (!sensor.IsTargetInDetectionRange())
             {
-                Debug.Log($"ChaseState: Player out of range ({dist:F2} > {enemyFSM.Config.detectionRange}). Returning to Patrol.");
-                enemyFSM.QueueNextState(EnemyFSM.EnemyState.Patrol);
+                changeState(EnemyFSM.EnemyState.Patrol);
                 return;
             }
             
             // Transition to Attack if within attack range
-            if (dist <= enemyFSM.Config.attackRange)
+            if (sensor.IsTargetInAttackRange())
             {
-                enemyFSM.CurrentVelocity = Vector2.MoveTowards(enemyFSM.CurrentVelocity, Vector2.zero, enemyFSM.Config.deceleration * Time.deltaTime);
-                enemyFSM.QueueNextState(EnemyFSM.EnemyState.Attack);
+                movement.Stop();
+                changeState(EnemyFSM.EnemyState.Attack);
                 return;
             }
 
-            // Stop if too close
-            if (dist <= enemyFSM.Config.stopDistance)
+            // Stop if too close, else move towards target
+            if (sensor.IsTargetTooClose())
             {
-                enemyFSM.CurrentVelocity = Vector2.MoveTowards(enemyFSM.CurrentVelocity, Vector2.zero, enemyFSM.Config.deceleration * Time.deltaTime);
+                movement.Stop();
             }
             else
             {
-                // Chase the player
-                Vector2 direction = (enemyFSM.player.position - enemyFSM.transform.position).normalized;
-                Vector2 targetVelocity = direction * enemyFSM.Config.moveSpeed;
-                enemyFSM.CurrentVelocity = Vector2.MoveTowards(
-                    enemyFSM.CurrentVelocity,
-                    targetVelocity,
-                    enemyFSM.Config.acceleration * Time.deltaTime
-                );
+                movement.MoveTowards(sensor.TargetPosition);
             }
-
-            // Apply movement
-            enemyFSM.transform.position += (Vector3)enemyFSM.CurrentVelocity * Time.deltaTime;
         }
 
         public override void ExitState()

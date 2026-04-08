@@ -6,7 +6,11 @@ namespace _Scripts.Enemy
     {
         [Header("Base Stats")]
         [SerializeField] protected float maxHealth = 100f;
+        [SerializeField] protected EnemyConfig config;
+        
         protected float currentHealth;
+        
+        public EnemyConfig Config => config;
 
         protected virtual void Awake()
         {

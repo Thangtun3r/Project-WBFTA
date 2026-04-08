@@ -13,23 +13,22 @@ public class Spawner2D : MonoBehaviour
     [SerializeField] private Collider2D spawnArea; // Use Collider2D (Box, Polygon, or Composite)
     [SerializeField] private float minSpawnInterval = 0.5f;
     [SerializeField] private float maxSpawnInterval = 2f;
-    [SerializeField] private float playerSpawnRadius = 15f; 
-    [SerializeField] private float minPlayerDistance = 4f; 
-    [SerializeField] private int initialPreSpawnCount = 8;
+    [SerializeField] private int maxActiveEnemies = 20;
 
     private Queue<GameObject> pool = new Queue<GameObject>();
-    private Transform playerTransform;
     private float timer = 0f;
     private float currentSpawnInterval;
+
+    private int ActiveEnemyCount => poolSize - pool.Count;
 
     void Start()
     {
         InitializePool();
-        
-        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-        if (playerObj != null) playerTransform = playerObj.transform;
+        if (maxActiveEnemies <= 0 || maxActiveEnemies > poolSize)
+        {
+            maxActiveEnemies = poolSize;
+        }
 
-        PreSpawnEnemies();
         currentSpawnInterval = Random.Range(minSpawnInterval, maxSpawnInterval);
     }
 
@@ -43,38 +42,22 @@ public class Spawner2D : MonoBehaviour
         }
     }
 
-    private void PreSpawnEnemies()
+    private Vector2 GetPointWithinCameraViewport()
     {
-        for (int i = 0; i < initialPreSpawnCount; i++)
+        Camera cam = Camera.main;
+        if (cam == null) return (Vector2)transform.position;
+
+        float zDistance = Mathf.Abs(cam.transform.position.z - transform.position.z);
+        Vector3 viewportPoint = new Vector3(Random.value, Random.value, zDistance);
+        Vector3 worldPoint = cam.ViewportToWorldPoint(viewportPoint);
+        Vector2 spawnPos = new Vector2(worldPoint.x, worldPoint.y);
+
+        if (spawnArea != null)
         {
-            Vector2 randomPoint = GetRandomPointInCollider2D(spawnArea);
-            Spawn(randomPoint, Quaternion.identity);
+            spawnPos = spawnArea.ClosestPoint(spawnPos);
         }
-    }
 
-    private Vector2 GetRandomPointInCollider2D(Collider2D col)
-    {
-        Bounds bounds = col.bounds;
-        Vector2 point = new Vector2(
-            Random.Range(bounds.min.x, bounds.max.x),
-            Random.Range(bounds.min.y, bounds.max.y)
-        );
-
-        // ClosestPoint ensures that even if our random box-math 
-        // lands outside a complex shape, it snaps to the edge.
-        return col.ClosestPoint(point);
-    }
-
-    private Vector2 GetPointNearPlayer()
-    {
-        if (playerTransform == null) return (Vector2)transform.position;
-
-        // Generate a random point in a ring around the player
-        Vector2 randomOffset = Random.insideUnitCircle.normalized * Random.Range(minPlayerDistance, playerSpawnRadius);
-        Vector2 spawnPos = (Vector2)playerTransform.position + randomOffset;
-
-        // Constrain it so enemies don't spawn outside the "Map" Collider
-        return spawnArea.ClosestPoint(spawnPos);
+        return spawnPos;
     }
 
     public GameObject Spawn(Vector2 position, Quaternion rotation)
@@ -109,11 +92,14 @@ public class Spawner2D : MonoBehaviour
         timer += Time.deltaTime;
         if (timer >= currentSpawnInterval)
         {
-            Vector2 spawnPos = GetPointNearPlayer();
-            Spawn(spawnPos, Quaternion.identity);
+            if (ActiveEnemyCount < maxActiveEnemies)
+            {
+                Vector2 spawnPos = GetPointWithinCameraViewport();
+                Spawn(spawnPos, Quaternion.identity);
 
-            timer = 0f;
-            currentSpawnInterval = Random.Range(minSpawnInterval, maxSpawnInterval);
+                timer = 0f;
+                currentSpawnInterval = Random.Range(minSpawnInterval, maxSpawnInterval);
+            }
         }
     }
 }

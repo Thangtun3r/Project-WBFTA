@@ -169,9 +169,7 @@ MonoBehaviour:
   spawnArea: {fileID: 900442925}
   minSpawnInterval: 1
   maxSpawnInterval: 2
-  playerSpawnRadius: 20
-  minPlayerDistance: 5
-  initialPreSpawnCount: 5
+  maxActiveEnemies: 5
 --- !u!1 &49457039
 GameObject:
   m_ObjectHideFlags: 0
@@ -7601,7 +7599,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3526367780042481598, guid: f7a5fa5037516374fa7095d660fdb41b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -20.98
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 3526367780042481598, guid: f7a5fa5037516374fa7095d660fdb41b, type: 3}
       propertyPath: m_LocalPosition.y
@@ -7609,7 +7607,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3526367780042481598, guid: f7a5fa5037516374fa7095d660fdb41b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.24
       objectReference: {fileID: 0}
     - target: {fileID: 3526367780042481598, guid: f7a5fa5037516374fa7095d660fdb41b, type: 3}
       propertyPath: m_LocalRotation.w

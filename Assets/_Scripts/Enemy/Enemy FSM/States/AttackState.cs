@@ -1,49 +1,46 @@
 using UnityEngine;
+using System;
+using _Scripts.Enemy.Modules;
 
 namespace _Scripts.Enemy
 {
     public class AttackState : BaseState<EnemyFSM.EnemyState>
     {
-        private readonly EnemyFSM enemyFSM;
+        private readonly ITargetSensor sensor;
+        private readonly IMovement movement;
+        private readonly IEnemyAttack attackModule;
+        private readonly Action<EnemyFSM.EnemyState> changeState;
 
-        public AttackState(EnemyFSM fsm) : base(EnemyFSM.EnemyState.Attack)
+        public AttackState(ITargetSensor sensor, IMovement movement, IEnemyAttack attackModule, Action<EnemyFSM.EnemyState> changeState) : base(EnemyFSM.EnemyState.Attack)
         {
-            enemyFSM = fsm;
+            this.sensor = sensor;
+            this.movement = movement;
+            this.attackModule = attackModule;
+            this.changeState = changeState;
         }
 
         public override void EnterState()
         {
-            enemyFSM.AttackModule?.SetAttackActive(true);
+            attackModule?.SetAttackActive(true);
         }
 
         public override void UpdateState()
         {
-            // Decelerate to stop while attacking
-            if (enemyFSM.CurrentVelocity.sqrMagnitude > 0.01f)
-            {
-                enemyFSM.CurrentVelocity = Vector2.MoveTowards(
-                    enemyFSM.CurrentVelocity,
-                    Vector2.zero,
-                    enemyFSM.Config.deceleration * Time.deltaTime
-                );
-                enemyFSM.transform.position += (Vector3)enemyFSM.CurrentVelocity * Time.deltaTime;
-            }
+            if (attackModule == null || sensor == null) return;
 
-            if (enemyFSM.player == null || enemyFSM.Config == null)
-            {
-                return;
-            }
+            // Execution: Module handles stopping physics
+            movement?.Stop();
 
-            float dist = Vector2.Distance(enemyFSM.transform.position, enemyFSM.player.position);
-            if (dist > enemyFSM.Config.attackRange + enemyFSM.AttackExitBuffer)
+            // Central decision point: Has the player successfully escaped the attack?
+            if (sensor.IsTargetOutOfAttackRange())
             {
-                enemyFSM.QueueNextState(EnemyFSM.EnemyState.Chase);
+                changeState(EnemyFSM.EnemyState.Chase);
             }
         }
 
         public override void ExitState()
         {
-            enemyFSM.AttackModule?.SetAttackActive(false);
+            attackModule?.SetAttackActive(false);
         }
     }
 }

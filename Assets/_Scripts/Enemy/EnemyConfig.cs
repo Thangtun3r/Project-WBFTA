@@ -11,5 +11,6 @@ namespace _Scripts.Enemy
         public float stopDistance = 1.5f;
         public float detectionRange = 5f;
         public float attackRange = 1.2f;
+        public float attackExitBuffer = 0.2f;
     }
 }
