@@ -5081,6 +5081,7 @@ GameObject:
   - component: {fileID: 837729731640092321}
   - component: {fileID: 1432443307123316997}
   - component: {fileID: 4279756431424898031}
+  - component: {fileID: 2119117488707750801}
   - component: {fileID: 558457595636325237}
   m_Layer: 6
   m_Name: Ranged Enemy
@@ -5088,7 +5089,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4779135819728176075
 Transform:
   m_ObjectHideFlags: 0
@@ -5224,6 +5225,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d55da96354baa65489e28e924b5c1a5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Enemy.Modules.RangedEnemyMovement
+--- !u!114 &2119117488707750801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8980048317678214775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f5d72912896a53409edd9aceb588035, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Enemy.Modules.RangedAttackModule
+  projectilePrefab: {fileID: 1805574314347126598, guid: 5add8fdeeac561245ae2ff7cf62f9a4c, type: 3}
+  firePoint: {fileID: 4779135819728176075}
+  visualTarget: {fileID: 4463660185146987650}
+  attackCooldown: 4
+  projectileSpeed: 15.61
+  shakeAngle: {x: 0, y: 0, z: 4}
+  shakeSpeed: 0.05
+  shakeEase: 4
 --- !u!58 &558457595636325237
 CircleCollider2D:
   m_ObjectHideFlags: 0

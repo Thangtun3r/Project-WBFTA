@@ -11,12 +11,24 @@ namespace _Scripts.Enemy.Modules
 
         private void Awake()
         {
-            player = GameObject.FindWithTag("Player")?.transform;
             config = GetComponentInParent<BaseEnemy>()?.Config;
         }
 
-        public bool HasTarget => player != null;
-        public Vector3 TargetPosition => player != null ? player.position : Vector3.zero;
+        public bool HasTarget 
+        {
+            get
+            {
+                // If we don't have the player yet, try to find it dynamically.
+                // This fixes the issue where spawned enemies can't find a dynamically spawned player!
+                if (player == null)
+                {
+                    player = GameObject.FindWithTag("Player")?.transform;
+                }
+                return player != null;
+            }
+        }
+        
+        public Vector3 TargetPosition => HasTarget ? player.position : Vector3.zero;
 
         private float GetDistanceToTarget()
         {

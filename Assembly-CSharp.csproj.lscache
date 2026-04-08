@@ -101,14 +101,19 @@ Assets/_Scripts/Enemy/
  EnemyVisual.cs
  IEnemyAttack.cs
  Modules/
+  DiveAttackModule.cs
   DiveEnemyMovement.cs
   EnemyMovement.cs
   EnemyPatrol.cs
   EnemySensor.cs
+  HitboxProxy.cs
   IMovement.cs
   IPatrolModule.cs
   ITargetSensor.cs
+  RangedAttackModule.cs
   RangedEnemyMovement.cs
+  SpinAttackModule.cs
+ Projectile.cs
 Assets/_Scripts/
  FlaotingDamangePool.cs
  FloatingDamageText.cs
@@ -121,6 +126,7 @@ Assets/_Scripts/
   Movement.cs
   Player.cs
   PlayerAttack.cs
+  PlayerHealth.cs
   PlayerVisual.cs
  Spawner.cs
  System/

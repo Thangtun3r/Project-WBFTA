@@ -48,6 +48,14 @@ namespace _Scripts.Enemy.Modules
             _mainCamera = Camera.main;
         }
 
+        private void OnEnable()
+        {
+            // Reset state for Object Pooling
+            _currentState = DiveState.Locking;
+            _stateTimer = 0f;
+            _isShaking = false;
+        }
+
         private void OnDisable()
         {
             if (visualRoot != null)

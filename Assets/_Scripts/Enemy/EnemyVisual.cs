@@ -22,24 +22,34 @@ namespace _Scripts.Enemy
         [SerializeField] private Ease showScaleEase = Ease.OutBack;
         [SerializeField] private Ease hideScaleEase = Ease.InBack;
 
-        private Color _baseColor;
+        private Color _baseColor = Color.white;
         private Transform _scaleTarget;
+        private bool _isInitialized = false;
 
         private Transform ScaleTarget => _scaleTarget != null ? _scaleTarget : enemyVisual != null ? enemyVisual.transform : transform;
 
         private void Awake()
         {
+            Initialize();
+        }
+
+        private void Initialize()
+        {
+            if (_isInitialized) return;
+            
             _scaleTarget = scaleTarget != null ? scaleTarget : enemyVisual != null ? enemyVisual.transform : transform;
 
             if (enemyVisual != null)
             {
                 _baseColor = enemyVisual.color;
             }
-
+            _isInitialized = true;
         }
 
         private void OnEnable()
         {
+            Initialize(); // Ensure _baseColor is captured before applying it
+            
             if (enemyVisual != null && ScaleTarget != null)
             {
                 // Reset visual state for pooling safety
@@ -99,6 +109,16 @@ namespace _Scripts.Enemy
             {
                 enemyVisual.DOKill();
                 enemyVisual.enabled = false;
+            }
+        }
+
+        public void ShowVisual()
+        {
+            if (enemyVisual != null)
+            {
+                enemyVisual.enabled = true;
+                // reset color to default if it was changed
+                enemyVisual.color = _baseColor;
             }
         }
 

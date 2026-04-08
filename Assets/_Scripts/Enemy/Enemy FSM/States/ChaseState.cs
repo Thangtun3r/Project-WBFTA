@@ -45,7 +45,7 @@ namespace _Scripts.Enemy
             }
 
             // Stop if too close, else move towards target
-            if (sensor.IsTargetTooClose())
+            if (sensor.IsTargetTooClose() && !(movement is _Scripts.Enemy.Modules.DiveEnemyMovement))
             {
                 movement.Stop();
             }

@@ -15,9 +15,20 @@ namespace _Scripts.Enemy.Modules
         [SerializeField] private float waveFrequency = 4f;  // How fast it waves back and forth
         [SerializeField] private float waveAmplitude = 5f;  // How wide the wave is
 
+        [Header("Stop & Go Movement")]
+        [SerializeField] private bool useStopAndGo = true;
+        [SerializeField] private float moveDurationMin = 1f;
+        [SerializeField] private float moveDurationMax = 2f;
+        [SerializeField] private float stopDurationMin = 0.5f;
+        [SerializeField] private float stopDurationMax = 1f;
+
         private float _timeOffset;
         private float _actualFrequency;
         private float _actualAmplitude;
+
+        private bool _isMovingPhase = true;
+        private float _phaseTimer;
+        private Vector2 _lockedDirection = Vector2.zero;
 
         private void Awake()
         {
@@ -28,6 +39,9 @@ namespace _Scripts.Enemy.Modules
             _timeOffset = Random.Range(0f, 100f);
             _actualFrequency = waveFrequency * Random.Range(0.8f, 1.2f);
             _actualAmplitude = waveAmplitude * Random.Range(0.8f, 1.2f);
+
+            _isMovingPhase = true;
+            _phaseTimer = Random.Range(moveDurationMin, moveDurationMax);
         }
 
         public void MoveTowards(Vector2 targetPosition)
@@ -42,7 +56,36 @@ namespace _Scripts.Enemy.Modules
         {
             if (config == null) return;
             
-            Vector2 forwardDir = direction.normalized;
+            if (useStopAndGo)
+            {
+                _phaseTimer -= Time.deltaTime;
+                if (_phaseTimer <= 0f)
+                {
+                    _isMovingPhase = !_isMovingPhase;
+                    _phaseTimer = _isMovingPhase 
+                        ? Random.Range(moveDurationMin, moveDurationMax) 
+                        : Random.Range(stopDurationMin, stopDurationMax);
+                    
+                    if (!_isMovingPhase)
+                    {
+                        _lockedDirection = Vector2.zero; // Clear locked aim when stopping
+                    }
+                }
+
+                if (!_isMovingPhase)
+                {
+                    Stop();
+                    return;
+                }
+
+                // Lock direction at the start of the moving phase
+                if (_lockedDirection == Vector2.zero && direction != Vector2.zero)
+                {
+                    _lockedDirection = direction.normalized;
+                }
+            }
+
+            Vector2 forwardDir = useStopAndGo ? _lockedDirection : direction.normalized;
             Vector2 targetVelocity = forwardDir * config.moveSpeed;
             
             if (useSineWave)
