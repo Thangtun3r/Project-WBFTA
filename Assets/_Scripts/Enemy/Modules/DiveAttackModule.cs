@@ -9,6 +9,7 @@ namespace _Scripts.Enemy.Modules
 
         [Header("Attack Settings")]
         [SerializeField] private float damageCooldown = 0.5f;
+        [SerializeField] private bool useTrigger = true;
 
         private EnemyConfig _config;
         private bool _isAttacking;
@@ -35,9 +36,15 @@ namespace _Scripts.Enemy.Modules
 
             foreach (var col in hitboxes)
             {
+                if (col != null)
+                {
+                    col.isTrigger = useTrigger;
+                }
+
                 HitboxProxy proxy = col.gameObject.AddComponent<HitboxProxy>();
                 proxy.attackModule = this;
                 proxy.damage = damage;
+                proxy.useTrigger = useTrigger;
             }
         }
 

@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSO
   health: 120
   maxHealth: 120
-  damage: 30
+  damage: 20
   moveSpeed: 7

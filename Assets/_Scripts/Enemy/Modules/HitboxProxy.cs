@@ -3,17 +3,22 @@ using _Scripts.Enemy;
 
 namespace _Scripts.Enemy.Modules
 {
-    // Simply forwarding physics triggers to the main attack module
+    // Simply forwarding physics triggers or collisions to the main attack module
     public class HitboxProxy : MonoBehaviour
     {
         [HideInInspector] public IEnemyAttack attackModule;
         [HideInInspector] public int damage;
+        [HideInInspector] public bool useTrigger = true;
 
         private Collider2D _col;
 
         private void Awake()
         {
             _col = GetComponent<Collider2D>();
+            if (_col != null)
+            {
+                _col.isTrigger = useTrigger;
+            }
             
             // A trigger event is only sent to the child if it has its own Rigidbody2D.
             // We add a Kinematic one so it follows the parent's movement without falling.
@@ -27,12 +32,26 @@ namespace _Scripts.Enemy.Modules
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
+            if (!useTrigger) return;
             HandleTrigger(collision);
         }
 
         private void OnTriggerStay2D(Collider2D collision)
         {
+            if (!useTrigger) return;
             HandleTrigger(collision);
+        }
+
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (useTrigger) return;
+            HandleTrigger(collision.collider);
+        }
+
+        private void OnCollisionStay2D(Collision2D collision)
+        {
+            if (useTrigger) return;
+            HandleTrigger(collision.collider);
         }
 
         private void HandleTrigger(Collider2D collision)
