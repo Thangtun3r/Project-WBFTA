@@ -19,4 +19,4 @@ MonoBehaviour:
   detectionRange: 64.6
   attackRange: 0.94
   attackExitBuffer: 0.2
-  damage: 200
+  damage: 50

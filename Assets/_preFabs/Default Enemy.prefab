@@ -66,7 +66,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d16eef32db243b892c8e5c5f4a1e173, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Enemy.DefaultEnemy
-  maxHealth: 300
+  maxHealth: 80
   config: {fileID: 11400000, guid: c543e6e3b8d2bd7438dcc68a57ae2902, type: 2}
   deathReturnDelay: 0.2
 --- !u!114 &8766825156057594251
@@ -167,8 +167,8 @@ MonoBehaviour:
   useStopAndGo: 1
   moveDurationMin: 1
   moveDurationMax: 1
-  stopDurationMin: 0.7
-  stopDurationMax: 0.7
+  stopDurationMin: 0.2
+  stopDurationMax: 0.2
 --- !u!114 &3614392375466288681
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -337,7 +337,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1.16
+      scalar: 1.01
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -508,7 +508,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 2.27
+      scalar: 0.61
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -972,7 +972,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 1
+      value: 0.15
       mode: 0
       spread: 0
       speed:
