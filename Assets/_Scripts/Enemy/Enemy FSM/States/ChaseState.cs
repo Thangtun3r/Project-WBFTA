@@ -39,7 +39,7 @@ namespace _Scripts.Enemy
             // Transition to Attack if within attack range
             if (sensor.IsTargetInAttackRange())
             {
-                movement.Stop();
+                // Removed movement.Stop() here so the enemy maintains momentum
                 changeState(EnemyFSM.EnemyState.Attack);
                 return;
             }

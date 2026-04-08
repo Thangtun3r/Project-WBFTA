@@ -26,10 +26,18 @@ namespace _Scripts.Enemy
 
         public override void UpdateState()
         {
-            if (attackModule == null || sensor == null) return;
+            if (attackModule == null || sensor == null || movement == null) return;
 
-            // Execution: Module handles stopping physics
-            movement?.Stop();
+            // Continue moving towards the player while attacking!
+            // Only stop moving if the enemy gets completely in the player's face (stopDistance)
+            if (sensor.IsTargetTooClose())
+            {
+                movement.Stop();
+            }
+            else
+            {
+                movement.MoveTowards(sensor.TargetPosition);
+            }
 
             // Central decision point: Has the player successfully escaped the attack?
             if (sensor.IsTargetOutOfAttackRange())

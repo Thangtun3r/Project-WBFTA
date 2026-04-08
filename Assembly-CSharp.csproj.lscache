@@ -101,12 +101,14 @@ Assets/_Scripts/Enemy/
  EnemyVisual.cs
  IEnemyAttack.cs
  Modules/
+  DiveEnemyMovement.cs
   EnemyMovement.cs
   EnemyPatrol.cs
   EnemySensor.cs
   IMovement.cs
   IPatrolModule.cs
   ITargetSensor.cs
+  RangedEnemyMovement.cs
 Assets/_Scripts/
  FlaotingDamangePool.cs
  FloatingDamageText.cs
