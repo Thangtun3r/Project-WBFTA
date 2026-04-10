@@ -112,6 +112,9 @@ Assets/_Scripts/Enemy/
   ITargetSensor.cs
   RangedAttackModule.cs
   RangedEnemyMovement.cs
+  SlimeAttackModule.cs
+  SlimeMovement.cs
+  SlimeTrail.cs
   SpinAttackModule.cs
  Projectile.cs
 Assets/_Scripts/

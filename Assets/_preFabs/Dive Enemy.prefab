@@ -5001,7 +5001,7 @@ Transform:
   m_GameObject: {fileID: 2777554242437089352}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.123, y: -0.123, z: 0}
+  m_LocalPosition: {x: 0.135, y: -0.148, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5094,8 +5094,8 @@ Transform:
   m_GameObject: {fileID: 5274383391286395954}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.35, z: -1.34}
-  m_LocalScale: {x: 1.4625, y: 2.3, z: 1}
+  m_LocalPosition: {x: 0, y: 2.29, z: -1.34}
+  m_LocalScale: {x: 1.8464063, y: 1.46625, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5373545153032029484}
@@ -5150,7 +5150,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
-  m_Color: {r: 1, g: 0.95831084, b: 0.7971698, a: 1}
+  m_Color: {r: 1, g: 0.8632983, b: 0.3537736, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -5194,7 +5194,7 @@ CapsuleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0.0041824733, y: -0.37209824}
-  m_Size: {x: 1.5249224, y: 2.052607}
+  m_Size: {x: 1.19, y: 2.052607}
   m_Direction: 0
 --- !u!50 &6617686652434376028
 Rigidbody2D:
@@ -5428,6 +5428,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Enemy.EnemyVisuals
   enemyVisual: {fileID: 7577470986394371958}
+  turretVisual: {fileID: 0}
   deathParticles: {fileID: 6300896989847742642}
   shakeDuration: 0.1
   shakeStrength: 7
