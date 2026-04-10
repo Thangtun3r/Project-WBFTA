@@ -114,25 +114,21 @@ namespace _Scripts
                 // X Axis
                 if (mousePos.x < edgeThreshold)
                 {
-                    float normalizedDist = mousePos.x / edgeThreshold;
-                    mouseMove.x = -(1f - normalizedDist);
+                    mouseMove.x = -1f;
                 }
                 else if (mousePos.x > Screen.width - edgeThreshold)
                 {
-                    float normalizedDist = (Screen.width - mousePos.x) / edgeThreshold;
-                    mouseMove.x = 1f - normalizedDist;
+                    mouseMove.x = 1f;
                 }
 
                 // Y Axis
                 if (mousePos.y < edgeThreshold)
                 {
-                    float normalizedDist = mousePos.y / edgeThreshold;
-                    mouseMove.y = -(1f - normalizedDist);
+                    mouseMove.y = -1f;
                 }
                 else if (mousePos.y > Screen.height - edgeThreshold)
                 {
-                    float normalizedDist = (Screen.height - mousePos.y) / edgeThreshold;
-                    mouseMove.y = 1f - normalizedDist;
+                    mouseMove.y = 1f;
                 }
             }
 

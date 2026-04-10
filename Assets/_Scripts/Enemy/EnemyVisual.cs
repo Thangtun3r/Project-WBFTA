@@ -7,6 +7,7 @@ namespace _Scripts.Enemy
     {
         [Header("References")]
         [SerializeField] private SpriteRenderer enemyVisual;
+        [SerializeField] private SpriteRenderer turretVisual;
         [SerializeField] private ParticleSystem deathParticles;
 
         [Header("Juice Settings")]
@@ -23,6 +24,7 @@ namespace _Scripts.Enemy
         [SerializeField] private Ease hideScaleEase = Ease.InBack;
 
         private Color _baseColor = Color.white;
+        private Color _turretBaseColor = Color.white;
         private Transform _scaleTarget;
         private bool _isInitialized = false;
 
@@ -43,6 +45,10 @@ namespace _Scripts.Enemy
             {
                 _baseColor = enemyVisual.color;
             }
+            if (turretVisual != null)
+            {
+                _turretBaseColor = turretVisual.color;
+            }
             _isInitialized = true;
         }
 
@@ -50,38 +56,63 @@ namespace _Scripts.Enemy
         {
             Initialize(); // Ensure _baseColor is captured before applying it
             
-            if (enemyVisual != null && ScaleTarget != null)
+            if (ScaleTarget != null)
             {
-                // Reset visual state for pooling safety
-                enemyVisual.DOKill();
                 ScaleTarget.DOKill();
-                
-                enemyVisual.color = _baseColor;
-                enemyVisual.enabled = true;
-                enemyVisual.transform.localRotation = Quaternion.identity;
                 ScaleTarget.localScale = Vector3.zero;
                 ScaleTarget
                     .DOScale(new Vector3(0.85f, 0.85f, 0.85f), showScaleDuration)
                     .SetEase(showScaleEase);
             }
+
+            if (enemyVisual != null)
+            {
+                // Reset visual state for pooling safety
+                enemyVisual.DOKill();
+                enemyVisual.color = _baseColor;
+                enemyVisual.enabled = true;
+                enemyVisual.transform.localRotation = Quaternion.identity;
+            }
+
+            if (turretVisual != null)
+            {
+                turretVisual.DOKill();
+                turretVisual.color = _turretBaseColor;
+                turretVisual.enabled = true;
+                turretVisual.transform.localRotation = Quaternion.identity;
+            }
         }
 
         public void PlayHitEffects()
         {
-            if (enemyVisual == null) return;
+            if (enemyVisual != null)
+            {
+                // Kill existing tweens on the visual child to prevent stuttering
+                enemyVisual.transform.DOKill(true); 
+                enemyVisual.transform.localRotation = Quaternion.identity; 
+                
+                // Shake Rotation (Still applied to the visual child)
+                enemyVisual.transform.DOShakeRotation(shakeDuration, new Vector3(0, 0, shakeStrength));
 
-            // Kill existing tweens on the visual child to prevent stuttering
-            enemyVisual.transform.DOKill(true); 
-            enemyVisual.transform.localRotation = Quaternion.identity; 
-            
-            // Shake Rotation (Still applied to the visual child)
-            enemyVisual.transform.DOShakeRotation(shakeDuration, new Vector3(0, 0, shakeStrength));
+                // Color Flash
+                enemyVisual.DOKill();
+                enemyVisual.DOColor(damageColor, flashDuration)
+                    .SetLoops(2, LoopType.Yoyo)
+                    .OnComplete(() => enemyVisual.color = _baseColor);
+            }
 
-            // Color Flash
-            enemyVisual.DOKill();
-            enemyVisual.DOColor(damageColor, flashDuration)
-                .SetLoops(2, LoopType.Yoyo)
-                .OnComplete(() => enemyVisual.color = _baseColor);
+            if (turretVisual != null)
+            {
+                turretVisual.transform.DOKill(true); 
+                turretVisual.transform.localRotation = Quaternion.identity; 
+                
+                turretVisual.transform.DOShakeRotation(shakeDuration, new Vector3(0, 0, shakeStrength));
+
+                turretVisual.DOKill();
+                turretVisual.DOColor(damageColor, flashDuration)
+                    .SetLoops(2, LoopType.Yoyo)
+                    .OnComplete(() => turretVisual.color = _turretBaseColor);
+            }
         }
 
         public void PlayDeathEffects()
@@ -89,12 +120,20 @@ namespace _Scripts.Enemy
             if (enemyVisual != null && ScaleTarget != null)
             {
                 enemyVisual.DOKill();
+                if (turretVisual != null) turretVisual.DOKill();
                 ScaleTarget.DOKill();
+                
                 enemyVisual.enabled = true;
+                if (turretVisual != null) turretVisual.enabled = true;
+                
                 ScaleTarget
                     .DOScale(Vector3.zero, hideScaleDuration)
                     .SetEase(hideScaleEase)
-                    .OnComplete(() => enemyVisual.enabled = false);
+                    .OnComplete(() => 
+                    {
+                        if (enemyVisual != null) enemyVisual.enabled = false;
+                        if (turretVisual != null) turretVisual.enabled = false;
+                    });
             }
 
             if (deathParticles != null)
@@ -110,6 +149,11 @@ namespace _Scripts.Enemy
                 enemyVisual.DOKill();
                 enemyVisual.enabled = false;
             }
+            if (turretVisual != null)
+            {
+                turretVisual.DOKill();
+                turretVisual.enabled = false;
+            }
         }
 
         public void ShowVisual()
@@ -120,6 +164,11 @@ namespace _Scripts.Enemy
                 // reset color to default if it was changed
                 enemyVisual.color = _baseColor;
             }
+            if (turretVisual != null)
+            {
+                turretVisual.enabled = true;
+                turretVisual.color = _turretBaseColor;
+            }
         }
 
         public void Flip(bool flipX)
@@ -127,6 +176,12 @@ namespace _Scripts.Enemy
             if (enemyVisual != null)
             {
                 enemyVisual.flipX = flipX;
+            }
+            if (turretVisual != null)
+            {
+                // Optionally flip the turret visual as well depending on your art setup
+                // For instance: sometimes turrets spin freely and shouldn't flip
+                turretVisual.flipY = flipX; // Or flipX depending on top-down vs side-scroller. Leaving as flipY or flipX may need testing based on aim alignment
             }
         }
     }

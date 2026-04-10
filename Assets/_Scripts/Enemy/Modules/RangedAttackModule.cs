@@ -18,6 +18,7 @@ namespace _Scripts.Enemy.Modules
         [SerializeField] private Vector3 shakeAngle = new Vector3(0, 0, 15f);
         [SerializeField] private float shakeSpeed = 0.05f;
         [SerializeField] private Ease shakeEase = Ease.InOutSine;
+        [SerializeField] private float rotationSpeed = 5f;
         
         private EnemyConfig _config;
         private ITargetSensor _targetSensor;
@@ -82,9 +83,18 @@ namespace _Scripts.Enemy.Modules
             }
             else if (_attackState == AttackState.WindingUp)
             {
+                // Rotate smoothly towards the target we're shooting at using Lerp
+                Vector3 direction = (_targetSensor.TargetPosition - transform.position).normalized;
+                float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                Quaternion targetRotation = Quaternion.AngleAxis(angle, Vector3.forward);
+                transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed * 5f);
+
                 _windupTimer += Time.deltaTime;
                 if (_windupTimer >= actualWindupDuration)
                 {
+                    // Snap to perfectly align at the exact moment of the shot
+                    transform.rotation = targetRotation;
+
                     StopWindup();
                     Shoot(_targetSensor.TargetPosition);
                     _nextFireTime = Time.time + cooldownDuration;
