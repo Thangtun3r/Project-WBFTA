@@ -99,7 +99,7 @@ namespace _Scripts.Enemy.Modules
 
             // Recalculate config in case it was injected after Awake()
             if (_config == null) _config = GetComponentInParent<BaseEnemy>()?.Config;
-            int inkDamage = _config != null ? _config.damage : 10;
+            float inkDamage = _config != null ? _config.damage : 10f;
             
             // Setup the SlimeTrail component right before activation
             if (ink.TryGetComponent<SlimeTrail>(out SlimeTrail trailScript))

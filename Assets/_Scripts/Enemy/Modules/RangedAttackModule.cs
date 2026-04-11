@@ -9,6 +9,7 @@ namespace _Scripts.Enemy.Modules
         [SerializeField] private GameObject projectilePrefab;
         [SerializeField] private Transform firePoint;
         [SerializeField] private Transform visualTarget;
+        [SerializeField] private Transform rotationTarget; // The object to rotate toward the player
         
         [Header("Attack Settings")]
         [SerializeField] private float attackCooldown = 1.5f; // Time between attacks
@@ -39,6 +40,18 @@ namespace _Scripts.Enemy.Modules
             if (firePoint == null)
             {
                 firePoint = transform; // Default to this transform if not set
+            }
+            
+            if (visualTarget == null)
+            {
+                visualTarget = transform; // Default to this transform if not set
+                Debug.LogWarning("RangedAttackModule: visualTarget not assigned, using this transform");
+            }
+            
+            if (rotationTarget == null)
+            {
+                rotationTarget = transform; // Default to this transform if not set
+                Debug.LogWarning("RangedAttackModule: rotationTarget not assigned, using this transform");
             }
         }
 
@@ -84,16 +97,16 @@ namespace _Scripts.Enemy.Modules
             else if (_attackState == AttackState.WindingUp)
             {
                 // Rotate smoothly towards the target we're shooting at using Lerp
-                Vector3 direction = (_targetSensor.TargetPosition - transform.position).normalized;
+                Vector3 direction = (_targetSensor.TargetPosition - rotationTarget.position).normalized;
                 float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
                 Quaternion targetRotation = Quaternion.AngleAxis(angle, Vector3.forward);
-                transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed * 5f);
+                rotationTarget.rotation = Quaternion.Lerp(rotationTarget.rotation, targetRotation, Time.deltaTime * rotationSpeed * 5f);
 
                 _windupTimer += Time.deltaTime;
                 if (_windupTimer >= actualWindupDuration)
                 {
                     // Snap to perfectly align at the exact moment of the shot
-                    transform.rotation = targetRotation;
+                    rotationTarget.rotation = targetRotation;
 
                     StopWindup();
                     Shoot(_targetSensor.TargetPosition);
@@ -164,7 +177,7 @@ namespace _Scripts.Enemy.Modules
             // Pass the damage to the projectile
             if (projectile.TryGetComponent<Projectile>(out Projectile projScript))
             {
-                int damage = _config != null ? _config.damage : 10;
+                float damage = _config != null ? _config.damage : 10f;
                 projScript.Initialize(damage);
             }        }
     }

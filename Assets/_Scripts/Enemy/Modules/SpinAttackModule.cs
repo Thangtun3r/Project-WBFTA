@@ -20,7 +20,7 @@ namespace _Scripts.Enemy.Modules
         private void Awake()
         {
             _config = GetComponentInParent<BaseEnemy>()?.Config;
-            int spinDamage = _config != null ? _config.damage : 10;
+            float spinDamage = _config != null ? _config.damage : 10f;
             
             if (spinningRoot != null)
             {

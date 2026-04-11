@@ -99,7 +99,9 @@ Assets/_Scripts/Enemy/
    PatrolState.cs
  EnemyConfig.cs
  EnemyVisual.cs
+ FloatingHealthBar.cs
  IEnemyAttack.cs
+ IhealthObservable.cs
  Modules/
   DiveAttackModule.cs
   DiveEnemyMovement.cs
@@ -129,14 +131,19 @@ Assets/_Scripts/
   Movement.cs
   Player.cs
   PlayerAttack.cs
+  PlayerConfig.cs
   PlayerHealth.cs
+  PlayerStatMachine.cs
   PlayerVisual.cs
- Spawner.cs
  System/
+  EconomyManager.cs
   GameManager.cs
+  HealthbarDamp.cs
+  HUDManager.cs
   ModifierManager.cs
   PlayerSO.cs
   PlayerStats.cs
+  Spawner.cs
 Temp/obj/Assembly-CSharp/.NETStandard,Version=v2.1.AssemblyAttributes.cs
 
 [metadataReferences]

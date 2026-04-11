@@ -4,9 +4,9 @@ namespace _Scripts.Enemy
 {
     public class Projectile : MonoBehaviour
     {
-        private int _damage;
+        private float _damage;
 
-        public void Initialize(int damage)
+        public void Initialize(float damage)
         {
             _damage = damage;
         }

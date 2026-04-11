@@ -32,12 +32,18 @@ namespace _Scripts.Enemy.Modules
         [SerializeField] private float shakeSpeed = 0.05f;
         [Tooltip("What kind of easing curve the shake should use")]
         [SerializeField] private Ease shakeEase = Ease.InOutSine;
+        [Tooltip("What color the sprite flashes when winding up")]
+        [SerializeField] private Color flashColor = Color.white;
+        [Tooltip("How fast the color flashes")]
+        [SerializeField] private float flashSpeed = 0.1f;
 
         private enum DiveState { Locking, Diving, Returning }
         private DiveState _currentState = DiveState.Locking;
         private float _stateTimer = 0f;
         private Vector2 _lockedDirection;
         private Camera _mainCamera;
+        private SpriteRenderer _visualSpriteRenderer;
+        private Color _originalColor;
 
         // Tracks whether we've triggered the shake for the current lock phase
         private bool _isShaking = false;
@@ -46,6 +52,16 @@ namespace _Scripts.Enemy.Modules
         {
             config = GetComponentInParent<BaseEnemy>()?.Config;
             _mainCamera = Camera.main;
+            
+            if (visualRoot != null)
+            {
+                _visualSpriteRenderer = visualRoot.GetComponent<SpriteRenderer>();
+                if (_visualSpriteRenderer == null)
+                    _visualSpriteRenderer = visualRoot.GetComponentInChildren<SpriteRenderer>();
+                    
+                if (_visualSpriteRenderer != null)
+                    _originalColor = _visualSpriteRenderer.color;
+            }
         }
 
         private void OnEnable()
@@ -54,6 +70,16 @@ namespace _Scripts.Enemy.Modules
             _currentState = DiveState.Locking;
             _stateTimer = 0f;
             _isShaking = false;
+            if (_visualSpriteRenderer != null)
+            {
+                _visualSpriteRenderer.DOKill();
+                _visualSpriteRenderer.color = _originalColor;
+            }
+            if (visualRoot != null)
+            {
+                visualRoot.DOKill();
+                visualRoot.localRotation = Quaternion.identity;
+            }
         }
 
         private void OnDisable()
@@ -62,6 +88,11 @@ namespace _Scripts.Enemy.Modules
             {
                 visualRoot.DOKill();
                 visualRoot.localRotation = Quaternion.identity;
+            }
+            if (_visualSpriteRenderer != null)
+            {
+                _visualSpriteRenderer.DOKill();
+                _visualSpriteRenderer.color = _originalColor;
             }
         }
 
@@ -75,6 +106,16 @@ namespace _Scripts.Enemy.Modules
                 _isShaking = false;
             }
 
+            // Always make sure flashing stops if we are entering returning or diving
+            if (newState != DiveState.Locking)
+            {
+                if (_visualSpriteRenderer != null)
+                {
+                    _visualSpriteRenderer.DOKill();
+                    _visualSpriteRenderer.color = _originalColor;
+                }
+            }
+
             _currentState = newState;
             _stateTimer = 0f;
 
@@ -86,6 +127,15 @@ namespace _Scripts.Enemy.Modules
                 visualRoot.DOLocalRotate(shakeAngle, shakeSpeed)
                     .SetEase(shakeEase)
                     .SetLoops(-1, LoopType.Yoyo);
+                    
+                if (_visualSpriteRenderer != null)
+                {
+                    _visualSpriteRenderer.color = _originalColor;
+                    _visualSpriteRenderer.DOColor(flashColor, flashSpeed)
+                        .SetEase(Ease.InOutSine)
+                        .SetLoops(-1, LoopType.Yoyo);
+                }
+
                 _isShaking = true;
             }
         }
@@ -171,6 +221,15 @@ namespace _Scripts.Enemy.Modules
                     visualRoot.DOLocalRotate(shakeAngle, shakeSpeed)
                         .SetEase(shakeEase)
                         .SetLoops(-1, LoopType.Yoyo);
+                        
+                    if (_visualSpriteRenderer != null)
+                    {
+                        _visualSpriteRenderer.color = _originalColor;
+                        _visualSpriteRenderer.DOColor(flashColor, flashSpeed)
+                            .SetEase(Ease.InOutSine)
+                            .SetLoops(-1, LoopType.Yoyo);
+                    }
+
                     _isShaking = true;
                 }
 

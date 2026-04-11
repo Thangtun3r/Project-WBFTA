@@ -22,7 +22,7 @@ public class FloatingDamagePool : MonoBehaviour
     private void OnEnable() => player.OnHitTarget += SpawnDamage;
     private void OnDisable() => player.OnHitTarget -= SpawnDamage;
 
-    private void SpawnDamage(Vector2 hitPoint, float actualDamage)
+    private void SpawnDamage(Vector2 hitPoint, float actualDamage, bool isCrit)
     {
         // 1. Get the object from the pool
         FloatingDamageText textObj = pool.Dequeue();
@@ -37,12 +37,9 @@ public class FloatingDamagePool : MonoBehaviour
         textObj.transform.position += new Vector3(jitterX, jitterY, 0);
         
 
-        // 5. Activate and run your DOTween setup
+        // 5. Activate and run your DOTween setup using the actual crit status
         textObj.gameObject.SetActive(true);
-    
-        bool isCrit = Random.value > 0.8f; 
         textObj.Setup(actualDamage, isCrit);
-
 
         // 6. Push back to the end of the queue
         pool.Enqueue(textObj);

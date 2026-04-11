@@ -7,7 +7,7 @@ namespace _Scripts.Enemy.Modules
     public class HitboxProxy : MonoBehaviour
     {
         [HideInInspector] public IEnemyAttack attackModule;
-        [HideInInspector] public int damage;
+        [HideInInspector] public float damage;
         [HideInInspector] public bool useTrigger = true;
 
         private Collider2D _col;
@@ -34,24 +34,6 @@ namespace _Scripts.Enemy.Modules
         {
             if (!useTrigger) return;
             HandleTrigger(collision);
-        }
-
-        private void OnTriggerStay2D(Collider2D collision)
-        {
-            if (!useTrigger) return;
-            HandleTrigger(collision);
-        }
-
-        private void OnCollisionEnter2D(Collision2D collision)
-        {
-            if (useTrigger) return;
-            HandleTrigger(collision.collider);
-        }
-
-        private void OnCollisionStay2D(Collision2D collision)
-        {
-            if (useTrigger) return;
-            HandleTrigger(collision.collider);
         }
 
         private void HandleTrigger(Collider2D collision)

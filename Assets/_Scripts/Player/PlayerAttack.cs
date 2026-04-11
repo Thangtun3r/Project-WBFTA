@@ -12,11 +12,18 @@ public enum AttackDetectionMethod
         [SerializeField] private float damageAmount = 10f;
         [SerializeField] private float attackGraceTime = 0.005f;
         [SerializeField] private AttackDetectionMethod detectionMethod = AttackDetectionMethod.Collision;
+        
+        private PlayerStatMachine _statMachine;
 
-        // Updated Action to pass the damage value as well
-        public event Action<Vector2, float> OnHitTarget; 
+        // Updated Action to pass damage and crit status
+        public event Action<Vector2, float, bool> OnHitTarget; 
 
         private float _lastAttackTime = -Mathf.Infinity;
+
+        private void Awake()
+        {
+            _statMachine = GetComponentInParent<PlayerStatMachine>();
+        }
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
@@ -41,9 +48,13 @@ public enum AttackDetectionMethod
 
             if (damagable != null)
             {
-                damagable.TakeDamage(damageAmount);
+                // Get calculated damage from stat machine (includes crit)
+                float finalDamage = _statMachine != null ? _statMachine.GetCalculatedAttackDamage() : damageAmount;
+                bool isCrit = _statMachine != null ? _statMachine.WasLastAttackCrit() : false;
+                
+                damagable.TakeDamage(finalDamage);
                 _lastAttackTime = Time.time;
-                OnHitTarget?.Invoke(hitPoint, damageAmount);
+                OnHitTarget?.Invoke(hitPoint, finalDamage, isCrit);
             }
         }
         

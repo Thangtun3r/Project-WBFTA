@@ -10,7 +10,7 @@ namespace _Scripts.Enemy.Modules
         [SerializeField] private float fadeDuration = 1.5f;  // How long it takes to fade out
         [SerializeField] private SpriteRenderer spriteRenderer;
 
-        private int _damage;
+        private float _damage;
         private Color _baseColor;
         private Vector3 _baseScale;
         private bool _isInitialized;
@@ -32,7 +32,7 @@ namespace _Scripts.Enemy.Modules
             if (_baseScale == Vector3.zero) _baseScale = Vector3.one;
         }
 
-        public void Initialize(int damage)
+        public void Initialize(float damage)
         {
             _damage = damage;
             _isInitialized = true;

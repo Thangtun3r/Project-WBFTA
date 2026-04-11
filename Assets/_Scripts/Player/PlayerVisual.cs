@@ -31,7 +31,7 @@ public class PlayerVisual : MonoBehaviour
             _playerAttack.OnHitTarget -= PlayHitVisuals;
     }
 
-    private void PlayHitVisuals(Vector2 hitPoint, float damageAmount)
+    private void PlayHitVisuals(Vector2 hitPoint, float damageAmount, bool isCrit)
     {
         if (hitEffect != null)
         {

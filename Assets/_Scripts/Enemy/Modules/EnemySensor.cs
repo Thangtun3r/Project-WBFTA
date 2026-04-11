@@ -6,40 +6,65 @@ namespace _Scripts.Enemy.Modules
     public class EnemySensor : MonoBehaviour, ITargetSensor
     {
         private EnemyConfig config;
-        
-        private Transform player;
+        private Transform _player;
+        private Camera _mainCamera;
+
+        [Header("Viewport Optimization")]
+        [Tooltip("Extra margin outside the screen (0.1 = 10%) so enemies don't 'deactivate' the millisecond they touch the edge.")]
+        [SerializeField] private float viewportBuffer = 0.1f; 
 
         private void Awake()
         {
             config = GetComponentInParent<BaseEnemy>()?.Config;
+            _mainCamera = Camera.main;
         }
 
         public bool HasTarget 
         {
             get
             {
-                // If we don't have the player yet, try to find it dynamically.
-                // This fixes the issue where spawned enemies can't find a dynamically spawned player!
-                if (player == null)
+                if (_player == null)
                 {
-                    player = GameObject.FindWithTag("Player")?.transform;
+                    // Finds the player dynamically (fixes issues with pooled/spawned players)
+                    var playerObj = GameObject.FindWithTag("Player");
+                    if (playerObj != null) _player = playerObj.transform;
                 }
-                return player != null;
+                return _player != null;
             }
         }
         
-        public Vector3 TargetPosition => HasTarget ? player.position : Vector3.zero;
+        public Vector3 TargetPosition => HasTarget ? _player.position : Vector3.zero;
+
+        /// <summary>
+        /// Checks if this enemy is currently visible to the player's camera.
+        /// </summary>
+        public bool IsInViewport()
+        {
+            if (_mainCamera == null) _mainCamera = Camera.main;
+            if (_mainCamera == null) return false;
+
+            Vector3 viewPos = _mainCamera.WorldToViewportPoint(transform.position);
+
+            // Viewport coordinates are 0 to 1. We add a buffer so they don't 'pop' out.
+            bool inX = viewPos.x >= -viewportBuffer && viewPos.x <= 1f + viewportBuffer;
+            bool inY = viewPos.y >= -viewportBuffer && viewPos.y <= 1f + viewportBuffer;
+            
+            // viewPos.z > 0 ensures the object isn't BEHIND the camera
+            return inX && inY && viewPos.z > 0;
+        }
 
         private float GetDistanceToTarget()
         {
             if (!HasTarget) return float.MaxValue;
-            return Vector2.Distance(transform.position, player.position);
+            return Vector2.Distance(transform.position, _player.position);
         }
+
+        // --- ITargetSensor Implementation ---
 
         public bool IsTargetInDetectionRange()
         {
-            if (config == null) return false;
-            return GetDistanceToTarget() <= config.detectionRange;
+            // NEW LOGIC: Enemy detects player ONLY if the enemy is on screen
+            return HasTarget && IsInViewport();
         }
 
         public bool IsTargetInAttackRange()
@@ -51,6 +76,7 @@ namespace _Scripts.Enemy.Modules
         public bool IsTargetOutOfAttackRange()
         {
             if (config == null) return true;
+            // Includes the exit buffer to prevent 'stuttering' at the edge of the range
             return GetDistanceToTarget() > config.attackRange + config.attackExitBuffer;
         }
 
@@ -60,29 +86,21 @@ namespace _Scripts.Enemy.Modules
             return GetDistanceToTarget() <= config.stopDistance;
         }
 
+        // --- Visual Debugging ---
+
         private void OnDrawGizmos()
         {
             if (config == null) return;
 
-            // Draw detection range
-            Gizmos.color = Color.yellow;
-            DrawCircleGizmo(transform.position, config.detectionRange, 32);
-
-            // Draw attack range
-            Gizmos.color = Color.red;
+            // Attack Range (Red)
+            Gizmos.color = new Color(1, 0, 0, 0.5f);
             DrawCircleGizmo(transform.position, config.attackRange, 32);
 
-            // Draw stop distance
+            // Stop Distance (Green)
             Gizmos.color = Color.green;
             DrawCircleGizmo(transform.position, config.stopDistance, 16);
-
-            // Draw patrol reach (360-degree patrol with 5 unit reach)
-            Gizmos.color = Color.cyan;
-            DrawCircleGizmo(transform.position, 5f, 32);
-
-            // Draw enemy avoidance radius
-            Gizmos.color = new Color(1f, 0.5f, 0f); // Orange
-            DrawCircleGizmo(transform.position, 2f, 16);
+            
+            // Logic Note: We don't draw a 'Detection Range' anymore because it's the screen!
         }
 
         private void DrawCircleGizmo(Vector3 center, float radius, int segments)

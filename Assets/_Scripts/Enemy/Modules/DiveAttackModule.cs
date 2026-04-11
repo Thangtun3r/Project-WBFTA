@@ -32,7 +32,7 @@ namespace _Scripts.Enemy.Modules
                 return;
             }
 
-            int damage = _config != null ? _config.damage : 10;
+            float damage = _config != null ? _config.damage : 10f;
 
             foreach (var col in hitboxes)
             {
