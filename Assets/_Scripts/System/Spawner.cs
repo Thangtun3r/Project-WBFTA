@@ -43,6 +43,10 @@ public class DirectorSpawner2D : MonoBehaviour
     [SerializeField] private LayerMask obstacleLayer;
     [SerializeField] private List<EnemyDefinition> enemyPool = new List<EnemyDefinition>();
 
+    [Header("Spawn Loading Indicator")]
+    [SerializeField] private GameObject loadingIndicatorPrefab;
+    [SerializeField] private float spawnLoadingDelay = 1.5f;
+
     // Internal State
     private float _currentCredits;
     private float _gameTimer;
@@ -199,12 +203,35 @@ public class DirectorSpawner2D : MonoBehaviour
         GameObject obj = _pools[def.prefab].Dequeue();
         obj.transform.position = pos;
         
-        // Set the enemy's strength based on the global level
-        obj.GetComponent<BaseEnemy>()?.SetLevel(_worldLevel);
-
-        obj.SetActive(true);
+        // Start delayed spawn with loading indicator
+        StartCoroutine(DelayedSpawn(obj, def, pos));
         _activeEnemies.Add(obj);
         return true;
+    }
+
+    private IEnumerator DelayedSpawn(GameObject enemyObj, EnemyDefinition def, Vector2 pos)
+    {
+        // Spawn loading indicator at position
+        GameObject loadingIndicator = null;
+        if (loadingIndicatorPrefab != null)
+        {
+            loadingIndicator = Instantiate(loadingIndicatorPrefab, pos, Quaternion.identity);
+        }
+
+        // Wait for the spawn delay
+        yield return new WaitForSeconds(spawnLoadingDelay);
+
+        // Destroy loading indicator
+        if (loadingIndicator != null)
+        {
+            Destroy(loadingIndicator);
+        }
+
+        // Set the enemy's strength based on the global level
+        enemyObj.GetComponent<BaseEnemy>()?.SetLevel(_worldLevel);
+
+        // Finally activate the enemy
+        enemyObj.SetActive(true);
     }
 
     public void OnEnemyDeath(GameObject obj, GameObject prefabKey)
