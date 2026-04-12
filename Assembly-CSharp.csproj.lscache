@@ -133,6 +133,7 @@ Assets/_Scripts/
   PlayerAttack.cs
   PlayerConfig.cs
   PlayerHealth.cs
+  PlayerIdle.cs
   PlayerStatMachine.cs
   PlayerVisual.cs
  System/

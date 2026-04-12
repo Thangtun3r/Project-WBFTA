@@ -10,14 +10,14 @@ public class DirectorSpawner2D : MonoBehaviour
     {
         public string enemyName;
         public GameObject prefab;
-        public int creditCost; // The "Price" for the Economy Track
+        [Range(0f, 100f)]
+        public float weight; // Weight cost for spawning this enemy (use slider)
     }
 
-    [Header("Economy & Leveling")]
-    [SerializeField] private int initialCredits = 200;
-    [SerializeField] private float baseCreditsPerSecond = 5f;
-    [SerializeField] private float creditsPerLevelMultiplier = 1.25f;
-    [SerializeField] private float timeDifficultyScaling = 0.05f; // Extra scaling per minute
+    [Header("Weight & Leveling")]
+    [Range(0f, 100f)]
+    [SerializeField] private float currentWeight = 50f; // Slider for current weight
+    [SerializeField] private float maxWeight = 100f;
 
     [Header("Dynamic Enemy Cap")]
     [Tooltip("The base number of enemies allowed at Level 1")]
@@ -26,6 +26,8 @@ public class DirectorSpawner2D : MonoBehaviour
     [SerializeField] private float extraEnemiesPerLevel = 2.5f;
     [Tooltip("The absolute limit to protect your GPU/CPU")]
     [SerializeField] private int hardMaxEnemies = 50;
+    [Tooltip("Spawn more enemies when count drops below this threshold")]
+    [SerializeField] private float minEnemyThreshold = 0.75f; // 75% of max
 
     [Header("Track A: Economy Maintenance (Off-Screen)")]
     [SerializeField] private float spawnRadiusMin = 15f; 
@@ -48,7 +50,6 @@ public class DirectorSpawner2D : MonoBehaviour
     [SerializeField] private float spawnLoadingDelay = 1.5f;
 
     // Internal State
-    private float _currentCredits;
     private float _gameTimer;
     private int _worldLevel = 1;
     private int _currentMaxEnemies;
@@ -63,9 +64,8 @@ public class DirectorSpawner2D : MonoBehaviour
         InitializePools();
         GameManager.OnLevelChanged += UpdateWorldLevel;
 
-        // Initialize Cap and Credits
+        // Initialize Cap
         UpdateWorldLevel(1); 
-        _currentCredits = initialCredits;
         
         // Phase 1: Pre-populate the map bounds
         PopulateMapAtStart();
@@ -77,26 +77,44 @@ public class DirectorSpawner2D : MonoBehaviour
     {
         _gameTimer += Time.deltaTime;
 
-        // 1. Economy Calculation
-        float scalingFactor = 1f + (_gameTimer / 60f * timeDifficultyScaling);
-        float income = baseCreditsPerSecond * Mathf.Pow(creditsPerLevelMultiplier, _worldLevel - 1) * scalingFactor;
-        _currentCredits += income * Time.deltaTime;
+        // Clamp weight to max value
+        currentWeight = Mathf.Min(currentWeight, maxWeight);
 
-        // Stop all spawning if at the cap
-        if (_activeEnemies.Count >= _currentMaxEnemies) return;
+        // Count currently enabled enemies
+        int enabledEnemyCount = CountEnabledEnemies();
+        
+        // Calculate threshold for spawning
+        int spawnThreshold = Mathf.CeilToInt(_currentMaxEnemies * minEnemyThreshold);
 
-        // 2. Track A: Credit-based Donut Spawning
-        if (Time.time >= _nextCreditSpawnTime)
+        // Only spawn if enabled enemy count drops below threshold
+        if (enabledEnemyCount < spawnThreshold)
         {
-            if (TryCreditSpawn()) _nextCreditSpawnTime = Time.time + creditSpawnCooldown;
-        }
+            // 2. Track A: Weight-based Donut Spawning
+            if (Time.time >= _nextCreditSpawnTime)
+            {
+                if (TryCreditSpawn()) _nextCreditSpawnTime = Time.time + creditSpawnCooldown;
+            }
 
-        // 3. Track B: Chance-based Viewport Spawning
-        if (Time.time >= _nextRngCheckTime)
-        {
-            TryRNGViewportSpawn();
-            _nextRngCheckTime = Time.time + rngCheckInterval;
+            // 3. Track B: Chance-based Viewport Spawning
+            if (Time.time >= _nextRngCheckTime)
+            {
+                TryRNGViewportSpawn();
+                _nextRngCheckTime = Time.time + rngCheckInterval;
+            }
         }
+    }
+
+    private int CountEnabledEnemies()
+    {
+        int count = 0;
+        foreach (var enemy in _activeEnemies)
+        {
+            if (enemy != null && enemy.activeInHierarchy)
+            {
+                count++;
+            }
+        }
+        return count;
     }
 
     private bool TryCreditSpawn()
@@ -104,16 +122,15 @@ public class DirectorSpawner2D : MonoBehaviour
         // Pick random enemy
         EnemyDefinition selection = enemyPool[Random.Range(0, enemyPool.Count)];
 
-        // If credits are high and slots are low, the Director eventually 
-        // "must" pick the expensive ones to spend its cash.
-        if (_currentCredits >= selection.creditCost)
+        // If weight is high enough, spawn the enemy
+        if (currentWeight >= selection.weight)
         {
             Vector2 pos = GetDonutPosition();
             if (IsValidSpawnPoint(pos, false))
             {
                 if (SpawnFromPool(selection, pos))
                 {
-                    _currentCredits -= selection.creditCost;
+                    currentWeight -= selection.weight;
                     return true;
                 }
             }
@@ -168,15 +185,15 @@ public class DirectorSpawner2D : MonoBehaviour
     private void PopulateMapAtStart()
     {
         int safety = 0;
-        while (_currentCredits >= 10 && _activeEnemies.Count < _currentMaxEnemies && safety < 100)
+        while (currentWeight >= 5f && _activeEnemies.Count < _currentMaxEnemies && safety < 100)
         {
             EnemyDefinition selection = enemyPool[Random.Range(0, enemyPool.Count)];
-            if (_currentCredits >= selection.creditCost)
+            if (currentWeight >= selection.weight)
             {
                 Vector2 pos = new Vector2(Random.Range(mapBoundsMin.x, mapBoundsMax.x), Random.Range(mapBoundsMin.y, mapBoundsMax.y));
                 if (IsValidSpawnPoint(pos, false))
                 {
-                    if (SpawnFromPool(selection, pos)) _currentCredits -= selection.creditCost;
+                    if (SpawnFromPool(selection, pos)) currentWeight -= selection.weight;
                 }
             }
             safety++;

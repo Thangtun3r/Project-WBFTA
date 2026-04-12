@@ -163,34 +163,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6415bd59b06da6247be4139f2a177886, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Spawner
-  initialCredits: 40
-  baseCreditsPerSecond: 5
-  creditsPerLevelMultiplier: 1.2
-  timeDifficultyScaling: 0.05
+  currentWeight: 50
+  maxWeight: 100
   baseMaxEnemies: 20
   extraEnemiesPerLevel: 3
   hardMaxEnemies: 60
+  minEnemyThreshold: 0.75
   spawnRadiusMin: 35.9
   spawnRadiusMax: 44.3
   creditSpawnCooldown: 2
   viewportSpawnChance: 100
   rngCheckInterval: 1
   viewportSafeZone: 4
-  mapBoundsMin: {x: 144.8, y: 90.3}
-  mapBoundsMax: {x: -145.8, y: -78.74}
+  mapBoundsMin: {x: 100.9, y: 70.4}
+  mapBoundsMax: {x: -99.7, y: -56.3}
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 0
   enemyPool:
   - enemyName: 
     prefab: {fileID: 99734925}
-    creditCost: 4
+    weight: 48.8
   - enemyName: 
     prefab: {fileID: 8980048317678214775, guid: 61124440380a9ba49b5a79b2e232d55b, type: 3}
-    creditCost: 4
+    weight: 49.6
   - enemyName: 
     prefab: {fileID: 9203883233185218907, guid: dc8fe1119b118264691c5f9a5eca0c7e, type: 3}
-    creditCost: 20
+    weight: 7.3
   loadingIndicatorPrefab: {fileID: 6414776186518300151, guid: 58ba6645079fb4d4090780b1572d92a1, type: 3}
   spawnLoadingDelay: 1
 --- !u!1 &25084799
@@ -539,7 +538,7 @@ CircleCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -1896,8 +1895,8 @@ Transform:
   m_GameObject: {fileID: 900442924}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1796.7947, y: -1013.6014, z: 0}
-  m_LocalScale: {x: 295.22812, y: 173.28304, z: 1}
+  m_LocalPosition: {x: -1792.1533, y: -1012.0543, z: 0}
+  m_LocalScale: {x: 197.24567, y: 128.93863, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1303363980}
@@ -7952,7 +7951,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1003ae9875e0022439abf353800a8f47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  levelUpInterval: 80
+  levelUpInterval: 60
 --- !u!114 &1421364084
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8566,7 +8565,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1362645100913559232, guid: f7a5fa5037516374fa7095d660fdb41b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3124206406038775290, guid: f7a5fa5037516374fa7095d660fdb41b, type: 3}
+      propertyPath: m_SortingOrder
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3526367780042481598, guid: f7a5fa5037516374fa7095d660fdb41b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8607,6 +8610,18 @@ PrefabInstance:
     - target: {fileID: 3526367780042481598, guid: f7a5fa5037516374fa7095d660fdb41b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4276901230107055732, guid: f7a5fa5037516374fa7095d660fdb41b, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6848301281568794072, guid: f7a5fa5037516374fa7095d660fdb41b, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7101438674331009247, guid: f7a5fa5037516374fa7095d660fdb41b, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
