@@ -61,7 +61,7 @@ namespace _Scripts.Enemy
                 ScaleTarget.DOKill();
                 ScaleTarget.localScale = Vector3.zero;
                 ScaleTarget
-                    .DOScale(new Vector3(0.85f, 0.85f, 0.85f), showScaleDuration)
+                    .DOScale(new Vector3(1.1f, 1.1f, 1.1f), showScaleDuration)
                     .SetEase(showScaleEase);
             }
 

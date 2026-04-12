@@ -4,11 +4,28 @@ namespace _Scripts.Enemy
 {
     public class Projectile : MonoBehaviour
     {
+        [SerializeField] private float lifeTime = 5f; // Destroy projectile after this many seconds
+        
         private float _damage;
+        private float _spawnTime;
+
+        private void Start()
+        {
+            _spawnTime = Time.time;
+        }
 
         public void Initialize(float damage)
         {
             _damage = damage;
+        }
+
+        private void Update()
+        {
+            // Check if projectile has exceeded its lifetime
+            if (Time.time - _spawnTime >= lifeTime)
+            {
+                Destroy(gameObject);
+            }
         }
 
         private void OnTriggerEnter2D(Collider2D collision)

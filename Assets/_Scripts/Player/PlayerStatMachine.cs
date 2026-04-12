@@ -12,6 +12,7 @@ public class PlayerStatMachine : MonoBehaviour
     private float _baseDamage;
     private float _baseHealth;
     private bool _wasLastAttackCrit;
+    private PlayerHealth _playerHealth;
 
     private void Awake()
     {
@@ -23,6 +24,17 @@ public class PlayerStatMachine : MonoBehaviour
 
         _baseDamage = config.damage;
         _baseHealth = config.maxHealth;
+
+        // Initialize PlayerHealth component
+        _playerHealth = GetComponent<PlayerHealth>();
+        if (_playerHealth != null)
+        {
+            _playerHealth.Initialize(_baseHealth);
+        }
+        else
+        {
+            Debug.LogWarning("PlayerStatMachine: PlayerHealth component not found on this GameObject!");
+        }
     }
 
     /// <summary>
