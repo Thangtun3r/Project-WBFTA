@@ -7,45 +7,38 @@ namespace _Scripts.Enemy.Modules
     public class DiveEnemyMovement : MonoBehaviour, IMovement
     {
         private EnemyConfig config;
-        
         private Vector2 _currentVelocity;
         public Vector2 CurrentVelocity => _currentVelocity;
 
         [Header("Dive Settings")]
-        [Tooltip("How long the enemy aims in place before dashing")]
         [SerializeField] private float lockTime = 1f;
-        
-        [Tooltip("How long the enemy dashes forward (this plus speed dictates distance)")]
-        [SerializeField] private float diveTime = 0.6f;
-        
-        [Tooltip("Speed multiplier applied to normal moveSpeed during the dash")]
-        [SerializeField] private float diveSpeedMultiplier = 3.5f;
+        [SerializeField] private float diveSpeedMultiplier = 4f;
+        [SerializeField] private float stallDuration = 2f;
+        [SerializeField] private float arrivalThreshold = 0.2f;
+        [SerializeField] private float viewportMargin = 0.1f;
 
         [Header("Visuals")]
-        [Tooltip("The object that visibly points in the direction of the dive")]
         [SerializeField] private Transform indicatorRoot;
-        [Tooltip("The actual sprite root that will shake to anticipate the dive")]
         [SerializeField] private Transform visualRoot;
-        [Tooltip("Euler angle limits for the shake (left/right)")]
         [SerializeField] private Vector3 shakeAngle = new Vector3(0, 0, 15f);
-        [Tooltip("How fast the shake ticks back and forth")]
         [SerializeField] private float shakeSpeed = 0.05f;
-        [Tooltip("What kind of easing curve the shake should use")]
         [SerializeField] private Ease shakeEase = Ease.InOutSine;
-        [Tooltip("What color the sprite flashes when winding up")]
         [SerializeField] private Color flashColor = Color.white;
-        [Tooltip("How fast the color flashes")]
         [SerializeField] private float flashSpeed = 0.1f;
+        
+        [Header("Stuck Effects")]
+        [SerializeField] private float crashShakeStrength = 0.3f;
+        [SerializeField] private int crashShakeVibrato = 10;
+        [SerializeField] private ParticleSystem crashParticleEffect;
 
-        private enum DiveState { Locking, Diving, Returning }
-        private DiveState _currentState = DiveState.Locking;
+        private enum DiveState { Chasing, Locking, Diving, Stuck }
+        private DiveState _currentState = DiveState.Chasing;
+        
         private float _stateTimer = 0f;
-        private Vector2 _lockedDirection;
+        private Vector2 _diveTarget;
         private Camera _mainCamera;
         private SpriteRenderer _visualSpriteRenderer;
         private Color _originalColor;
-
-        // Tracks whether we've triggered the shake for the current lock phase
         private bool _isShaking = false;
 
         private void Awake()
@@ -55,101 +48,65 @@ namespace _Scripts.Enemy.Modules
             
             if (visualRoot != null)
             {
-                _visualSpriteRenderer = visualRoot.GetComponent<SpriteRenderer>();
-                if (_visualSpriteRenderer == null)
-                    _visualSpriteRenderer = visualRoot.GetComponentInChildren<SpriteRenderer>();
-                    
-                if (_visualSpriteRenderer != null)
-                    _originalColor = _visualSpriteRenderer.color;
-            }
-        }
-
-        private void OnEnable()
-        {
-            // Reset state for Object Pooling
-            _currentState = DiveState.Locking;
-            _stateTimer = 0f;
-            _isShaking = false;
-            if (_visualSpriteRenderer != null)
-            {
-                _visualSpriteRenderer.DOKill();
-                _visualSpriteRenderer.color = _originalColor;
-            }
-            if (visualRoot != null)
-            {
-                visualRoot.DOKill();
-                visualRoot.localRotation = Quaternion.identity;
-            }
-        }
-
-        private void OnDisable()
-        {
-            if (visualRoot != null)
-            {
-                visualRoot.DOKill();
-                visualRoot.localRotation = Quaternion.identity;
-            }
-            if (_visualSpriteRenderer != null)
-            {
-                _visualSpriteRenderer.DOKill();
-                _visualSpriteRenderer.color = _originalColor;
+                _visualSpriteRenderer = visualRoot.GetComponent<SpriteRenderer>() ?? visualRoot.GetComponentInChildren<SpriteRenderer>();
+                if (_visualSpriteRenderer != null) _originalColor = _visualSpriteRenderer.color;
             }
         }
 
         private void ChangeState(DiveState newState)
         {
-            // Clean up exiting state
-            if (_currentState == DiveState.Locking && visualRoot != null)
+            if (visualRoot != null) visualRoot.DOKill();
+            if (_visualSpriteRenderer != null)
             {
-                visualRoot.DOKill();
-                visualRoot.localRotation = Quaternion.identity;
-                _isShaking = false;
-            }
-
-            // Always make sure flashing stops if we are entering returning or diving
-            if (newState != DiveState.Locking)
-            {
-                if (_visualSpriteRenderer != null)
-                {
-                    _visualSpriteRenderer.DOKill();
-                    _visualSpriteRenderer.color = _originalColor;
-                }
+                _visualSpriteRenderer.DOKill();
+                _visualSpriteRenderer.color = _originalColor;
             }
 
             _currentState = newState;
             _stateTimer = 0f;
+            _isShaking = false;
 
-            // Trigger entering state
+            if (_currentState == DiveState.Chasing && visualRoot != null)
+            {
+                visualRoot.localRotation = Quaternion.identity;
+            }
+
             if (_currentState == DiveState.Locking && visualRoot != null)
             {
-                // Consistent PingPong rotation: start fully minus, tweet to fully plus and repeat back and forth
                 visualRoot.localRotation = Quaternion.Euler(-shakeAngle);
-                visualRoot.DOLocalRotate(shakeAngle, shakeSpeed)
-                    .SetEase(shakeEase)
-                    .SetLoops(-1, LoopType.Yoyo);
-                    
+                visualRoot.DOLocalRotate(shakeAngle, shakeSpeed).SetEase(shakeEase).SetLoops(-1, LoopType.Yoyo);
+                
                 if (_visualSpriteRenderer != null)
                 {
-                    _visualSpriteRenderer.color = _originalColor;
-                    _visualSpriteRenderer.DOColor(flashColor, flashSpeed)
-                        .SetEase(Ease.InOutSine)
-                        .SetLoops(-1, LoopType.Yoyo);
+                    _visualSpriteRenderer.DOColor(flashColor, flashSpeed).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
                 }
-
                 _isShaking = true;
+            }
+            
+            if (_currentState == DiveState.Stuck)
+            {
+                _currentVelocity = Vector2.zero;
+                transform.position = _diveTarget;
+                if (visualRoot != null)
+                {
+                    visualRoot.DOShakePosition(0.4f, crashShakeStrength, crashShakeVibrato);
+                }
+                if (crashParticleEffect != null)
+                {
+                    crashParticleEffect.Play();
+                }
             }
         }
 
         public void MoveTowards(Vector2 targetPosition)
         {
             if (config == null) return;
-            
-            // Constantly update aim while in locking or returning state
-            if (_currentState == DiveState.Locking || _currentState == DiveState.Returning)
+
+            if (_currentState == DiveState.Chasing || _currentState == DiveState.Locking)
             {
-                _lockedDirection = (targetPosition - (Vector2)transform.position).normalized;
+                _diveTarget = GetClampedViewportPosition(targetPosition);
             }
-            
+
             ProcessDiveState();
         }
 
@@ -157,134 +114,100 @@ namespace _Scripts.Enemy.Modules
         {
             if (config == null) return;
             
-            // Constantly update aim while in locking or returning state
-            if (_currentState == DiveState.Locking || _currentState == DiveState.Returning)
+            if (_currentState == DiveState.Chasing || _currentState == DiveState.Locking)
             {
-                _lockedDirection = direction.normalized;
+                Vector2 target = (Vector2)transform.position + (direction.normalized * 5f);
+                _diveTarget = GetClampedViewportPosition(target);
             }
 
             ProcessDiveState();
+        }
+
+        private Vector2 GetClampedViewportPosition(Vector2 worldPos)
+        {
+            if (_mainCamera == null) return worldPos;
+
+            Vector3 vpPos = _mainCamera.WorldToViewportPoint(worldPos);
+            
+            vpPos.x = Mathf.Clamp(vpPos.x, viewportMargin, 1f - viewportMargin);
+            vpPos.y = Mathf.Clamp(vpPos.y, viewportMargin, 1f - viewportMargin);
+            vpPos.z = Mathf.Abs(_mainCamera.transform.position.z); 
+
+            Vector3 clampedWorldPos = _mainCamera.ViewportToWorldPoint(vpPos);
+            return new Vector2(clampedWorldPos.x, clampedWorldPos.y);
         }
 
         private void ProcessDiveState()
         {
             _stateTimer += Time.deltaTime;
 
-            // Check if enemy is out of bounds
-            bool isOffScreen = false;
-            if (_mainCamera != null)
+            switch (_currentState)
             {
-                Vector3 vp = _mainCamera.WorldToViewportPoint(transform.position);
-                // 5% margin to consider it safely "inside" the screen
-                if (vp.x <= 0.05f || vp.x >= 0.95f || vp.y <= 0.05f || vp.y >= 0.95f)
-                {
-                    isOffScreen = true;
-                }
-            }
+                case DiveState.Chasing:
+                    Vector2 dir = (_diveTarget - (Vector2)transform.position).normalized;
+                    _currentVelocity = Vector2.MoveTowards(_currentVelocity, dir * config.moveSpeed, config.acceleration * Time.deltaTime);
+                    UpdateIndicatorRotation();
 
-            // Immediately switch to returning if we are locking but outside the screen
-            if (isOffScreen && _currentState == DiveState.Locking)
-            {
-                ChangeState(DiveState.Returning);
-            }
-            // Once safely back inside the viewport, switch back to locking
-            else if (!isOffScreen && _currentState == DiveState.Returning)
-            {
-                ChangeState(DiveState.Locking); 
-            }
-
-            // Handle States
-            if (_currentState == DiveState.Returning)
-            {
-                // Just walk normally towards the target to re-enter the arena
-                Vector2 targetVelocity = _lockedDirection * config.moveSpeed;
-                _currentVelocity = Vector2.MoveTowards(
-                    _currentVelocity, 
-                    targetVelocity, 
-                    config.acceleration * Time.deltaTime
-                );
-                
-                // Point indicator towards target safely
-                if (indicatorRoot != null && _lockedDirection != Vector2.zero)
-                {
-                    float angle = Mathf.Atan2(_lockedDirection.y, _lockedDirection.x) * Mathf.Rad2Deg;
-                    Quaternion targetRotation = Quaternion.Euler(0, 0, angle - 90f);
-                    indicatorRoot.rotation = Quaternion.Lerp(indicatorRoot.rotation, targetRotation, 15f * Time.deltaTime);
-                }
-            }
-            else if (_currentState == DiveState.Locking)
-            {
-                // Ensure shaking starts if this is the very first frame or just entered silently
-                if (!_isShaking && visualRoot != null)
-                {
-                    visualRoot.localRotation = Quaternion.Euler(-shakeAngle);
-                    visualRoot.DOLocalRotate(shakeAngle, shakeSpeed)
-                        .SetEase(shakeEase)
-                        .SetLoops(-1, LoopType.Yoyo);
-                        
-                    if (_visualSpriteRenderer != null)
+                    if (IsInsideViewport())
                     {
-                        _visualSpriteRenderer.color = _originalColor;
-                        _visualSpriteRenderer.DOColor(flashColor, flashSpeed)
-                            .SetEase(Ease.InOutSine)
-                            .SetLoops(-1, LoopType.Yoyo);
+                        ChangeState(DiveState.Locking);
                     }
+                    break;
 
-                    _isShaking = true;
-                }
+                case DiveState.Locking:
+                    _currentVelocity = Vector2.MoveTowards(_currentVelocity, Vector2.zero, config.deceleration * Time.deltaTime);
+                    UpdateIndicatorRotation();
+                    
+                    if (_stateTimer >= lockTime) ChangeState(DiveState.Diving);
+                    break;
 
-                // Smoothly rotate indicator toward locked direction
-                if (indicatorRoot != null && _lockedDirection != Vector2.zero)
-                {
-                    float angle = Mathf.Atan2(_lockedDirection.y, _lockedDirection.x) * Mathf.Rad2Deg;
-                    Quaternion targetRotation = Quaternion.Euler(0, 0, angle - 90f); // -90 assumes default sprite points UP
-                    indicatorRoot.rotation = Quaternion.Lerp(indicatorRoot.rotation, targetRotation, 15f * Time.deltaTime);
-                }
+                case DiveState.Diving:
+                    float step = (config.moveSpeed * diveSpeedMultiplier) * Time.deltaTime;
+                    transform.position = Vector2.MoveTowards(transform.position, _diveTarget, step);
 
-                // Brake and stay still while winding up the attack
-                _currentVelocity = Vector2.MoveTowards(
-                    _currentVelocity, 
-                    Vector2.zero, 
-                    config.deceleration * Time.deltaTime
-                );
+                    if (Vector2.Distance(transform.position, _diveTarget) < arrivalThreshold)
+                    {
+                        ChangeState(DiveState.Stuck);
+                    }
+                    break;
 
-                if (_stateTimer >= lockTime)
-                {
-                    ChangeState(DiveState.Diving);
-                }
+                case DiveState.Stuck:
+                    if (_stateTimer >= stallDuration) ChangeState(DiveState.Chasing);
+                    break;
             }
-            else if (_currentState == DiveState.Diving)
+
+            if (_currentState == DiveState.Chasing || _currentState == DiveState.Locking)
             {
-                // Shoot forward like a rocket using the locked direction! (Ignores targets current position so it overshoots)
-                Vector2 targetVelocity = _lockedDirection * (config.moveSpeed * diveSpeedMultiplier);
-                
-                // Accelerate extremely fast to simulate a burst of speed
-                _currentVelocity = Vector2.MoveTowards(
-                    _currentVelocity, 
-                    targetVelocity, 
-                    (config.acceleration * diveSpeedMultiplier) * Time.deltaTime
-                );
-
-                if (_stateTimer >= diveTime)
-                {
-                    ChangeState(DiveState.Locking);
-                }
+                ApplyMovement();
             }
-
-            ApplyMovement();
         }
 
-        public void Stop()
+        private bool IsInsideViewport()
         {
-            if (config == null) return;
-            
-            _currentVelocity = Vector2.MoveTowards(_currentVelocity, Vector2.zero, config.deceleration * Time.deltaTime);
-            ApplyMovement();
+            if (_mainCamera == null) return true;
+            Vector3 vp = _mainCamera.WorldToViewportPoint(transform.position);
+            return vp.x >= viewportMargin && vp.x <= 1f - viewportMargin && 
+                   vp.y >= viewportMargin && vp.y <= 1f - viewportMargin;
+        }
+
+        private void UpdateIndicatorRotation()
+        {
+            if (indicatorRoot != null)
+            {
+                Vector2 dir = (_diveTarget - (Vector2)transform.position).normalized;
+                if (dir != Vector2.zero)
+                {
+                    float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+                    indicatorRoot.rotation = Quaternion.Lerp(indicatorRoot.rotation, Quaternion.Euler(0, 0, angle - 90f), 15f * Time.deltaTime);
+                }
+            }
         }
 
         private void ApplyMovement()
         {
             transform.position += (Vector3)_currentVelocity * Time.deltaTime;
         }
+
+        public void Stop() => _currentVelocity = Vector2.zero;
     }
 }

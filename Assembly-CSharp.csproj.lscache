@@ -105,6 +105,7 @@ Assets/_Scripts/Enemy/
  Modules/
   DiveAttackModule.cs
   DiveEnemyMovement.cs
+  DiveEnemySensor.cs
   EnemyMovement.cs
   EnemyPatrol.cs
   EnemySensor.cs
@@ -133,12 +134,12 @@ Assets/_Scripts/
   PlayerAttack.cs
   PlayerConfig.cs
   PlayerHealth.cs
-  PlayerIdle.cs
   PlayerStatMachine.cs
   PlayerVisual.cs
  System/
   EconomyManager.cs
   GameManager.cs
+  GridManager.cs
   HealthbarDamp.cs
   HUDManager.cs
   ModifierManager.cs
