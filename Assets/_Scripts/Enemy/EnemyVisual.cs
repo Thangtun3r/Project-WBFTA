@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using DG.Tweening;
 
 namespace _Scripts.Enemy
@@ -10,11 +11,15 @@ namespace _Scripts.Enemy
         [SerializeField] private SpriteRenderer turretVisual;
         [SerializeField] private ParticleSystem deathParticles;
 
+        [Header("Flash Events")]
+        public UnityEvent OnFlashWindupStart = new();
+        public UnityEvent OnFlashComplete = new();
+
         [Header("Juice Settings")]
         [SerializeField] private float shakeDuration = 0.2f;
         [SerializeField] private float shakeStrength = 15f;
         [SerializeField] private Color damageColor = Color.white;
-        [SerializeField] private float flashDuration = 0.1f;
+        private float flashDuration = 0.05f;
 
         [Header("Scale Tween")]
         [SerializeField] private Transform scaleTarget;
@@ -85,6 +90,8 @@ namespace _Scripts.Enemy
 
         public void PlayHitEffects()
         {
+            OnFlashWindupStart?.Invoke();
+            
             if (enemyVisual != null)
             {
                 // Kill existing tweens on the visual child to prevent stuttering
@@ -98,7 +105,11 @@ namespace _Scripts.Enemy
                 enemyVisual.DOKill();
                 enemyVisual.DOColor(damageColor, flashDuration)
                     .SetLoops(2, LoopType.Yoyo)
-                    .OnComplete(() => enemyVisual.color = _baseColor);
+                    .OnComplete(() => 
+                    {
+                        enemyVisual.color = _baseColor;
+                        OnFlashComplete?.Invoke();
+                    });
             }
 
             if (turretVisual != null)

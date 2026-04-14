@@ -119,7 +119,6 @@ Assets/_Scripts/Enemy/
   SlimeMovement.cs
   SlimeTrail.cs
   SpinAttackModule.cs
- Projectile.cs
 Assets/_Scripts/
  FlaotingDamangePool.cs
  FloatingDamageText.cs
@@ -145,6 +144,8 @@ Assets/_Scripts/
   ModifierManager.cs
   PlayerSO.cs
   PlayerStats.cs
+  Projectile.cs
+  ProjectilePool.cs
   Spawner.cs
 Temp/obj/Assembly-CSharp/.NETStandard,Version=v2.1.AssemblyAttributes.cs
 

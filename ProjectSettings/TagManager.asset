@@ -45,5 +45,8 @@ TagManager:
   - name: Sky
     uniqueID: 3644782821
     locked: 0
+  - name: Cursor
+    uniqueID: 2921200039
+    locked: 0
   m_RenderingLayers:
   - Default

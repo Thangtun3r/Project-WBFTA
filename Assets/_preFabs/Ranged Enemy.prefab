@@ -298,7 +298,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.8235294, g: 0.42352942, b: 0.5176471, a: 1}
+  m_Color: {r: 0.9056604, g: 0.6824845, b: 0.34603062, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -5315,7 +5315,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.8235294, g: 0.42352942, b: 0.5176471, a: 1}
+  m_Color: {r: 0.90588236, g: 0.6862745, b: 0.34901962, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -5492,7 +5492,6 @@ MonoBehaviour:
   shakeDuration: 0.1
   shakeStrength: 7
   damageColor: {r: 1, g: 1, b: 1, a: 1}
-  flashDuration: 0.08
   scaleTarget: {fileID: 4779135819728176075}
   showScaleDuration: 0.2
   hideScaleDuration: 0.15
@@ -5580,16 +5579,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f5d72912896a53409edd9aceb588035, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Enemy.Modules.RangedAttackModule
-  projectilePrefab: {fileID: 1805574314347126598, guid: 5add8fdeeac561245ae2ff7cf62f9a4c, type: 3}
+  cooldown: 3
+  windupDuration: 0.5
+  projSpeed: 15
+  turnSpeed: 10
   firePoint: {fileID: 3662739255391230774}
-  visualTarget: {fileID: 4463660185146987650}
   rotationTarget: {fileID: 5035293590262120749}
-  attackCooldown: 4
-  projectileSpeed: 15.61
   shakeAngle: {x: 0, y: 0, z: 4}
-  shakeSpeed: 0.05
-  shakeEase: 4
-  rotationSpeed: 5
 --- !u!58 &558457595636325237
 CircleCollider2D:
   m_ObjectHideFlags: 0

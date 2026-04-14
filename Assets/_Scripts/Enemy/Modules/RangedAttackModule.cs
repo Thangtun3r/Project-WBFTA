@@ -1,184 +1,115 @@
 using UnityEngine;
 using DG.Tweening;
+using System.Collections;
 
 namespace _Scripts.Enemy.Modules
 {
     public class RangedAttackModule : MonoBehaviour, IEnemyAttack
     {
-        [Header("Projectile Setup")]
-        [SerializeField] private GameObject projectilePrefab;
-        [SerializeField] private Transform firePoint;
-        [SerializeField] private Transform visualTarget;
-        [SerializeField] private Transform rotationTarget; // The object to rotate toward the player
-        
-        [Header("Attack Settings")]
-        [SerializeField] private float attackCooldown = 1.5f; // Time between attacks
-        [SerializeField] private float projectileSpeed = 10f;
+        [Header("Settings")]
+        [SerializeField] private float cooldown = 1.2f;
+        [SerializeField] private float windupDuration = 0.4f;
+        [SerializeField] private float projSpeed = 10f;
+        [SerializeField] private float turnSpeed = 10f;
 
-        [Header("Windup Settings")]
+        [Header("References")]
+        [SerializeField] private Transform firePoint;
+        [SerializeField] private Transform rotationTarget;
         [SerializeField] private Vector3 shakeAngle = new Vector3(0, 0, 15f);
-        [SerializeField] private float shakeSpeed = 0.05f;
-        [SerializeField] private Ease shakeEase = Ease.InOutSine;
-        [SerializeField] private float rotationSpeed = 5f;
-        
+
+        private ITargetSensor _sensor;
+        private Coroutine _attackRoutine;
         private EnemyConfig _config;
-        private ITargetSensor _targetSensor;
-        private bool _isAttacking;
-        private float _nextFireTime;
-        
-        private enum AttackState { Cooldown, WindingUp }
-        private AttackState _attackState = AttackState.Cooldown;
-        private float _windupTimer;
+        private EnemyVisuals _enemyVisuals;
 
         private void Awake()
         {
             _config = GetComponentInParent<BaseEnemy>()?.Config;
-            
-            // Try to find the sensor on the same GameObject or children
-            _targetSensor = GetComponentInChildren<ITargetSensor>();
-            
-            if (firePoint == null)
-            {
-                firePoint = transform; // Default to this transform if not set
-            }
-            
-            if (visualTarget == null)
-            {
-                visualTarget = transform; // Default to this transform if not set
-                Debug.LogWarning("RangedAttackModule: visualTarget not assigned, using this transform");
-            }
-            
-            if (rotationTarget == null)
-            {
-                rotationTarget = transform; // Default to this transform if not set
-                Debug.LogWarning("RangedAttackModule: rotationTarget not assigned, using this transform");
-            }
+            _sensor = GetComponentInChildren<ITargetSensor>();
+            _enemyVisuals = GetComponentInParent<EnemyVisuals>();
+            rotationTarget = rotationTarget ?? transform;
+            firePoint = firePoint ?? transform;
         }
 
         public void SetAttackActive(bool active)
         {
-            _isAttacking = active;
-            
-            if (!active && _attackState == AttackState.WindingUp)
+            if (active && _attackRoutine == null) _attackRoutine = StartCoroutine(AttackLoop());
+            else if (!active && _attackRoutine != null)
             {
-                StopWindup();
-            }
-            else if (active)
-            {
-                // Optional: shoot immediately when entering the state
-                // _nextFireTime = Time.time; 
+                StopCoroutine(_attackRoutine);
+                _attackRoutine = null;
+                ResetVisuals();
             }
         }
 
-        public bool CanHit()
+        private IEnumerator AttackLoop()
         {
-            return _isAttacking;
-        }
-
-        public void StartHitCooldown()
-        {
-            // Ranged attack does not use hitbox cooldowns.
-        }
-
-        private void Update()
-        {
-            if (!_isAttacking || _targetSensor == null || !_targetSensor.HasTarget) return;
-
-            float actualWindupDuration = attackCooldown * 0.1f;
-            float cooldownDuration = attackCooldown * 0.9f;
-
-            if (_attackState == AttackState.Cooldown)
+            while (true)
             {
-                if (Time.time >= _nextFireTime)
+                // 1. Wait for target
+                yield return new WaitUntil(() => _sensor != null && _sensor.HasTarget);
+
+                // 2. Alignment Phase: Rotate until facing target (within 5 degrees)
+                while (true)
                 {
-                    StartWindup();
-                }
-            }
-            else if (_attackState == AttackState.WindingUp)
-            {
-                // Rotate smoothly towards the target we're shooting at using Lerp
-                Vector3 direction = (_targetSensor.TargetPosition - rotationTarget.position).normalized;
-                float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-                Quaternion targetRotation = Quaternion.AngleAxis(angle, Vector3.forward);
-                rotationTarget.rotation = Quaternion.Lerp(rotationTarget.rotation, targetRotation, Time.deltaTime * rotationSpeed * 5f);
+                    float angleDiff = GetAngleToTarget();
+                    if (Mathf.Abs(angleDiff) < 5f) break; 
 
-                _windupTimer += Time.deltaTime;
-                if (_windupTimer >= actualWindupDuration)
+                    ApplyRotation(angleDiff);
+                    yield return null;
+                }
+
+                // 3. Windup Phase: Start shaking now that we are aligned
+                _enemyVisuals?.OnFlashWindupStart?.Invoke();
+                transform.DOLocalRotate(shakeAngle, 0.05f).SetLoops(-1, LoopType.Yoyo);
+                
+                float elapsed = 0;
+                while (elapsed < windupDuration)
                 {
-                    // Snap to perfectly align at the exact moment of the shot
-                    rotationTarget.rotation = targetRotation;
-
-                    StopWindup();
-                    Shoot(_targetSensor.TargetPosition);
-                    _nextFireTime = Time.time + cooldownDuration;
+                    ApplyRotation(GetAngleToTarget()); // Keep tracking during windup
+                    elapsed += Time.deltaTime;
+                    yield return null;
                 }
+
+                // 4. Fire & Cooldown
+                ExecuteFire();
+                yield return new WaitForSeconds(cooldown);
             }
         }
 
-        private void StartWindup()
+        private void ExecuteFire()
         {
-            _attackState = AttackState.WindingUp;
-            _windupTimer = 0f;
+            ResetVisuals();
             
-            if (visualTarget != null)
-            {
-                visualTarget.DOKill(true);
-                visualTarget.localRotation = Quaternion.Euler(-shakeAngle);
-                visualTarget.DOLocalRotate(shakeAngle, shakeSpeed)
-                    .SetEase(shakeEase)
-                    .SetLoops(-1, LoopType.Yoyo);
-            }
+            Vector3 dir = (rotationTarget.right); // Use current forward after alignment
+            float damage = _config != null ? _config.damage : 10f;
+
+            ProjectilePool.OnProjectileRequested?.Invoke(new ProjectileRequest(
+                firePoint.position, rotationTarget.rotation, damage, dir * projSpeed));
+
+            transform.DOPunchScale(new Vector3(0.2f, 0.2f, 0), 0.1f);
         }
 
-        private void StopWindup()
+        private float GetAngleToTarget()
         {
-            _attackState = AttackState.Cooldown;
-            if (visualTarget != null)
-            {
-                visualTarget.DOKill(true);
-                visualTarget.localRotation = Quaternion.identity;
-            }
+            Vector3 dir = (_sensor.TargetPosition - rotationTarget.position).normalized;
+            float targetAngle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+            return Mathf.DeltaAngle(rotationTarget.eulerAngles.z, targetAngle);
         }
 
-        private void Shoot(Vector3 targetPosition)
+        private void ApplyRotation(float angleDiff)
         {
-            if (projectilePrefab == null)
-            {
-                Debug.LogWarning("No Projectile Prefab assigned in RangedAttackModule!");
-                return;
-            }
+            float rotationStep = angleDiff * Time.deltaTime * turnSpeed;
+            rotationTarget.Rotate(0, 0, rotationStep);
+        }
 
-            // Spawn the projectile
-            GameObject projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
-            
-            if (visualTarget != null)
-            {
-                visualTarget.DOKill(true);
-                visualTarget.localScale = Vector3.one;
-                visualTarget.DOScale(1.2f, 0.1f).SetEase(Ease.OutQuad).SetLoops(2, LoopType.Yoyo);
-            }
-            
-            // Calculate direction to the target
-            Vector3 direction = (targetPosition - firePoint.position).normalized;
-            
-            // Rotate the projectile to face the target (assuming standard 2D rotation)
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            projectile.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-            
-            // Apply velocity to the 2D Rigidbody
-            if (projectile.TryGetComponent<Rigidbody2D>(out Rigidbody2D rb))
-            {
-                rb.linearVelocity = direction * projectileSpeed;
-            }
-            else
-            {
-                Debug.LogWarning("Projectile prefab is missing a Rigidbody2D!");
-            }            
-            // Pass the damage to the projectile
-            if (projectile.TryGetComponent<Projectile>(out Projectile projScript))
-            {
-                float damage = _config != null ? _config.damage : 10f;
-                projScript.Initialize(damage);
-            }        }
+        private void ResetVisuals()
+        {
+            transform.DOKill();
+            transform.localRotation = Quaternion.identity;
+        }
+
+        public bool CanHit() => _attackRoutine != null;
+        public void StartHitCooldown() { }
     }
 }

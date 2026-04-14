@@ -12,6 +12,7 @@ namespace _Scripts.Enemy.Modules
 
         [Header("Dive Settings")]
         [SerializeField] private float lockTime = 1f;
+        [SerializeField] private float graceCommitmentTime = 0.3f;
         [SerializeField] private float diveSpeedMultiplier = 4f;
         [SerializeField] private float stallDuration = 2f;
         [SerializeField] private float arrivalThreshold = 0.2f;
@@ -36,6 +37,7 @@ namespace _Scripts.Enemy.Modules
         
         private float _stateTimer = 0f;
         private Vector2 _diveTarget;
+        private bool _isCommitted = false;
         private Camera _mainCamera;
         private SpriteRenderer _visualSpriteRenderer;
         private Color _originalColor;
@@ -65,6 +67,7 @@ namespace _Scripts.Enemy.Modules
             _currentState = newState;
             _stateTimer = 0f;
             _isShaking = false;
+            _isCommitted = false;
 
             if (_currentState == DiveState.Chasing && visualRoot != null)
             {
@@ -102,7 +105,7 @@ namespace _Scripts.Enemy.Modules
         {
             if (config == null) return;
 
-            if (_currentState == DiveState.Chasing || _currentState == DiveState.Locking)
+            if (_currentState == DiveState.Chasing || (_currentState == DiveState.Locking && !_isCommitted))
             {
                 _diveTarget = GetClampedViewportPosition(targetPosition);
             }
@@ -114,7 +117,7 @@ namespace _Scripts.Enemy.Modules
         {
             if (config == null) return;
             
-            if (_currentState == DiveState.Chasing || _currentState == DiveState.Locking)
+            if (_currentState == DiveState.Chasing || (_currentState == DiveState.Locking && !_isCommitted))
             {
                 Vector2 target = (Vector2)transform.position + (direction.normalized * 5f);
                 _diveTarget = GetClampedViewportPosition(target);
@@ -157,6 +160,11 @@ namespace _Scripts.Enemy.Modules
                 case DiveState.Locking:
                     _currentVelocity = Vector2.MoveTowards(_currentVelocity, Vector2.zero, config.deceleration * Time.deltaTime);
                     UpdateIndicatorRotation();
+                    
+                    if (_stateTimer >= graceCommitmentTime)
+                    {
+                        _isCommitted = true;
+                    }
                     
                     if (_stateTimer >= lockTime) ChangeState(DiveState.Diving);
                     break;
