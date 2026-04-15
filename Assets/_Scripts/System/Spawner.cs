@@ -22,6 +22,9 @@ public class DirectorSpawner2D : MonoBehaviour
     public int globalMaxCap = 30;
     public int reservedPlayerSlots = 5; // Guaranteed slots for player spawns
     public float spawnInterval = 2f;
+    public float capGrowthMultiplier = 1.2f; // Exponential growth per level
+    
+    private int _baseGlobalMaxCap; // Store base cap for scaling
     
     [Header("Telegraph Settings")]
     public GameObject loadingPrefab;
@@ -51,6 +54,7 @@ public class DirectorSpawner2D : MonoBehaviour
             if (p != null) playerTransform = p.transform;
         }
 
+        _baseGlobalMaxCap = globalMaxCap;
         _currentCredits = initialCredits;
         UpdateDifficulty(GameManager.Instance != null ? GameManager.Instance.CurrentLevel : 1);
         InvokeRepeating(nameof(TrySpawnEnemy), 0.5f, spawnInterval);
@@ -66,6 +70,7 @@ public class DirectorSpawner2D : MonoBehaviour
     private void UpdateDifficulty(int level)
     {
         _activeCreditsPerSecond = baseCreditsPerSecond + (level - 1) * difficultyScaling;
+        globalMaxCap = Mathf.RoundToInt(_baseGlobalMaxCap * Mathf.Pow(capGrowthMultiplier, level - 1));
     }
 
     private void TrySpawnEnemy()

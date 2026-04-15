@@ -172,13 +172,14 @@ MonoBehaviour:
     weight: 1
   - enemyName: 
     prefab: {fileID: 9203883233185218907, guid: dc8fe1119b118264691c5f9a5eca0c7e, type: 3}
-    weight: 8.7
-  initialCredits: 200
+    weight: 69.7
+  initialCredits: 500
   baseCreditsPerSecond: 1
   difficultyScaling: 0.5
   globalMaxCap: 30
   reservedPlayerSlots: 5
   spawnInterval: 1
+  capGrowthMultiplier: 1.15
   loadingPrefab: {fileID: 6414776186518300151, guid: 58ba6645079fb4d4090780b1572d92a1, type: 3}
   loadingDuration: 1.5
   nearPlayerChance: 0.2
