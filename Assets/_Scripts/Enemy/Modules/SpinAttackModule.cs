@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace _Scripts.Enemy.Modules
 {
@@ -6,80 +7,70 @@ namespace _Scripts.Enemy.Modules
     {
         [Header("Spin Settings")]
         [SerializeField] private Transform spinningRoot;
-        [SerializeField] private float spinSpeed = 360f; // Degrees per second
+        [SerializeField] private float spinSpeed = 360f;
         [SerializeField] private bool alwaysSpin = false;
         
         [Header("Damage Settings")]
-        [SerializeField] private float damageCooldown = 0.5f; // Prevent hitting every frame
-        
+        [SerializeField] private float damageCooldown = 0.5f;
+        [SerializeField] private LayerMask targetLayer; // Set to "Player"
+        [SerializeField] private float detectionRadius = 1f;
+
         private EnemyConfig _config;
         private bool _isAttacking;
-        
         private float _cooldownTimer;
+        private float _spinDamage;
+
+        // List to keep track of proxies we've created
+        private List<HitboxProxy> _proxies = new List<HitboxProxy>();
 
         private void Awake()
         {
             _config = GetComponentInParent<BaseEnemy>()?.Config;
-            float spinDamage = _config != null ? _config.damage : 10f;
+            _spinDamage = _config != null ? _config.damage : 10f;
             
-            if (spinningRoot != null)
-            {
-                // Get all colliders in the spinning root to use as hitboxes
-                Collider2D[] hitboxes = spinningRoot.GetComponentsInChildren<Collider2D>();
-                
-                foreach (var col in hitboxes)
-                {
-                    // Dynamically attach the proxy to route collisions to this script
-                    HitboxProxy proxy = col.gameObject.AddComponent<HitboxProxy>();
-                    proxy.attackModule = this;
-                    proxy.damage = spinDamage;
-                }
-            }
-            else
-            {
-                Debug.LogWarning("Spinning Root not assigned on SpinAttackModule!");
-            }
+            SetupProxies();
         }
 
-        public void SetAttackActive(bool active)
+        private void SetupProxies()
         {
-            _isAttacking = active;
+            if (spinningRoot == null) return;
+
+            Collider2D[] hitboxes = spinningRoot.GetComponentsInChildren<Collider2D>();
+            foreach (var col in hitboxes)
+            {
+                HitboxProxy proxy = col.gameObject.GetComponent<HitboxProxy>() ?? col.gameObject.AddComponent<HitboxProxy>();
+                
+                proxy.attackModule = this;
+                proxy.damage = _spinDamage;
+                
+                _proxies.Add(proxy);
+            }
         }
 
         private void Update()
         {
-            // Spin regardless, or only spin when attacking based on the toggle
             if (_isAttacking || alwaysSpin)
             {
                 Spin();
             }
 
-            // Cooldown countdown
-            if (_cooldownTimer > 0)
-            {
-                _cooldownTimer -= Time.deltaTime;
-            }
-        }
-
-        public bool CanHit()
-        {
-            return _isAttacking && _cooldownTimer <= 0;
-        }
-
-        public void StartHitCooldown()
-        {
-            if (!_isAttacking) return;
-            
-            _cooldownTimer = damageCooldown;
+            if (_cooldownTimer > 0) _cooldownTimer -= Time.deltaTime;
         }
 
         private void Spin()
         {
             if (spinningRoot != null)
             {
-                // Simple 2D rotation on the Z axis
+                // Rotation via Transform is fine for visuals/colliders 
+                // IF we aren't relying on high-speed physics tunneling
                 spinningRoot.Rotate(0, 0, spinSpeed * Time.deltaTime);
             }
         }
+
+        public bool CanHit() => _isAttacking && _cooldownTimer <= 0;
+
+        public void StartHitCooldown() => _cooldownTimer = damageCooldown;
+
+        public void SetAttackActive(bool active) => _isAttacking = active;
     }
 }

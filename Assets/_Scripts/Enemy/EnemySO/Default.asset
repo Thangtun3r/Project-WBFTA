@@ -17,7 +17,7 @@ MonoBehaviour:
   deceleration: 15
   stopDistance: 3
   detectionRange: 43.8
-  attackRange: 3.48
+  attackRange: 12.51
   attackExitBuffer: 1
   damage: 16
   tier: 1

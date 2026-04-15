@@ -326,6 +326,10 @@ MonoBehaviour:
   spinSpeed: 90
   alwaysSpin: 1
   damageCooldown: 0
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  detectionRadius: 1
 --- !u!1 &2574730979140863387
 GameObject:
   m_ObjectHideFlags: 0
@@ -5643,8 +5647,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.016507702, y: 0.10007775}
-  m_Size: {x: 1.0902581, y: 1.9189183}
+  m_Offset: {x: 0.016507702, y: 0.08033755}
+  m_Size: {x: 1.0902376, y: 1.8793232}
   m_Direction: 0
 --- !u!50 &7650092566285852075
 Rigidbody2D:

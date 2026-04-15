@@ -33,17 +33,12 @@ namespace _Scripts.Enemy.Modules
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (!useTrigger) return;
-            HandleTrigger(collision);
-        }
-
-        private void HandleTrigger(Collider2D collision)
-        {
             if (!collision.CompareTag("Player")) return;
+            Debug.Log($"HitboxProxy Triggered on {collision.name}");
             if (attackModule == null || !attackModule.CanHit()) return;
-
             collision.GetComponentInParent<IDamagable>()?.TakeDamage(damage);
-            Debug.Log($"Hitbox proxy hit Player for {damage} damage!");
             attackModule.StartHitCooldown();
         }
-    }
+}
+
 }
