@@ -10507,13 +10507,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a055f0396e00a449977ce7d5f769306, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Enemy.EnemyVisuals
-  enemyVisual: {fileID: 977869940075687498}
-  turretVisual: {fileID: 0}
+  shakeTarget: {fileID: 4720413435469617337}
+  flashVisuals:
+  - {fileID: 977869940075687498}
+  - {fileID: 7414915541133414321}
+  - {fileID: 3510043967153597441}
   deathParticles: {fileID: 6300896989847742642}
+  OnFlashWindupStart:
+    m_PersistentCalls:
+      m_Calls: []
+  OnFlashComplete:
+    m_PersistentCalls:
+      m_Calls: []
   shakeDuration: 0.1
   shakeStrength: 7
   damageColor: {r: 1, g: 1, b: 1, a: 1}
-  flashDuration: 0.08
   scaleTarget: {fileID: 952738740523826985}
   showScaleDuration: 0.2
   hideScaleDuration: 0.15
@@ -10590,6 +10598,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Enemy.Modules.DiveEnemyMovement
   lockTime: 0.7
+  graceCommitmentTime: 0.3
   diveSpeedMultiplier: 3.5
   stallDuration: 2
   arrivalThreshold: 0.2

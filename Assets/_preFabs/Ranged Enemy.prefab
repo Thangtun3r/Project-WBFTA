@@ -5486,9 +5486,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a055f0396e00a449977ce7d5f769306, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Enemy.EnemyVisuals
-  enemyVisual: {fileID: 6867698817040051414}
-  turretVisual: {fileID: 341055019625889147}
+  shakeTarget: {fileID: 4463660185146987650}
+  flashVisuals:
+  - {fileID: 6867698817040051414}
+  - {fileID: 341055019625889147}
   deathParticles: {fileID: 7273841526008436735}
+  OnFlashWindupStart:
+    m_PersistentCalls:
+      m_Calls: []
+  OnFlashComplete:
+    m_PersistentCalls:
+      m_Calls: []
   shakeDuration: 0.1
   shakeStrength: 7
   damageColor: {r: 1, g: 1, b: 1, a: 1}

@@ -7,8 +7,8 @@ namespace _Scripts.Enemy
     public class EnemyVisuals : MonoBehaviour
     {
         [Header("References")]
-        [SerializeField] private SpriteRenderer enemyVisual;
-        [SerializeField] private SpriteRenderer turretVisual;
+        [SerializeField] private Transform shakeTarget;
+        [SerializeField] private SpriteRenderer[] flashVisuals;
         [SerializeField] private ParticleSystem deathParticles;
 
         [Header("Flash Events")]
@@ -28,12 +28,11 @@ namespace _Scripts.Enemy
         [SerializeField] private Ease showScaleEase = Ease.OutBack;
         [SerializeField] private Ease hideScaleEase = Ease.InBack;
 
-        private Color _baseColor = Color.white;
-        private Color _turretBaseColor = Color.white;
+        private Color[] _baseColors;
         private Transform _scaleTarget;
         private bool _isInitialized = false;
 
-        private Transform ScaleTarget => _scaleTarget != null ? _scaleTarget : enemyVisual != null ? enemyVisual.transform : transform;
+        private Transform ScaleTarget => _scaleTarget != null ? _scaleTarget : transform;
 
         private void Awake()
         {
@@ -44,22 +43,26 @@ namespace _Scripts.Enemy
         {
             if (_isInitialized) return;
             
-            _scaleTarget = scaleTarget != null ? scaleTarget : enemyVisual != null ? enemyVisual.transform : transform;
+            _scaleTarget = scaleTarget != null ? scaleTarget : transform;
+            if (shakeTarget == null) shakeTarget = _scaleTarget;
 
-            if (enemyVisual != null)
+            if (flashVisuals != null && flashVisuals.Length > 0)
             {
-                _baseColor = enemyVisual.color;
-            }
-            if (turretVisual != null)
-            {
-                _turretBaseColor = turretVisual.color;
+                _baseColors = new Color[flashVisuals.Length];
+                for (int i = 0; i < flashVisuals.Length; i++)
+                {
+                    if (flashVisuals[i] != null)
+                    {
+                        _baseColors[i] = flashVisuals[i].color;
+                    }
+                }
             }
             _isInitialized = true;
         }
 
         private void OnEnable()
         {
-            Initialize(); // Ensure _baseColor is captured before applying it
+            Initialize(); // Ensure base color is captured before applying it
             
             if (ScaleTarget != null)
             {
@@ -70,21 +73,26 @@ namespace _Scripts.Enemy
                     .SetEase(showScaleEase);
             }
 
-            if (enemyVisual != null)
+            if (shakeTarget != null)
             {
-                // Reset visual state for pooling safety
-                enemyVisual.DOKill();
-                enemyVisual.color = _baseColor;
-                enemyVisual.enabled = true;
-                enemyVisual.transform.localRotation = Quaternion.identity;
+                // Reset shake target rotation 
+                shakeTarget.DOKill();
+                shakeTarget.localRotation = Quaternion.identity;
             }
 
-            if (turretVisual != null)
+            if (flashVisuals != null)
             {
-                turretVisual.DOKill();
-                turretVisual.color = _turretBaseColor;
-                turretVisual.enabled = true;
-                turretVisual.transform.localRotation = Quaternion.identity;
+                for (int i = 0; i < flashVisuals.Length; i++)
+                {
+                    var visual = flashVisuals[i];
+                    if (visual != null && _baseColors != null)
+                    {
+                        // Reset visual state for pooling safety
+                        visual.DOKill();
+                        visual.color = _baseColors[i];
+                        visual.enabled = true;
+                    }
+                }
             }
         }
 
@@ -92,58 +100,87 @@ namespace _Scripts.Enemy
         {
             OnFlashWindupStart?.Invoke();
             
-            if (enemyVisual != null)
+            if (shakeTarget != null)
             {
-                // Kill existing tweens on the visual child to prevent stuttering
-                enemyVisual.transform.DOKill(true); 
-                enemyVisual.transform.localRotation = Quaternion.identity; 
-                
-                // Shake Rotation (Still applied to the visual child)
-                enemyVisual.transform.DOShakeRotation(shakeDuration, new Vector3(0, 0, shakeStrength));
-
-                // Color Flash
-                enemyVisual.DOKill();
-                enemyVisual.DOColor(damageColor, flashDuration)
-                    .SetLoops(2, LoopType.Yoyo)
-                    .OnComplete(() => 
-                    {
-                        enemyVisual.color = _baseColor;
-                        OnFlashComplete?.Invoke();
-                    });
+                // Shake Rotation
+                shakeTarget.DOKill(true); 
+                shakeTarget.localRotation = Quaternion.identity; 
+                shakeTarget.DOShakeRotation(shakeDuration, new Vector3(0, 0, shakeStrength));
             }
 
-            if (turretVisual != null)
+            if (flashVisuals != null)
             {
-                turretVisual.transform.DOKill(true); 
-                turretVisual.transform.localRotation = Quaternion.identity; 
-                
-                turretVisual.transform.DOShakeRotation(shakeDuration, new Vector3(0, 0, shakeStrength));
+                bool invokeComplete = true; // Make sure the event is only invoked once per flash
+                for (int i = 0; i < flashVisuals.Length; i++)
+                {
+                    var index = i;
+                    var visual = flashVisuals[index];
+                    if (visual != null && _baseColors != null)
+                    {
+                        visual.DOKill();
+                        var tween = visual.DOColor(damageColor, flashDuration)
+                            .SetLoops(2, LoopType.Yoyo);
 
-                turretVisual.DOKill();
-                turretVisual.DOColor(damageColor, flashDuration)
-                    .SetLoops(2, LoopType.Yoyo)
-                    .OnComplete(() => turretVisual.color = _turretBaseColor);
+                        if (invokeComplete)
+                        {
+                            tween.OnComplete(() => 
+                            {
+                                visual.color = _baseColors[index];
+                                OnFlashComplete?.Invoke();
+                            });
+                            invokeComplete = false;
+                        }
+                        else
+                        {
+                            tween.OnComplete(() => visual.color = _baseColors[index]);
+                        }
+                    }
+                }
+                
+                // Fallback invoke if empty list or missing visuals
+                if (invokeComplete)
+                {
+                    DOVirtual.DelayedCall(flashDuration * 2, () => OnFlashComplete?.Invoke());
+                }
+            }
+            else
+            {
+                 DOVirtual.DelayedCall(flashDuration * 2, () => OnFlashComplete?.Invoke());
             }
         }
 
         public void PlayDeathEffects()
         {
-            if (enemyVisual != null && ScaleTarget != null)
+            if (shakeTarget != null) shakeTarget.DOKill();
+
+            if (ScaleTarget != null)
             {
-                enemyVisual.DOKill();
-                if (turretVisual != null) turretVisual.DOKill();
                 ScaleTarget.DOKill();
                 
-                enemyVisual.enabled = true;
-                if (turretVisual != null) turretVisual.enabled = true;
+                if (flashVisuals != null)
+                {
+                    foreach (var visual in flashVisuals)
+                    {
+                        if (visual != null)
+                        {
+                            visual.DOKill();
+                            visual.enabled = true;
+                        }
+                    }
+                }
                 
                 ScaleTarget
                     .DOScale(Vector3.zero, hideScaleDuration)
                     .SetEase(hideScaleEase)
                     .OnComplete(() => 
                     {
-                        if (enemyVisual != null) enemyVisual.enabled = false;
-                        if (turretVisual != null) turretVisual.enabled = false;
+                        if (flashVisuals != null)
+                        {
+                            foreach (var visual in flashVisuals)
+                            {
+                                if (visual != null) visual.enabled = false;
+                            }
+                        }
                     });
             }
 
@@ -155,44 +192,32 @@ namespace _Scripts.Enemy
 
         public void HideVisual()
         {
-            if (enemyVisual != null)
+            if (flashVisuals != null)
             {
-                enemyVisual.DOKill();
-                enemyVisual.enabled = false;
-            }
-            if (turretVisual != null)
-            {
-                turretVisual.DOKill();
-                turretVisual.enabled = false;
+                foreach (var visual in flashVisuals)
+                {
+                    if (visual != null)
+                    {
+                        visual.DOKill();
+                        visual.enabled = false;
+                    }
+                }
             }
         }
 
         public void ShowVisual()
         {
-            if (enemyVisual != null)
+            if (flashVisuals != null && _baseColors != null)
             {
-                enemyVisual.enabled = true;
-                // reset color to default if it was changed
-                enemyVisual.color = _baseColor;
-            }
-            if (turretVisual != null)
-            {
-                turretVisual.enabled = true;
-                turretVisual.color = _turretBaseColor;
-            }
-        }
-
-        public void Flip(bool flipX)
-        {
-            if (enemyVisual != null)
-            {
-                enemyVisual.flipX = flipX;
-            }
-            if (turretVisual != null)
-            {
-                // Optionally flip the turret visual as well depending on your art setup
-                // For instance: sometimes turrets spin freely and shouldn't flip
-                turretVisual.flipY = flipX; // Or flipX depending on top-down vs side-scroller. Leaving as flipY or flipX may need testing based on aim alignment
+                for (int i = 0; i < flashVisuals.Length; i++)
+                {
+                    var visual = flashVisuals[i];
+                    if (visual != null)
+                    {
+                        visual.enabled = true;
+                        visual.color = _baseColors[i];
+                    }
+                }
             }
         }
     }
