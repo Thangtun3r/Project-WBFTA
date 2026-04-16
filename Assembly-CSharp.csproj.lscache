@@ -149,7 +149,9 @@ Assets/_Scripts/
   Projectile.cs
   ProjectilePool.cs
   Spawner.cs
- Temp/PenTool.cs
+ Temp/
+  CurveCollision.cs
+  PenTool.cs
 Temp/obj/Assembly-CSharp/.NETStandard,Version=v2.1.AssemblyAttributes.cs
 
 [metadataReferences]

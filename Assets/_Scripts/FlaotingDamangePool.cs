@@ -19,29 +19,28 @@ public class FloatingDamagePool : MonoBehaviour
         }
     }
 
-    private void OnEnable() => player.OnHitTarget += SpawnDamage;
+    private void OnEnable()
+    
+    {
+        player.OnHitTarget += SpawnDamage;
+    } 
     private void OnDisable() => player.OnHitTarget -= SpawnDamage;
 
-    private void SpawnDamage(Vector2 hitPoint, float actualDamage, bool isCrit)
+    public void SpawnDamage(Vector2 hitPoint, float actualDamage, bool isCrit) // Changed to PUBLIC
     {
-        // 1. Get the object from the pool
-        FloatingDamageText textObj = pool.Dequeue();
+        if (pool.Count == 0) return; // Safety check
 
-        // 2. Set the world position BEFORE activating
-        // We use Vector3 to ensure Z is 0 (or slightly in front of the background)
+        FloatingDamageText textObj = pool.Dequeue();
+        
         textObj.transform.position = new Vector3(hitPoint.x, hitPoint.y, 0);
 
-        // 3. Add a tiny bit of random "jitter" so multiple hits don't overlap
-        float jitterX = Random.Range(-0.3f, 0.3f);
-        float jitterY = Random.Range(-0.1f, 0.1f);
+        float jitterX = UnityEngine.Random.Range(-0.3f, 0.3f);
+        float jitterY = UnityEngine.Random.Range(-0.1f, 0.1f);
         textObj.transform.position += new Vector3(jitterX, jitterY, 0);
-        
 
-        // 5. Activate and run your DOTween setup using the actual crit status
         textObj.gameObject.SetActive(true);
         textObj.Setup(actualDamage, isCrit);
 
-        // 6. Push back to the end of the queue
         pool.Enqueue(textObj);
     }
 }
