@@ -22,6 +22,6 @@ MonoBehaviour:
   damage: 44.6
   tier: 1
   level: 1
-  maxHealth: 20
-  healthIncreasePerLevel: 24
+  maxHealth: 14
+  healthIncreasePerLevel: 2.8
   damageIncreasePerLevel: 20

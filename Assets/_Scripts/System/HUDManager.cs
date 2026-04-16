@@ -12,6 +12,10 @@ public class HUDManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI moneyText;
     [SerializeField] private TextMeshProUGUI levelText;
     [SerializeField] private Volume postProcessVolume;
+
+    [Header("Money Display")]
+    [SerializeField] private float moneyChangeSpeed = 120f;
+
     [Header("Vignette Settings")]
     [SerializeField] private float damageFlashIntensity = 0.6f;
     [SerializeField] private float damageFlashDuration = 0.3f;
@@ -24,6 +28,9 @@ public class HUDManager : MonoBehaviour
     private Vignette _vignette;
     private float _targetVignetteIntensity;
     private float _damageFlashTimer;
+
+    private int _displayedMoney;
+    private int _targetMoney;
 
     private void OnEnable()
     {
@@ -54,6 +61,12 @@ public class HUDManager : MonoBehaviour
 
     private void Update()
     {
+        if (moneyText != null && _displayedMoney != _targetMoney)
+        {
+            _displayedMoney = (int)Mathf.MoveTowards(_displayedMoney, _targetMoney, moneyChangeSpeed * Time.deltaTime);
+            moneyText.text = $"${_displayedMoney:F0}";
+        }
+
         if (_vignette == null)
             return;
 
@@ -120,9 +133,11 @@ public class HUDManager : MonoBehaviour
         }
     }
 
-    private void UpdateMoneyDisplay(float currentMoney)
+    private void UpdateMoneyDisplay(int currentMoney)
     {
-        if (moneyText != null)
+        _targetMoney = currentMoney;
+
+        if (_displayedMoney == _targetMoney && moneyText != null)
         {
             moneyText.text = $"${currentMoney:F0}";
         }

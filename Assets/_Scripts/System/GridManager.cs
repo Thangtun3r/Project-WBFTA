@@ -12,8 +12,13 @@ public class GridManager : MonoBehaviour
     [Header("References")]
     public Transform playerTransform;
 
+    [Header("Gizmo Settings")]
+    public bool drawGizmos = true;
+
     private void OnDrawGizmos()
     {
+        if (!drawGizmos)
+            return;
         // Fallback: Try to find player if reference is null (useful for Editor testing)
         if (playerTransform == null)
         {

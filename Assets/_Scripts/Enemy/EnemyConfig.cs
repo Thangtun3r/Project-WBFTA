@@ -16,6 +16,7 @@ namespace _Scripts.Enemy
         public float attackRange = 5f;
         public float attackExitBuffer = 1f;
         public float damage = 10;
+
         
         [Header("Progression")]
         public int tier = 1;

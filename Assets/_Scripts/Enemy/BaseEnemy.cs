@@ -10,6 +10,7 @@ namespace _Scripts.Enemy
         [SerializeField] protected EnemyConfig config;
         [SerializeField] protected float deathReturnDelay = 3f;
         
+        
         protected int currentLevel;
         protected float currentDamage;
         protected float currentHealth;
@@ -93,12 +94,20 @@ namespace _Scripts.Enemy
                 _visuals.PlayDeathEffects();
                 _visuals.HideVisual();
             }
+            
 
             _fsm?.QueueNextState(EnemyFSM.EnemyState.Dead);
+            // Reward the player for defeating this enemy, speak to the boss
+            RewardPlayer(config.tier, currentLevel);
             
             Die();
             
             Invoke(nameof(DeactivateObject), deathReturnDelay);
+        }
+
+        protected virtual void RewardPlayer(int tier, int level)
+        {
+            EnemyRewardManager.Instance?.HandleReward(tier, level);
         }
 
         protected virtual void DeactivateObject()

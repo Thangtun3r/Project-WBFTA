@@ -5,9 +5,9 @@ public class EconomyManager : MonoBehaviour
 {
     public static EconomyManager Instance { get; private set; }
 
-    public float CurrentMoney { get; private set; }
+    public int CurrentMoney { get; private set; }
 
-    public static event Action<float> OnMoneyChanged;
+    public static event Action<int> OnMoneyChanged;
 
     private void Awake()
     {
@@ -21,11 +21,11 @@ public class EconomyManager : MonoBehaviour
 
     private void Start()
     {
-        CurrentMoney = 0f;
+        CurrentMoney = 0;
         OnMoneyChanged?.Invoke(CurrentMoney);
     }
 
-    public void AddMoney(float amount)
+    public void AddMoney(int amount)
     {
         if (amount <= 0)
             return;
@@ -35,7 +35,7 @@ public class EconomyManager : MonoBehaviour
         Debug.Log($"Added {amount} money! Current money: {CurrentMoney}");
     }
 
-    public void RemoveMoney(float amount)
+    public void RemoveMoney(int amount)
     {
         if (amount <= 0)
             return;
@@ -45,7 +45,7 @@ public class EconomyManager : MonoBehaviour
         Debug.Log($"Removed {amount} money! Current money: {CurrentMoney}");
     }
 
-    public bool TryRemoveMoney(float amount)
+    public bool TryRemoveMoney(int amount)
     {
         if (CurrentMoney >= amount)
         {

@@ -137,16 +137,19 @@ Assets/_Scripts/
   PlayerVisual.cs
  System/
   EconomyManager.cs
+  EnemyRewardManager.cs
   GameManager.cs
   GridManager.cs
   HealthbarDamp.cs
   HUDManager.cs
+  MiniMap.cs
   ModifierManager.cs
   PlayerSO.cs
   PlayerStats.cs
   Projectile.cs
   ProjectilePool.cs
   Spawner.cs
+ Temp/PenTool.cs
 Temp/obj/Assembly-CSharp/.NETStandard,Version=v2.1.AssemblyAttributes.cs
 
 [metadataReferences]
