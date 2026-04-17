@@ -17,7 +17,11 @@ public class Player : MonoBehaviour
         _health = GetComponent<PlayerHealth>();
         _statMachine = GetComponent<PlayerStatMachine>();
 
-        // Pass the data from the stat machine to the workers
+      
+    }
+
+    void Start()
+    {
         InitializeWorkerScripts();
     }
 

@@ -12,7 +12,6 @@ public class PlayerStatMachine : MonoBehaviour
     private float _baseDamage;
     private float _baseHealth;
     private bool _wasLastAttackCrit;
-    private PlayerHealth _playerHealth;
 
     private void Awake()
     {
@@ -24,17 +23,6 @@ public class PlayerStatMachine : MonoBehaviour
 
         _baseDamage = config.damage;
         _baseHealth = config.maxHealth;
-
-        // Initialize PlayerHealth component
-        _playerHealth = GetComponent<PlayerHealth>();
-        if (_playerHealth != null)
-        {
-            _playerHealth.Initialize(_baseHealth);
-        }
-        else
-        {
-            Debug.LogWarning("PlayerStatMachine: PlayerHealth component not found on this GameObject!");
-        }
     }
 
     /// <summary>
@@ -59,35 +47,59 @@ public class PlayerStatMachine : MonoBehaviour
     /// <summary>
     /// Returns whether the last attack was a critical hit
     /// </summary>
-    public bool WasLastAttackCrit() => _wasLastAttackCrit;
+    public bool WasLastAttackCrit()
+    {
+        return _wasLastAttackCrit;
+    }
 
     /// <summary>
     /// Gets the base damage without crit calculations
     /// </summary>
-    public float GetBaseDamage() => _baseDamage;
+    public float GetBaseDamage()
+    {
+        return _baseDamage;
+    }
 
     /// <summary>
     /// Gets the base health
     /// </summary>
-    public float GetBaseHealth() => _baseHealth;
+    public float GetBaseHealth()
+    {
+        Debug.Log("PlayerStatMachine: Returning base health: " + _baseHealth);
+    
+        return _baseHealth;
+        
+    }
 
     /// <summary>
     /// Gets the current crit rate (0-1)
     /// </summary>
-    public float GetCritRate() => critRate;
+    public float GetCritRate()
+    {
+        return critRate;
+    }
 
     /// <summary>
     /// Gets the current crit damage multiplier
     /// </summary>
-    public float GetCritDamage() => critDamage;
+    public float GetCritDamage()
+    {
+        return critDamage;
+    }
 
     /// <summary>
     /// Sets new crit rate
     /// </summary>
-    public void SetCritRate(float newCritRate) => critRate = Mathf.Clamp01(newCritRate);
+    public void SetCritRate(float newCritRate)
+    {
+        critRate = Mathf.Clamp01(newCritRate);
+    }
 
     /// <summary>
     /// Sets new crit damage multiplier
     /// </summary>
-    public void SetCritDamage(float newCritDamage) => critDamage = Mathf.Max(1f, newCritDamage);
+    public void SetCritDamage(float newCritDamage)
+    {
+        critDamage = Mathf.Max(1f, newCritDamage);
+    }
 }
