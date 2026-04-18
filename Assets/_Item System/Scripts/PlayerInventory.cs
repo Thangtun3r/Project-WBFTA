@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerInventory : MonoBehaviour
 {
     [SerializeField] private List<ItemRuntime> activeItems = new List<ItemRuntime>();
-    public static event Action<ItemRuntime> OnInventoryUpdated;
+    public event Action<ItemRuntime> InventoryUpdated;
 
     public void ProcessPickup(string itemId)
     {
@@ -24,14 +24,14 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
-    public List<ItemRuntime> GetActiveItems()
+    public IReadOnlyList<ItemRuntime> GetActiveItems()
     {
         return activeItems;
     }
     private void UpdateExistingItem(ItemRuntime item)
     {
         item.AddStack(1);
-        OnInventoryUpdated?.Invoke(item);
+        InventoryUpdated?.Invoke(item);
     }
 
     private void AddNewItem(ItemDefinition definition, IItemLogic logic)
@@ -39,32 +39,32 @@ public class PlayerInventory : MonoBehaviour
         ItemRuntime newItem = new ItemRuntime();
         newItem.Initialize(definition, logic);
         activeItems.Add(newItem);
-        OnInventoryUpdated?.Invoke(newItem);
+        InventoryUpdated?.Invoke(newItem);
     }
 
     public void RemoveItem(string itemId)
-{
-    // Use the factory to get the definition so we know what we are looking for
-    var (definition, _) = ItemDatabaseFactory.Instance.CreateItem(itemId);
-    if (definition == null) return;
-
-    ItemRuntime existingItem = FindItemByDefinition(definition);
-    
-    if (existingItem != null)
     {
-        existingItem.DecreaseStack(1);
+        // Use the factory to get the definition so we know what we are looking for
+        var definition = ItemDatabaseFactory.Instance.GetDefinition(itemId);
+        if (definition == null) return;
 
-        // If we have 0 left, completely remove it from the inventory
-        if (existingItem.StackSize <= 0)
+        ItemRuntime existingItem = FindItemByDefinition(definition);
+        
+        if (existingItem != null)
         {
-            existingItem.Remove(); // This calls Dispose() on the logic script!
-            activeItems.Remove(existingItem);
-        }
+            existingItem.DecreaseStack(1);
 
-        // Tell the UI that the inventory changed
-        OnInventoryUpdated?.Invoke(existingItem);
+            // If we have 0 left, completely remove it from the inventory
+            if (existingItem.StackSize <= 0)
+            {
+                existingItem.Remove(); // This calls Dispose() on the logic script!
+                activeItems.Remove(existingItem);
+            }
+
+            // Tell the UI that the inventory changed
+            InventoryUpdated?.Invoke(existingItem);
+        }
     }
-}
 
     private ItemRuntime FindItemByDefinition(ItemDefinition definition)
     {

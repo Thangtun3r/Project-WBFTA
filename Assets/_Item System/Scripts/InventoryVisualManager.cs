@@ -10,9 +10,14 @@ public class InventoryVisualManager : MonoBehaviour
     private readonly Dictionary<ItemDefinition, ItemRuntimeVisual> visualsByDefinition =
         new Dictionary<ItemDefinition, ItemRuntimeVisual>();
 
-    private void Start()
+    private void Awake()
     {
         playerInventory = FindObjectOfType<PlayerInventory>();
+
+        if (playerInventory == null)
+        {
+            Debug.LogWarning("InventoryVisualManager: No PlayerInventory found in scene.");
+        }
 
         if (inventoryUIParent == null)
         {
@@ -20,13 +25,25 @@ public class InventoryVisualManager : MonoBehaviour
         }
     }
 
-    void OnEnable()
+    private void OnEnable()
     {
-        PlayerInventory.OnInventoryUpdated += UpdateVisual;
+        if (playerInventory == null)
+        {
+            playerInventory = FindObjectOfType<PlayerInventory>();
+        }
+
+        if (playerInventory != null)
+        {
+            playerInventory.InventoryUpdated += UpdateVisual;
+        }
     }
-    void OnDisable()
+
+    private void OnDisable()
     {
-        PlayerInventory.OnInventoryUpdated -= UpdateVisual;
+        if (playerInventory != null)
+        {
+            playerInventory.InventoryUpdated -= UpdateVisual;
+        }
     }
 
     private void UpdateVisual(ItemRuntime itemRuntime)
@@ -39,6 +56,16 @@ public class InventoryVisualManager : MonoBehaviour
         ItemDefinition definition = itemRuntime.Definition;
         if (definition == null)
         {
+            return;
+        }
+
+        if (itemRuntime.StackSize <= 0)
+        {
+            if (visualsByDefinition.TryGetValue(definition, out ItemRuntimeVisual existingVisual))
+            {
+                Destroy(existingVisual.gameObject);
+                visualsByDefinition.Remove(definition);
+            }
             return;
         }
 

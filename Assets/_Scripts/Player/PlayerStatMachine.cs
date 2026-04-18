@@ -39,7 +39,7 @@ public class PlayerStatMachine : MonoBehaviour
         // Listen to the inventory. Whenever it changes, update our Inspector!
         if (inventory != null)
         {
-            PlayerInventory.OnInventoryUpdated += RefreshInspectorStats;
+            inventory.InventoryUpdated += RefreshInspectorStats;
         }
     }
 
@@ -48,7 +48,7 @@ public class PlayerStatMachine : MonoBehaviour
         // Always unsubscribe when destroyed to prevent memory leaks
         if (inventory != null)
         {
-            PlayerInventory.OnInventoryUpdated -= RefreshInspectorStats;
+            inventory.InventoryUpdated -= RefreshInspectorStats;
         }
     }
 
