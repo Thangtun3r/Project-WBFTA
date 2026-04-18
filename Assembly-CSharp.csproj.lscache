@@ -87,6 +87,23 @@ Assets/TextMesh Pro/Examples & Extras/Scripts/
  VertexShakeB.cs
  VertexZoom.cs
  WarpTextExample.cs
+Assets/_Item System/Scripts/
+ DebugItemGiver.cs
+ Interfaces/
+  IItemLogic.cs
+  IItemModifier.cs
+ InventoryVisualManager.cs
+ Item Logic/
+  CritDamageLogic.cs
+  CritRateLogic.cs
+  ItemLogicBase.cs
+ ItemDatabaseFactory.cs
+ ItemDefinition.cs
+ ItemGlobalEventBus.cs
+ ItemModifier.cs
+ ItemRuntime.cs
+ ItemRuntimeVisual.cs
+ PlayerInventory.cs
 Assets/_Scripts/Enemy/
  BaseEnemy.cs
  DefaultEnemy.cs
@@ -133,7 +150,6 @@ Assets/_Scripts/
   PlayerAttack.cs
   PlayerConfig.cs
   PlayerHealth.cs
-  PlayerInventory.cs
   PlayerStatMachine.cs
   PlayerVisual.cs
  System/

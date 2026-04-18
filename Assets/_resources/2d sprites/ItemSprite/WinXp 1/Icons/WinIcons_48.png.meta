@@ -1,0 +1,7267 @@
+fileFormatVersion: 2
+guid: 1e3cd892d215b4e439814480388eda64
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -3228397600675103836
+    second: WinIcons_48_0
+  - first:
+      213: -1387747178324207306
+    second: WinIcons_48_1
+  - first:
+      213: 9117723850488559440
+    second: WinIcons_48_2
+  - first:
+      213: -3704463525830780219
+    second: WinIcons_48_3
+  - first:
+      213: -7904641143851799939
+    second: WinIcons_48_4
+  - first:
+      213: 3197740208990903944
+    second: WinIcons_48_5
+  - first:
+      213: -1431972502200007660
+    second: WinIcons_48_6
+  - first:
+      213: 9221710528095963153
+    second: WinIcons_48_7
+  - first:
+      213: -7114166200692222017
+    second: WinIcons_48_8
+  - first:
+      213: 882763792076805170
+    second: WinIcons_48_9
+  - first:
+      213: -5655962095107666528
+    second: WinIcons_48_10
+  - first:
+      213: 7226101367713009281
+    second: WinIcons_48_11
+  - first:
+      213: 5172674273234071218
+    second: WinIcons_48_12
+  - first:
+      213: -4852788905258360429
+    second: WinIcons_48_13
+  - first:
+      213: 2385822202064440265
+    second: WinIcons_48_14
+  - first:
+      213: -3815492779344985975
+    second: WinIcons_48_15
+  - first:
+      213: -7378103706959159731
+    second: WinIcons_48_16
+  - first:
+      213: -9055324469015798088
+    second: WinIcons_48_17
+  - first:
+      213: 2923707879229451807
+    second: WinIcons_48_18
+  - first:
+      213: -1592555239395343891
+    second: WinIcons_48_19
+  - first:
+      213: 2970348066404502353
+    second: WinIcons_48_20
+  - first:
+      213: 7369990328555235068
+    second: WinIcons_48_21
+  - first:
+      213: -6000922279821129859
+    second: WinIcons_48_22
+  - first:
+      213: 4692270251083056161
+    second: WinIcons_48_23
+  - first:
+      213: 3949538251751201025
+    second: WinIcons_48_24
+  - first:
+      213: -6478144443249872307
+    second: WinIcons_48_25
+  - first:
+      213: -7084066270332646891
+    second: WinIcons_48_26
+  - first:
+      213: 4355142953797737895
+    second: WinIcons_48_27
+  - first:
+      213: 8135965304479043406
+    second: WinIcons_48_28
+  - first:
+      213: -2674154875534789551
+    second: WinIcons_48_29
+  - first:
+      213: -723762348082287664
+    second: WinIcons_48_30
+  - first:
+      213: 7387745731074887182
+    second: WinIcons_48_31
+  - first:
+      213: 4188106037246213236
+    second: WinIcons_48_32
+  - first:
+      213: -6596236887867640550
+    second: WinIcons_48_33
+  - first:
+      213: 877778423270505826
+    second: WinIcons_48_34
+  - first:
+      213: 6694505522262306940
+    second: WinIcons_48_35
+  - first:
+      213: 7108271178551517641
+    second: WinIcons_48_36
+  - first:
+      213: 364615517895323980
+    second: WinIcons_48_37
+  - first:
+      213: -711624639969424749
+    second: WinIcons_48_38
+  - first:
+      213: -8231007836156970011
+    second: WinIcons_48_39
+  - first:
+      213: -2431024435837683885
+    second: WinIcons_48_40
+  - first:
+      213: -2976203195329862879
+    second: WinIcons_48_41
+  - first:
+      213: 5235579017144741243
+    second: WinIcons_48_42
+  - first:
+      213: -8857578888664078405
+    second: WinIcons_48_43
+  - first:
+      213: -505650042796268661
+    second: WinIcons_48_44
+  - first:
+      213: 4482730665194218307
+    second: WinIcons_48_45
+  - first:
+      213: -6606057074690927915
+    second: WinIcons_48_46
+  - first:
+      213: 7198310950624962699
+    second: WinIcons_48_47
+  - first:
+      213: -5657034970864458977
+    second: WinIcons_48_48
+  - first:
+      213: 3526715306534613052
+    second: WinIcons_48_49
+  - first:
+      213: -744084729997574129
+    second: WinIcons_48_50
+  - first:
+      213: 8542818562187799614
+    second: WinIcons_48_51
+  - first:
+      213: 6630951875541204962
+    second: WinIcons_48_52
+  - first:
+      213: -7416405385069494729
+    second: WinIcons_48_53
+  - first:
+      213: -6576248191935446742
+    second: WinIcons_48_54
+  - first:
+      213: 7596877080896783108
+    second: WinIcons_48_55
+  - first:
+      213: 8593688358354281711
+    second: WinIcons_48_56
+  - first:
+      213: 7355132796346124563
+    second: WinIcons_48_57
+  - first:
+      213: 3334642440526867786
+    second: WinIcons_48_58
+  - first:
+      213: 5666005493413424306
+    second: WinIcons_48_59
+  - first:
+      213: 7428687069827907603
+    second: WinIcons_48_60
+  - first:
+      213: 4295085690880810824
+    second: WinIcons_48_61
+  - first:
+      213: 6830253572899268152
+    second: WinIcons_48_62
+  - first:
+      213: 6290119466011050432
+    second: WinIcons_48_63
+  - first:
+      213: 3705764344530093726
+    second: WinIcons_48_64
+  - first:
+      213: 6007521110028281113
+    second: WinIcons_48_65
+  - first:
+      213: 8688196859005094357
+    second: WinIcons_48_66
+  - first:
+      213: -2918104905739908957
+    second: WinIcons_48_67
+  - first:
+      213: 2966577147086563730
+    second: WinIcons_48_68
+  - first:
+      213: -1683475936106174518
+    second: WinIcons_48_69
+  - first:
+      213: 3762978254912953182
+    second: WinIcons_48_70
+  - first:
+      213: 2840882982741325917
+    second: WinIcons_48_71
+  - first:
+      213: 1035052562152602762
+    second: WinIcons_48_72
+  - first:
+      213: -297556977750661848
+    second: WinIcons_48_73
+  - first:
+      213: 5515217211735364674
+    second: WinIcons_48_74
+  - first:
+      213: -3139857269178947479
+    second: WinIcons_48_75
+  - first:
+      213: -7725629669038668760
+    second: WinIcons_48_76
+  - first:
+      213: 1475764757568065396
+    second: WinIcons_48_77
+  - first:
+      213: 838449728713745380
+    second: WinIcons_48_78
+  - first:
+      213: 6294474989182891820
+    second: WinIcons_48_79
+  - first:
+      213: 8676896465159002926
+    second: WinIcons_48_80
+  - first:
+      213: -1499456965868072688
+    second: WinIcons_48_81
+  - first:
+      213: -8123862508784404438
+    second: WinIcons_48_82
+  - first:
+      213: 2393009197007173785
+    second: WinIcons_48_83
+  - first:
+      213: 3731139611210588670
+    second: WinIcons_48_84
+  - first:
+      213: 5991696979193185882
+    second: WinIcons_48_85
+  - first:
+      213: 2879882636852674639
+    second: WinIcons_48_86
+  - first:
+      213: -3646827940079142136
+    second: WinIcons_48_87
+  - first:
+      213: 8863375797223014930
+    second: WinIcons_48_88
+  - first:
+      213: -4988811711989301075
+    second: WinIcons_48_89
+  - first:
+      213: -3700802845234799488
+    second: WinIcons_48_90
+  - first:
+      213: 1852615392561792691
+    second: WinIcons_48_91
+  - first:
+      213: -5160521105701236280
+    second: WinIcons_48_92
+  - first:
+      213: 3171370585654708353
+    second: WinIcons_48_93
+  - first:
+      213: 1544058871470940380
+    second: WinIcons_48_94
+  - first:
+      213: -8533021277438428154
+    second: WinIcons_48_95
+  - first:
+      213: 2706988647163095954
+    second: WinIcons_48_96
+  - first:
+      213: 5325586826770603866
+    second: WinIcons_48_97
+  - first:
+      213: 8907377031222070848
+    second: WinIcons_48_98
+  - first:
+      213: 2608522492594705422
+    second: WinIcons_48_99
+  - first:
+      213: 3561032958476219174
+    second: WinIcons_48_100
+  - first:
+      213: 4207639197390760016
+    second: WinIcons_48_101
+  - first:
+      213: 1251212823936055282
+    second: WinIcons_48_102
+  - first:
+      213: 3271510920678448843
+    second: WinIcons_48_103
+  - first:
+      213: -4922704273414171905
+    second: WinIcons_48_104
+  - first:
+      213: -463101576121542043
+    second: WinIcons_48_105
+  - first:
+      213: 3395024005430015597
+    second: WinIcons_48_106
+  - first:
+      213: -2526734968431787197
+    second: WinIcons_48_107
+  - first:
+      213: 311203103649920630
+    second: WinIcons_48_108
+  - first:
+      213: -8020864395332633222
+    second: WinIcons_48_109
+  - first:
+      213: -8957880356914615469
+    second: WinIcons_48_110
+  - first:
+      213: 7014620255651146943
+    second: WinIcons_48_111
+  - first:
+      213: -1772104138184446378
+    second: WinIcons_48_112
+  - first:
+      213: -8792703537282048059
+    second: WinIcons_48_113
+  - first:
+      213: -6861908462293646697
+    second: WinIcons_48_114
+  - first:
+      213: -5950675540217712956
+    second: WinIcons_48_115
+  - first:
+      213: -2052181685394840698
+    second: WinIcons_48_116
+  - first:
+      213: 4863878833018575901
+    second: WinIcons_48_117
+  - first:
+      213: -6170353447325183073
+    second: WinIcons_48_118
+  - first:
+      213: 8293732902152981149
+    second: WinIcons_48_119
+  - first:
+      213: -5675063230002866456
+    second: WinIcons_48_120
+  - first:
+      213: 3812887444887972960
+    second: WinIcons_48_121
+  - first:
+      213: 1265911596155892268
+    second: WinIcons_48_122
+  - first:
+      213: 3144341235705122411
+    second: WinIcons_48_123
+  - first:
+      213: 3226797306557874173
+    second: WinIcons_48_124
+  - first:
+      213: 1286781366694532904
+    second: WinIcons_48_125
+  - first:
+      213: 7993326187506173578
+    second: WinIcons_48_126
+  - first:
+      213: -6614191863877525688
+    second: WinIcons_48_127
+  - first:
+      213: 6101863909984775080
+    second: WinIcons_48_128
+  - first:
+      213: 6261749134863294351
+    second: WinIcons_48_129
+  - first:
+      213: 8380812915562154822
+    second: WinIcons_48_130
+  - first:
+      213: -6637074046447020484
+    second: WinIcons_48_131
+  - first:
+      213: -2802732218824825017
+    second: WinIcons_48_132
+  - first:
+      213: 3447453294763365146
+    second: WinIcons_48_133
+  - first:
+      213: 5327526270665933445
+    second: WinIcons_48_134
+  - first:
+      213: 4466337609885350256
+    second: WinIcons_48_135
+  - first:
+      213: -541194045484504205
+    second: WinIcons_48_136
+  - first:
+      213: -8699021395695909631
+    second: WinIcons_48_137
+  - first:
+      213: 2373877360971237082
+    second: WinIcons_48_138
+  - first:
+      213: 7022749042859556195
+    second: WinIcons_48_139
+  - first:
+      213: -6940227180807122729
+    second: WinIcons_48_140
+  - first:
+      213: -1525431246055822252
+    second: WinIcons_48_141
+  - first:
+      213: -3866800606944069927
+    second: WinIcons_48_142
+  - first:
+      213: 5660138296912230751
+    second: WinIcons_48_143
+  - first:
+      213: -7822408903565931321
+    second: WinIcons_48_144
+  - first:
+      213: 8704109555471218269
+    second: WinIcons_48_145
+  - first:
+      213: -7632932680187897786
+    second: WinIcons_48_146
+  - first:
+      213: 4791101175561391490
+    second: WinIcons_48_147
+  - first:
+      213: -4066450196116756305
+    second: WinIcons_48_148
+  - first:
+      213: 4240168186117715593
+    second: WinIcons_48_149
+  - first:
+      213: 2421470752768154332
+    second: WinIcons_48_150
+  - first:
+      213: -2194875584962642501
+    second: WinIcons_48_151
+  - first:
+      213: 8650513884348963144
+    second: WinIcons_48_152
+  - first:
+      213: 5753932066316730990
+    second: WinIcons_48_153
+  - first:
+      213: -7258647800530101621
+    second: WinIcons_48_154
+  - first:
+      213: 7135343214611433929
+    second: WinIcons_48_155
+  - first:
+      213: 6807499713601051257
+    second: WinIcons_48_156
+  - first:
+      213: -7691646504246295737
+    second: WinIcons_48_157
+  - first:
+      213: 1679861466468836923
+    second: WinIcons_48_158
+  - first:
+      213: -9214719936734106017
+    second: WinIcons_48_159
+  - first:
+      213: -6720381966433413267
+    second: WinIcons_48_160
+  - first:
+      213: 7689367024905242780
+    second: WinIcons_48_161
+  - first:
+      213: -2861216563904963730
+    second: WinIcons_48_162
+  - first:
+      213: 5289465950295397012
+    second: WinIcons_48_163
+  - first:
+      213: 6106074884388267549
+    second: WinIcons_48_164
+  - first:
+      213: -1038375253257637035
+    second: WinIcons_48_165
+  - first:
+      213: 1256389397240668013
+    second: WinIcons_48_166
+  - first:
+      213: 6111880329392515797
+    second: WinIcons_48_167
+  - first:
+      213: -815646284513274836
+    second: WinIcons_48_168
+  - first:
+      213: 6066113394753334121
+    second: WinIcons_48_169
+  - first:
+      213: -8156121800443562939
+    second: WinIcons_48_170
+  - first:
+      213: -3937806208626909137
+    second: WinIcons_48_171
+  - first:
+      213: -7635680341886690861
+    second: WinIcons_48_172
+  - first:
+      213: -2344771536657945053
+    second: WinIcons_48_173
+  - first:
+      213: 248380599571387881
+    second: WinIcons_48_174
+  - first:
+      213: 6622017648765074760
+    second: WinIcons_48_175
+  - first:
+      213: -331127061644361677
+    second: WinIcons_48_176
+  - first:
+      213: -5388522254299739555
+    second: WinIcons_48_177
+  - first:
+      213: 5727339537108758489
+    second: WinIcons_48_178
+  - first:
+      213: 3684537806310714195
+    second: WinIcons_48_179
+  - first:
+      213: 573203385805696299
+    second: WinIcons_48_180
+  - first:
+      213: 6611318926572769925
+    second: WinIcons_48_181
+  - first:
+      213: -6506902910278039436
+    second: WinIcons_48_182
+  - first:
+      213: 5886440339704362340
+    second: WinIcons_48_183
+  - first:
+      213: -8823556762112737403
+    second: WinIcons_48_184
+  - first:
+      213: -7498504347913958057
+    second: WinIcons_48_185
+  - first:
+      213: -8834902639005938349
+    second: WinIcons_48_186
+  - first:
+      213: -274272049003088494
+    second: WinIcons_48_187
+  - first:
+      213: -8142750574656160672
+    second: WinIcons_48_188
+  - first:
+      213: -5653842594552917355
+    second: WinIcons_48_189
+  - first:
+      213: 2793255655685137978
+    second: WinIcons_48_190
+  - first:
+      213: -2316609811984590952
+    second: WinIcons_48_191
+  - first:
+      213: 435727832649286240
+    second: WinIcons_48_192
+  - first:
+      213: 963698027734987888
+    second: WinIcons_48_193
+  - first:
+      213: -3067309454236956505
+    second: WinIcons_48_194
+  - first:
+      213: -7723024263332903651
+    second: WinIcons_48_195
+  - first:
+      213: -1557248375617531886
+    second: WinIcons_48_196
+  - first:
+      213: -220396897167553973
+    second: WinIcons_48_197
+  - first:
+      213: -4888966952433079752
+    second: WinIcons_48_198
+  - first:
+      213: 2681106255207126074
+    second: WinIcons_48_199
+  - first:
+      213: 7453849811267887454
+    second: WinIcons_48_200
+  - first:
+      213: -1833031833412620852
+    second: WinIcons_48_201
+  - first:
+      213: 3439395400787460874
+    second: WinIcons_48_202
+  - first:
+      213: -5686171244202093107
+    second: WinIcons_48_203
+  - first:
+      213: 5058412263839930444
+    second: WinIcons_48_204
+  - first:
+      213: -4701534026937284631
+    second: WinIcons_48_205
+  - first:
+      213: -6444064058143914340
+    second: WinIcons_48_206
+  - first:
+      213: 8131709687508160755
+    second: WinIcons_48_207
+  - first:
+      213: -1637341544474270099
+    second: WinIcons_48_208
+  - first:
+      213: 1453322759267117099
+    second: WinIcons_48_209
+  - first:
+      213: 1278038580996866180
+    second: WinIcons_48_210
+  - first:
+      213: -7971059138853103725
+    second: WinIcons_48_211
+  - first:
+      213: -4503261048337406682
+    second: WinIcons_48_212
+  - first:
+      213: -1830743425299888788
+    second: WinIcons_48_213
+  - first:
+      213: 6076426071846645076
+    second: WinIcons_48_214
+  - first:
+      213: 1996565652405386085
+    second: WinIcons_48_215
+  - first:
+      213: 826257936472379664
+    second: WinIcons_48_216
+  - first:
+      213: 4822311695975578414
+    second: WinIcons_48_217
+  - first:
+      213: -7306955691424099864
+    second: WinIcons_48_218
+  - first:
+      213: 8536555984438917440
+    second: WinIcons_48_219
+  - first:
+      213: -1086270405269543491
+    second: WinIcons_48_220
+  - first:
+      213: -3868435729038261102
+    second: WinIcons_48_221
+  - first:
+      213: -3206354354973981846
+    second: WinIcons_48_222
+  - first:
+      213: 4534187790382010008
+    second: WinIcons_48_223
+  - first:
+      213: 4190345578132929851
+    second: WinIcons_48_224
+  - first:
+      213: 2741513039964194510
+    second: WinIcons_48_225
+  - first:
+      213: 5875286594868142043
+    second: WinIcons_48_226
+  - first:
+      213: -773622557183182797
+    second: WinIcons_48_227
+  - first:
+      213: 6850170429411228767
+    second: WinIcons_48_228
+  - first:
+      213: -2598872900192855251
+    second: WinIcons_48_229
+  - first:
+      213: 1974256222096974249
+    second: WinIcons_48_230
+  - first:
+      213: 1742805053678257575
+    second: WinIcons_48_231
+  - first:
+      213: 47727538520081310
+    second: WinIcons_48_232
+  - first:
+      213: -5257388750142155290
+    second: WinIcons_48_233
+  - first:
+      213: -3482070578020523441
+    second: WinIcons_48_234
+  - first:
+      213: 6519297871619876633
+    second: WinIcons_48_235
+  - first:
+      213: 5445900954606282364
+    second: WinIcons_48_236
+  - first:
+      213: 5067183271915678277
+    second: WinIcons_48_237
+  - first:
+      213: -679923405180981515
+    second: WinIcons_48_238
+  - first:
+      213: -9168967279514059202
+    second: WinIcons_48_239
+  - first:
+      213: -4938444380790513055
+    second: WinIcons_48_240
+  - first:
+      213: -5958944803434414960
+    second: WinIcons_48_241
+  - first:
+      213: -8113948138191157061
+    second: WinIcons_48_242
+  - first:
+      213: 1972376229939971154
+    second: WinIcons_48_243
+  - first:
+      213: 4098549167738503161
+    second: WinIcons_48_244
+  - first:
+      213: -5562392577538014005
+    second: WinIcons_48_245
+  - first:
+      213: 6534251423389286866
+    second: WinIcons_48_246
+  - first:
+      213: -4091483362050284323
+    second: WinIcons_48_247
+  - first:
+      213: 8300181861628384733
+    second: WinIcons_48_248
+  - first:
+      213: 4128124993208883162
+    second: WinIcons_48_249
+  - first:
+      213: -2055532649386585085
+    second: WinIcons_48_250
+  - first:
+      213: 5002146353155366414
+    second: WinIcons_48_251
+  - first:
+      213: 619505450383632716
+    second: WinIcons_48_252
+  - first:
+      213: -765789622301728079
+    second: WinIcons_48_253
+  - first:
+      213: -2320859882553931907
+    second: WinIcons_48_254
+  - first:
+      213: -2343701573904341127
+    second: WinIcons_48_255
+  - first:
+      213: -1518132899016561046
+    second: WinIcons_48_256
+  - first:
+      213: -7221571961497495349
+    second: WinIcons_48_257
+  - first:
+      213: -6717239427712831771
+    second: WinIcons_48_258
+  - first:
+      213: -985838492906039006
+    second: WinIcons_48_259
+  - first:
+      213: -8443882427596109339
+    second: WinIcons_48_260
+  - first:
+      213: -4705258501438514508
+    second: WinIcons_48_261
+  - first:
+      213: 8907484080482081066
+    second: WinIcons_48_262
+  - first:
+      213: 3705806011350041863
+    second: WinIcons_48_263
+  - first:
+      213: -2369987542823806800
+    second: WinIcons_48_264
+  - first:
+      213: 5883858688952142118
+    second: WinIcons_48_265
+  - first:
+      213: -2349910706803590152
+    second: WinIcons_48_266
+  - first:
+      213: -9002021927443916925
+    second: WinIcons_48_267
+  - first:
+      213: 1776825311451503496
+    second: WinIcons_48_268
+  - first:
+      213: 9087092733456512731
+    second: WinIcons_48_269
+  - first:
+      213: -595408111101229921
+    second: WinIcons_48_270
+  - first:
+      213: 6365707100346608772
+    second: WinIcons_48_271
+  - first:
+      213: -982170952440263946
+    second: WinIcons_48_272
+  - first:
+      213: -5810314083411731313
+    second: WinIcons_48_273
+  - first:
+      213: -1214845554624674677
+    second: WinIcons_48_274
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: WinIcons_48_0
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 911
+        width: 36
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4ab790aac7d6233d0800000000000000
+      internalID: -3228397600675103836
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_1
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 911
+        width: 48
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6395fed3b4bbdbce0800000000000000
+      internalID: -1387747178324207306
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_2
+      rect:
+        serializedVersion: 2
+        x: 95
+        y: 911
+        width: 98
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0573a74c889a88e70800000000000000
+      internalID: 9117723850488559440
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_3
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 917
+        width: 48
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5ca1773ec0a179cc0800000000000000
+      internalID: -3704463525830780219
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_4
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 916
+        width: 50
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d7aa6cf92c21d4290800000000000000
+      internalID: -7904641143851799939
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_5
+      rect:
+        serializedVersion: 2
+        x: 287
+        y: 911
+        width: 50
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 88ed2e817c7a06c20800000000000000
+      internalID: 3197740208990903944
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_6
+      rect:
+        serializedVersion: 2
+        x: 335
+        y: 911
+        width: 98
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 414cd3e989c902ce0800000000000000
+      internalID: -1431972502200007660
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_7
+      rect:
+        serializedVersion: 2
+        x: 431
+        y: 911
+        width: 50
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 118c3a8ddd81aff70800000000000000
+      internalID: 9221710528095963153
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_8
+      rect:
+        serializedVersion: 2
+        x: 479
+        y: 863
+        width: 50
+        height: 97
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fb756ae6887654d90800000000000000
+      internalID: -7114166200692222017
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_9
+      rect:
+        serializedVersion: 2
+        x: 528
+        y: 912
+        width: 47
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2349057edf4304c00800000000000000
+      internalID: 882763792076805170
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_10
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 912
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0ad880ae07cf181b0800000000000000
+      internalID: -5655962095107666528
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_11
+      rect:
+        serializedVersion: 2
+        x: 624
+        y: 911
+        width: 96
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 18e8f7d88e4484460800000000000000
+      internalID: 7226101367713009281
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_12
+      rect:
+        serializedVersion: 2
+        x: 719
+        y: 911
+        width: 50
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2be2be278d709c740800000000000000
+      internalID: 5172674273234071218
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_13
+      rect:
+        serializedVersion: 2
+        x: 770
+        y: 911
+        width: 45
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3916e1ca33e67acb0800000000000000
+      internalID: -4852788905258360429
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_14
+      rect:
+        serializedVersion: 2
+        x: 818
+        y: 911
+        width: 46
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9cb8a43f6a42c1120800000000000000
+      internalID: 2385822202064440265
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_15
+      rect:
+        serializedVersion: 2
+        x: 863
+        y: 914
+        width: 49
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 98003145885ac0bc0800000000000000
+      internalID: -3815492779344985975
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_16
+      rect:
+        serializedVersion: 2
+        x: 911
+        y: 912
+        width: 49
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d4ed4b6f4c5bb9990800000000000000
+      internalID: -7378103706959159731
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_17
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 863
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8be19626f56055280800000000000000
+      internalID: -9055324469015798088
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_18
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 863
+        width: 50
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f1e6b7063d8139820800000000000000
+      internalID: 2923707879229451807
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_19
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 863
+        width: 49
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: de147ae827b16e9e0800000000000000
+      internalID: -1592555239395343891
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_20
+      rect:
+        serializedVersion: 2
+        x: 143
+        y: 865
+        width: 49
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 15b0f4d24dbc83920800000000000000
+      internalID: 2970348066404502353
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_21
+      rect:
+        serializedVersion: 2
+        x: 191
+        y: 864
+        width: 50
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cf6699be727774660800000000000000
+      internalID: 7369990328555235068
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_22
+      rect:
+        serializedVersion: 2
+        x: 245
+        y: 865
+        width: 38
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d77c8821bf078bca0800000000000000
+      internalID: -6000922279821129859
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_23
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 815
+        width: 193
+        height: 98
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 12440f1ceea4e1140800000000000000
+      internalID: 4692270251083056161
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_24
+      rect:
+        serializedVersion: 2
+        x: 532
+        y: 864
+        width: 40
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 109927a4d149fc630800000000000000
+      internalID: 3949538251751201025
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_25
+      rect:
+        serializedVersion: 2
+        x: 579
+        y: 864
+        width: 41
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d42bb6893f10916a0800000000000000
+      internalID: -6478144443249872307
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_26
+      rect:
+        serializedVersion: 2
+        x: 624
+        y: 868
+        width: 47
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 51a0f77924750bd90800000000000000
+      internalID: -7084066270332646891
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_27
+      rect:
+        serializedVersion: 2
+        x: 671
+        y: 815
+        width: 50
+        height: 98
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7add8232173907c30800000000000000
+      internalID: 4355142953797737895
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_28
+      rect:
+        serializedVersion: 2
+        x: 723
+        y: 864
+        width: 42
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e4f40669651c8e070800000000000000
+      internalID: 8135965304479043406
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_29
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 865
+        width: 97
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 154be591f4e73ead0800000000000000
+      internalID: -2674154875534789551
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_30
+      rect:
+        serializedVersion: 2
+        x: 864
+        y: 869
+        width: 48
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0dba0c4aafda4f5f0800000000000000
+      internalID: -723762348082287664
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_31
+      rect:
+        serializedVersion: 2
+        x: 911
+        y: 868
+        width: 49
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e0e80a7b99b868660800000000000000
+      internalID: 7387745731074887182
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_32
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 817
+        width: 47
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 47cbab750442f1a30800000000000000
+      internalID: 4188106037246213236
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_33
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 768
+        width: 96
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a153254bf757574a0800000000000000
+      internalID: -6596236887867640550
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_34
+      rect:
+        serializedVersion: 2
+        x: 49
+        y: 817
+        width: 47
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 26d7a8643de7e2c00800000000000000
+      internalID: 877778423270505826
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_35
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 815
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c70f551bd49a7ec50800000000000000
+      internalID: 6694505522262306940
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_36
+      rect:
+        serializedVersion: 2
+        x: 143
+        y: 720
+        width: 49
+        height: 97
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9c1e5b4c9f6a5a260800000000000000
+      internalID: 7108271178551517641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_37
+      rect:
+        serializedVersion: 2
+        x: 145
+        y: 816
+        width: 47
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c41feb7b1ef5f0500800000000000000
+      internalID: 364615517895323980
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_38
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 767
+        width: 49
+        height: 98
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 39a0539092dcf16f0800000000000000
+      internalID: -711624639969424749
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_39
+      rect:
+        serializedVersion: 2
+        x: 242
+        y: 767
+        width: 46
+        height: 98
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5eb38669bf595cd80800000000000000
+      internalID: -8231007836156970011
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_40
+      rect:
+        serializedVersion: 2
+        x: 479
+        y: 816
+        width: 96
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 357b99dd724434ed0800000000000000
+      internalID: -2431024435837683885
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_41
+      rect:
+        serializedVersion: 2
+        x: 575
+        y: 815
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1232bf266f662b6d0800000000000000
+      internalID: -2976203195329862879
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_42
+      rect:
+        serializedVersion: 2
+        x: 623
+        y: 817
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b7da666706388a840800000000000000
+      internalID: 5235579017144741243
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_43
+      rect:
+        serializedVersion: 2
+        x: 671
+        y: 721
+        width: 97
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bb7ad232eee831580800000000000000
+      internalID: -8857578888664078405
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_44
+      rect:
+        serializedVersion: 2
+        x: 719
+        y: 817
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b83a77217f19bf8f0800000000000000
+      internalID: -505650042796268661
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_45
+      rect:
+        serializedVersion: 2
+        x: 767
+        y: 719
+        width: 146
+        height: 146
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 343e6aa1acbd53e30800000000000000
+      internalID: 4482730665194218307
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_46
+      rect:
+        serializedVersion: 2
+        x: 912
+        y: 816
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d2571947129254a0800000000000000
+      internalID: -6606057074690927915
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_47
+      rect:
+        serializedVersion: 2
+        x: 922
+        y: 768
+        width: 29
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b882ecadba985e360800000000000000
+      internalID: 7198310950624962699
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_48
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 719
+        width: 49
+        height: 97
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f1369af8aac2e71b0800000000000000
+      internalID: -5657034970864458977
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_49
+      rect:
+        serializedVersion: 2
+        x: 57
+        y: 720
+        width: 30
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c30bdedc2e861f030800000000000000
+      internalID: 3526715306534613052
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_50
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 719
+        width: 31
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f00c3b161ea7ca5f0800000000000000
+      internalID: -744084729997574129
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_51
+      rect:
+        serializedVersion: 2
+        x: 143
+        y: 672
+        width: 98
+        height: 97
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e3c21d378303e8670800000000000000
+      internalID: 8542818562187799614
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_52
+      rect:
+        serializedVersion: 2
+        x: 287
+        y: 769
+        width: 194
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2eff758399fd50c50800000000000000
+      internalID: 6630951875541204962
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_53
+      rect:
+        serializedVersion: 2
+        x: 397
+        y: 719
+        width: 23
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 73e73a89892a31990800000000000000
+      internalID: -7416405385069494729
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_54
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 720
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a2102e4ac197cb4a0800000000000000
+      internalID: -6576248191935446742
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_55
+      rect:
+        serializedVersion: 2
+        x: 479
+        y: 673
+        width: 194
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 403c82184778d6960800000000000000
+      internalID: 7596877080896783108
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_56
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 768
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe4ed16d70ae24770800000000000000
+      internalID: 8593688358354281711
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_57
+      rect:
+        serializedVersion: 2
+        x: 528
+        y: 767
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 31949022f4ea21660800000000000000
+      internalID: 7355132796346124563
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_58
+      rect:
+        serializedVersion: 2
+        x: 581
+        y: 768
+        width: 39
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a4dab88c1a7074e20800000000000000
+      internalID: 3334642440526867786
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_59
+      rect:
+        serializedVersion: 2
+        x: 629
+        y: 767
+        width: 40
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2bca15af9f1b1ae40800000000000000
+      internalID: 5666005493413424306
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_60
+      rect:
+        serializedVersion: 2
+        x: 863
+        y: 719
+        width: 97
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 31041a8f78ff71760800000000000000
+      internalID: 7428687069827907603
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_61
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 719
+        width: 98
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 84f50d4fda53b9b30800000000000000
+      internalID: 4295085690880810824
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_62
+      rect:
+        serializedVersion: 2
+        x: 350
+        y: 720
+        width: 20
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 836e082bf6fe9ce50800000000000000
+      internalID: 6830253572899268152
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_63
+      rect:
+        serializedVersion: 2
+        x: 719
+        y: 730
+        width: 50
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c1cb5ee35efa4750800000000000000
+      internalID: 6290119466011050432
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_64
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 677
+        width: 49
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e96460199058d6330800000000000000
+      internalID: 3705764344530093726
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_65
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 671
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 91565efce900f5350800000000000000
+      internalID: 6007521110028281113
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_66
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 678
+        width: 48
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d9c9afd20da29870800000000000000
+      internalID: 8688196859005094357
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_67
+      rect:
+        serializedVersion: 2
+        x: 241
+        y: 671
+        width: 45
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a84c0c8c0fc087d0800000000000000
+      internalID: -2918104905739908957
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_68
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 674
+        width: 97
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 299e2ea92366b2920800000000000000
+      internalID: 2966577147086563730
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_69
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 674
+        width: 49
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac729783e8713a8e0800000000000000
+      internalID: -1683475936106174518
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_70
+      rect:
+        serializedVersion: 2
+        x: 431
+        y: 671
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e5b1b9529c8c83430800000000000000
+      internalID: 3762978254912953182
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_71
+      rect:
+        serializedVersion: 2
+        x: 527
+        y: 671
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d58bfba6508dc6720800000000000000
+      internalID: 2840882982741325917
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_72
+      rect:
+        serializedVersion: 2
+        x: 679
+        y: 679
+        width: 34
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a8cb6f242de3d5e00800000000000000
+      internalID: 1035052562152602762
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_73
+      rect:
+        serializedVersion: 2
+        x: 727
+        y: 679
+        width: 33
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 825abb8518ddedbf0800000000000000
+      internalID: -297556977750661848
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_74
+      rect:
+        serializedVersion: 2
+        x: 775
+        y: 680
+        width: 33
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2445b9c45dcf98c40800000000000000
+      internalID: 5515217211735364674
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_75
+      rect:
+        serializedVersion: 2
+        x: 822
+        y: 675
+        width: 39
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9682929037cfc64d0800000000000000
+      internalID: -3139857269178947479
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_76
+      rect:
+        serializedVersion: 2
+        x: 871
+        y: 679
+        width: 33
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8244bb68fbc09c490800000000000000
+      internalID: -7725629669038668760
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_77
+      rect:
+        serializedVersion: 2
+        x: 911
+        y: 672
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 47f82e26a38fa7410800000000000000
+      internalID: 1475764757568065396
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_78
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 632
+        width: 32
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e361020695c2ab00800000000000000
+      internalID: 838449728713745380
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_79
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 631
+        width: 34
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c27b3d137a77a5750800000000000000
+      internalID: 6294474989182891820
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_80
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 631
+        width: 34
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2b15a6ec578a6870800000000000000
+      internalID: 8676896465159002926
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_81
+      rect:
+        serializedVersion: 2
+        x: 151
+        y: 631
+        width: 34
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 011d27185dbd03be0800000000000000
+      internalID: -1499456965868072688
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_82
+      rect:
+        serializedVersion: 2
+        x: 199
+        y: 631
+        width: 34
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a28bacf171e324f80800000000000000
+      internalID: -8123862508784404438
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_83
+      rect:
+        serializedVersion: 2
+        x: 247
+        y: 632
+        width: 34
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 998fadb9f2da53120800000000000000
+      internalID: 2393009197007173785
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_84
+      rect:
+        serializedVersion: 2
+        x: 295
+        y: 632
+        width: 35
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ef1a89d35bba7c330800000000000000
+      internalID: 3731139611210588670
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_85
+      rect:
+        serializedVersion: 2
+        x: 343
+        y: 633
+        width: 34
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a56479e38a8c62350800000000000000
+      internalID: 5991696979193185882
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_86
+      rect:
+        serializedVersion: 2
+        x: 390
+        y: 634
+        width: 34
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f404b6cfff567f720800000000000000
+      internalID: 2879882636852674639
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_87
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 632
+        width: 32
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 80bfc9a6f4dd36dc0800000000000000
+      internalID: -3646827940079142136
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_88
+      rect:
+        serializedVersion: 2
+        x: 487
+        y: 629
+        width: 36
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 212c540d359010b70800000000000000
+      internalID: 8863375797223014930
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_89
+      rect:
+        serializedVersion: 2
+        x: 535
+        y: 639
+        width: 33
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: da0c1970e2e24cab0800000000000000
+      internalID: -4988811711989301075
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_90
+      rect:
+        serializedVersion: 2
+        x: 583
+        y: 638
+        width: 34
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 08c56028b6b14acc0800000000000000
+      internalID: -3700802845234799488
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_91
+      rect:
+        serializedVersion: 2
+        x: 623
+        y: 577
+        width: 50
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b6011b42efc5b910800000000000000
+      internalID: 1852615392561792691
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_92
+      rect:
+        serializedVersion: 2
+        x: 679
+        y: 635
+        width: 34
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8c195ce55652268b0800000000000000
+      internalID: -5160521105701236280
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_93
+      rect:
+        serializedVersion: 2
+        x: 727
+        y: 631
+        width: 34
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1884219beb8f20c20800000000000000
+      internalID: 3171370585654708353
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_94
+      rect:
+        serializedVersion: 2
+        x: 775
+        y: 631
+        width: 34
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd0e052ec599d6510800000000000000
+      internalID: 1544058871470940380
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_95
+      rect:
+        serializedVersion: 2
+        x: 823
+        y: 631
+        width: 34
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 60cbe69ab5e949980800000000000000
+      internalID: -8533021277438428154
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_96
+      rect:
+        serializedVersion: 2
+        x: 871
+        y: 631
+        width: 33
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 29beb2515d7219520800000000000000
+      internalID: 2706988647163095954
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_97
+      rect:
+        serializedVersion: 2
+        x: 920
+        y: 631
+        width: 33
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a5f5926b00948e940800000000000000
+      internalID: 5325586826770603866
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_98
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 581
+        width: 36
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 04e0772773c5d9b70800000000000000
+      internalID: 8907377031222070848
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_99
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 583
+        width: 34
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e0459bfe265533420800000000000000
+      internalID: 2608522492594705422
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_100
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 583
+        width: 34
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 623fe6bcb945b6130800000000000000
+      internalID: 3561032958476219174
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_101
+      rect:
+        serializedVersion: 2
+        x: 151
+        y: 583
+        width: 34
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0586c779e89846a30800000000000000
+      internalID: 4207639197390760016
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_102
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 577
+        width: 47
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2f73f152f633d5110800000000000000
+      internalID: 1251212823936055282
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_103
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 576
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bce99d169ddb66d20800000000000000
+      internalID: 3271510920678448843
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_104
+      rect:
+        serializedVersion: 2
+        x: 287
+        y: 575
+        width: 98
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ff2d9d08b8a0fabb0800000000000000
+      internalID: -4922704273414171905
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_105
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 577
+        width: 47
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 56a1a54f19bb299f0800000000000000
+      internalID: -463101576121542043
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_106
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 576
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d667497685c8d1f20800000000000000
+      internalID: 3395024005430015597
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_107
+      rect:
+        serializedVersion: 2
+        x: 479
+        y: 578
+        width: 50
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 343c015feeb3fecd0800000000000000
+      internalID: -2526734968431787197
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_108
+      rect:
+        serializedVersion: 2
+        x: 530
+        y: 581
+        width: 43
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6767d0ee29d915400800000000000000
+      internalID: 311203103649920630
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_109
+      rect:
+        serializedVersion: 2
+        x: 578
+        y: 579
+        width: 45
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a7dbe9c245a20b090800000000000000
+      internalID: -8020864395332633222
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_110
+      rect:
+        serializedVersion: 2
+        x: 671
+        y: 575
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 35ba7a9b6473fa380800000000000000
+      internalID: -8957880356914615469
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_111
+      rect:
+        serializedVersion: 2
+        x: 720
+        y: 576
+        width: 46
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fbca85c15ffe85160800000000000000
+      internalID: 7014620255651146943
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_112
+      rect:
+        serializedVersion: 2
+        x: 767
+        y: 575
+        width: 48
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 65e2482eca83867e0800000000000000
+      internalID: -1772104138184446378
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_113
+      rect:
+        serializedVersion: 2
+        x: 815
+        y: 576
+        width: 145
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5cf9bf4f7ba0af580800000000000000
+      internalID: -8792703537282048059
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_114
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 527
+        width: 97
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7928db70c9a95c0a0800000000000000
+      internalID: -6861908462293646697
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_115
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 536
+        width: 34
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4cea7bbcf14fa6da0800000000000000
+      internalID: -5950675540217712956
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_116
+      rect:
+        serializedVersion: 2
+        x: 143
+        y: 529
+        width: 47
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6836a7b41af2583e0800000000000000
+      internalID: -2052181685394840698
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_117
+      rect:
+        serializedVersion: 2
+        x: 191
+        y: 528
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d1c1d985708ff7340800000000000000
+      internalID: 4863878833018575901
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_118
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 529
+        width: 47
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f9353994b308e5aa0800000000000000
+      internalID: -6170353447325183073
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_119
+      rect:
+        serializedVersion: 2
+        x: 289
+        y: 529
+        width: 47
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d9a4cc6e122491370800000000000000
+      internalID: 8293732902152981149
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_120
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 527
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8e65cc16f002e31b0800000000000000
+      internalID: -5675063230002866456
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_121
+      rect:
+        serializedVersion: 2
+        x: 385
+        y: 528
+        width: 47
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 06c2819fde81ae430800000000000000
+      internalID: 3812887444887972960
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_122
+      rect:
+        serializedVersion: 2
+        x: 437
+        y: 533
+        width: 38
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c227bedb3eb619110800000000000000
+      internalID: 1265911596155892268
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_123
+      rect:
+        serializedVersion: 2
+        x: 481
+        y: 528
+        width: 47
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b6e01d6c1b1f2ab20800000000000000
+      internalID: 3144341235705122411
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_124
+      rect:
+        serializedVersion: 2
+        x: 527
+        y: 527
+        width: 95
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dffb193dd03e7cc20800000000000000
+      internalID: 3226797306557874173
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_125
+      rect:
+        serializedVersion: 2
+        x: 623
+        y: 528
+        width: 48
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8275b69d5d09bd110800000000000000
+      internalID: 1286781366694532904
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_126
+      rect:
+        serializedVersion: 2
+        x: 671
+        y: 479
+        width: 60
+        height: 98
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a86022c21dffdee60800000000000000
+      internalID: 7993326187506173578
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_127
+      rect:
+        serializedVersion: 2
+        x: 726
+        y: 539
+        width: 42
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 84f1d451b8ba534a0800000000000000
+      internalID: -6614191863877525688
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_128
+      rect:
+        serializedVersion: 2
+        x: 767
+        y: 538
+        width: 61
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8ab2b66a5ec2ea450800000000000000
+      internalID: 6101863909984775080
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_129
+      rect:
+        serializedVersion: 2
+        x: 820
+        y: 535
+        width: 45
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f8fd22879a336e650800000000000000
+      internalID: 6261749134863294351
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_130
+      rect:
+        serializedVersion: 2
+        x: 871
+        y: 535
+        width: 34
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 64b861971f0ae4470800000000000000
+      internalID: 8380812915562154822
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_131
+      rect:
+        serializedVersion: 2
+        x: 919
+        y: 535
+        width: 34
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c369f89c15064e3a0800000000000000
+      internalID: -6637074046447020484
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_132
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 489
+        width: 34
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 747676085e1ba19d0800000000000000
+      internalID: -2802732218824825017
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_133
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 482
+        width: 41
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a13de169180d7df20800000000000000
+      internalID: 3447453294763365146
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_134
+      rect:
+        serializedVersion: 2
+        x: 95
+        y: 431
+        width: 235
+        height: 98
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 582ca9eaaec2fe940800000000000000
+      internalID: 5327526270665933445
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_135
+      rect:
+        serializedVersion: 2
+        x: 335
+        y: 431
+        width: 242
+        height: 98
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 079fe2c746e9bfd30800000000000000
+      internalID: 4466337609885350256
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_136
+      rect:
+        serializedVersion: 2
+        x: 579
+        y: 479
+        width: 43
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 37be65c02ea4d78f0800000000000000
+      internalID: -541194045484504205
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_137
+      rect:
+        serializedVersion: 2
+        x: 624
+        y: 480
+        width: 46
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 105c508412ed64780800000000000000
+      internalID: -8699021395695909631
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_138
+      rect:
+        serializedVersion: 2
+        x: 719
+        y: 480
+        width: 97
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ad64809e1e4b1f020800000000000000
+      internalID: 2373877360971237082
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_139
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 383
+        width: 145
+        height: 146
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 36dbb5edb01d57160800000000000000
+      internalID: 7022749042859556195
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_140
+      rect:
+        serializedVersion: 2
+        x: 912
+        y: 483
+        width: 48
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d01b73662c5faf90800000000000000
+      internalID: -6940227180807122729
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_141
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 434
+        width: 43
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 45caf812d5494dae0800000000000000
+      internalID: -1525431246055822252
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_142
+      rect:
+        serializedVersion: 2
+        x: 49
+        y: 431
+        width: 47
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9d675ddc55d565ac0800000000000000
+      internalID: -3866800606944069927
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_143
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 434
+        width: 47
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f59b907dac9dc8e40800000000000000
+      internalID: 5660138296912230751
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_144
+      rect:
+        serializedVersion: 2
+        x: 578
+        y: 435
+        width: 44
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7cc891f0c88317390800000000000000
+      internalID: -7822408903565931321
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_145
+      rect:
+        serializedVersion: 2
+        x: 626
+        y: 434
+        width: 45
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d56f1fb36853bc870800000000000000
+      internalID: 8704109555471218269
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_146
+      rect:
+        serializedVersion: 2
+        x: 673
+        y: 435
+        width: 47
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6481eea1b20621690800000000000000
+      internalID: -7632932680187897786
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_147
+      rect:
+        serializedVersion: 2
+        x: 719
+        y: 432
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 28d0b4482296d7240800000000000000
+      internalID: 4791101175561391490
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_148
+      rect:
+        serializedVersion: 2
+        x: 767
+        y: 432
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fa8a4a377111197c0800000000000000
+      internalID: -4066450196116756305
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_149
+      rect:
+        serializedVersion: 2
+        x: 920
+        y: 433
+        width: 32
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9867579ff7a18da30800000000000000
+      internalID: 4240168186117715593
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_150
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 384
+        width: 33
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cda5eb4f1daca9120800000000000000
+      internalID: 2421470752768154332
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_151
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 391
+        width: 47
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bbdbf10d84c3a81e0800000000000000
+      internalID: -2194875584962642501
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_152
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 391
+        width: 47
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8495431ab8ccc0870800000000000000
+      internalID: 8650513884348963144
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_153
+      rect:
+        serializedVersion: 2
+        x: 143
+        y: 384
+        width: 146
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e62c98a8ab21adf40800000000000000
+      internalID: 5753932066316730990
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_154
+      rect:
+        serializedVersion: 2
+        x: 291
+        y: 388
+        width: 41
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b8a9bbb884a144b90800000000000000
+      internalID: -7258647800530101621
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_155
+      rect:
+        serializedVersion: 2
+        x: 339
+        y: 388
+        width: 41
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9c9886959d4d50360800000000000000
+      internalID: 7135343214611433929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_156
+      rect:
+        serializedVersion: 2
+        x: 387
+        y: 386
+        width: 42
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 97a93cdfbe8197e50800000000000000
+      internalID: 6807499713601051257
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_157
+      rect:
+        serializedVersion: 2
+        x: 434
+        y: 385
+        width: 43
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7434688a148c14590800000000000000
+      internalID: -7691646504246295737
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_158
+      rect:
+        serializedVersion: 2
+        x: 479
+        y: 384
+        width: 50
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b36edbc7a11105710800000000000000
+      internalID: 1679861466468836923
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_159
+      rect:
+        serializedVersion: 2
+        x: 528
+        y: 385
+        width: 47
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f5ee04a0a0dbe1080800000000000000
+      internalID: -9214719936734106017
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_160
+      rect:
+        serializedVersion: 2
+        x: 577
+        y: 385
+        width: 47
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d679bc725386cb2a0800000000000000
+      internalID: -6720381966433413267
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_161
+      rect:
+        serializedVersion: 2
+        x: 624
+        y: 383
+        width: 97
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c984413b19e16ba60800000000000000
+      internalID: 7689367024905242780
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_162
+      rect:
+        serializedVersion: 2
+        x: 720
+        y: 386
+        width: 49
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6b1bfac1baea48d0800000000000000
+      internalID: -2861216563904963730
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_163
+      rect:
+        serializedVersion: 2
+        x: 912
+        y: 383
+        width: 48
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 49291eac145f76940800000000000000
+      internalID: 5289465950295397012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_164
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 240
+        width: 49
+        height: 145
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d16a5e781c22db450800000000000000
+      internalID: 6106074884388267549
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_165
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 335
+        width: 47
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 553b50e6533f691f0800000000000000
+      internalID: -1038375253257637035
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_166
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 289
+        width: 48
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d6fd81a00879f6110800000000000000
+      internalID: 1256389397240668013
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_167
+      rect:
+        serializedVersion: 2
+        x: 141
+        y: 144
+        width: 53
+        height: 241
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5da632707c2c1d450800000000000000
+      internalID: 6111880329392515797
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_168
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 336
+        width: 48
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c241835960e3ea4f0800000000000000
+      internalID: -815646284513274836
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_169
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 336
+        width: 50
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 96be28d2ef92f2450800000000000000
+      internalID: 6066113394753334121
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_170
+      rect:
+        serializedVersion: 2
+        x: 287
+        y: 336
+        width: 50
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 544fdbb7f62afce80800000000000000
+      internalID: -8156121800443562939
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_171
+      rect:
+        serializedVersion: 2
+        x: 337
+        y: 340
+        width: 46
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f20277cdd1a1a59c0800000000000000
+      internalID: -3937806208626909137
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_172
+      rect:
+        serializedVersion: 2
+        x: 383
+        y: 339
+        width: 49
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3d919634f2d980690800000000000000
+      internalID: -7635680341886690861
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_173
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 336
+        width: 48
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 32e6e06e5b2b57fd0800000000000000
+      internalID: -2344771536657945053
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_174
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 336
+        width: 48
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e51d8ed6dc627300800000000000000
+      internalID: 248380599571387881
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_175
+      rect:
+        serializedVersion: 2
+        x: 527
+        y: 335
+        width: 193
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 84d720377f126eb50800000000000000
+      internalID: 6622017648765074760
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_176
+      rect:
+        serializedVersion: 2
+        x: 719
+        y: 339
+        width: 48
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3304b2b11b9976bf0800000000000000
+      internalID: -331127061644361677
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_177
+      rect:
+        serializedVersion: 2
+        x: 767
+        y: 337
+        width: 49
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d5a4d203f8f1835b0800000000000000
+      internalID: -5388522254299739555
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_178
+      rect:
+        serializedVersion: 2
+        x: 819
+        y: 335
+        width: 42
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9dfea69d6f89b7f40800000000000000
+      internalID: 5727339537108758489
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_179
+      rect:
+        serializedVersion: 2
+        x: 872
+        y: 338
+        width: 31
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 35ba5a20d9b122330800000000000000
+      internalID: 3684537806310714195
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_180
+      rect:
+        serializedVersion: 2
+        x: 920
+        y: 337
+        width: 32
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b2deff2417d64f700800000000000000
+      internalID: 573203385805696299
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_181
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 298
+        width: 50
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 582df23198f10cb50800000000000000
+      internalID: 6611318926572769925
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_182
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 239
+        width: 145
+        height: 98
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4780ce43746d2b5a0800000000000000
+      internalID: -6506902910278039436
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_183
+      rect:
+        serializedVersion: 2
+        x: 341
+        y: 287
+        width: 41
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 465bb9f1d46d0b150800000000000000
+      internalID: 5886440339704362340
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_184
+      rect:
+        serializedVersion: 2
+        x: 389
+        y: 289
+        width: 38
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 58f36c2cfdd6c8580800000000000000
+      internalID: -8823556762112737403
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_185
+      rect:
+        serializedVersion: 2
+        x: 437
+        y: 287
+        width: 41
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 75dcddb3606ffe790800000000000000
+      internalID: -7498504347913958057
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_186
+      rect:
+        serializedVersion: 2
+        x: 479
+        y: 297
+        width: 60
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 35dc3e0fbde146580800000000000000
+      internalID: -8834902639005938349
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_187
+      rect:
+        serializedVersion: 2
+        x: 534
+        y: 299
+        width: 42
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2953a5b4607913cf0800000000000000
+      internalID: -274272049003088494
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_188
+      rect:
+        serializedVersion: 2
+        x: 575
+        y: 298
+        width: 61
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 06cf2079e732ffe80800000000000000
+      internalID: -8142750574656160672
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_189
+      rect:
+        serializedVersion: 2
+        x: 628
+        y: 295
+        width: 45
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 59253b79d148981b0800000000000000
+      internalID: -5653842594552917355
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_190
+      rect:
+        serializedVersion: 2
+        x: 671
+        y: 289
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a36a6f33833a3c620800000000000000
+      internalID: 2793255655685137978
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_191
+      rect:
+        serializedVersion: 2
+        x: 719
+        y: 239
+        width: 94
+        height: 98
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 897597166afb9dfd0800000000000000
+      internalID: -2316609811984590952
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_192
+      rect:
+        serializedVersion: 2
+        x: 798
+        y: 321
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 062cfcbb7240c0600800000000000000
+      internalID: 435727832649286240
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_193
+      rect:
+        serializedVersion: 2
+        x: 815
+        y: 287
+        width: 145
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 07473e5104ebf5d00800000000000000
+      internalID: 963698027734987888
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_194
+      rect:
+        serializedVersion: 2
+        x: 803
+        y: 303
+        width: 13
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7a8420c7d4abe65d0800000000000000
+      internalID: -3067309454236956505
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_195
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 191
+        width: 51
+        height: 98
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d15c150d95e42d490800000000000000
+      internalID: -7723024263332903651
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_196
+      rect:
+        serializedVersion: 2
+        x: 95
+        y: 239
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 21053406ada836ae0800000000000000
+      internalID: -1557248375617531886
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_197
+      rect:
+        serializedVersion: 2
+        x: 238
+        y: 144
+        width: 48
+        height: 109
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b4acab2903ef0fcf0800000000000000
+      internalID: -220396897167553973
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_198
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 251
+        width: 48
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83a2a99a576e62cb0800000000000000
+      internalID: -4888966952433079752
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_199
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 241
+        width: 36
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a34d2ba1fe3353520800000000000000
+      internalID: 2681106255207126074
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_200
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 242
+        width: 48
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e512cb149e4617760800000000000000
+      internalID: 7453849811267887454
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_201
+      rect:
+        serializedVersion: 2
+        x: 528
+        y: 242
+        width: 47
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ccd25736243cf86e0800000000000000
+      internalID: -1833031833412620852
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_202
+      rect:
+        serializedVersion: 2
+        x: 575
+        y: 239
+        width: 98
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a038c02f4ef2bbf20800000000000000
+      internalID: 3439395400787460874
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_203
+      rect:
+        serializedVersion: 2
+        x: 672
+        y: 239
+        width: 48
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dc51b494169a611b0800000000000000
+      internalID: -5686171244202093107
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_204
+      rect:
+        serializedVersion: 2
+        x: 815
+        y: 239
+        width: 46
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c4898a14727133640800000000000000
+      internalID: 5058412263839930444
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_205
+      rect:
+        serializedVersion: 2
+        x: 863
+        y: 249
+        width: 50
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e7cdf856bbc0ceb0800000000000000
+      internalID: -4701534026937284631
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_206
+      rect:
+        serializedVersion: 2
+        x: 911
+        y: 191
+        width: 49
+        height: 98
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c96487891e51296a0800000000000000
+      internalID: -6444064058143914340
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_207
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 192
+        width: 47
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3f0d68c80e2a9d070800000000000000
+      internalID: 8131709687508160755
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_208
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 191
+        width: 36
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d662f915a8ef649e0800000000000000
+      internalID: -1637341544474270099
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_209
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 192
+        width: 48
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b286b1a795d3b2410800000000000000
+      internalID: 1453322759267117099
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_210
+      rect:
+        serializedVersion: 2
+        x: 287
+        y: 143
+        width: 47
+        height: 98
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 480009d61518cb110800000000000000
+      internalID: 1278038580996866180
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_211
+      rect:
+        serializedVersion: 2
+        x: 335
+        y: 191
+        width: 47
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 397970912fb116190800000000000000
+      internalID: -7971059138853103725
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_212
+      rect:
+        serializedVersion: 2
+        x: 383
+        y: 191
+        width: 47
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 625eef29fe33181c0800000000000000
+      internalID: -4503261048337406682
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_213
+      rect:
+        serializedVersion: 2
+        x: 431
+        y: 191
+        width: 48
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c654e1ced84e796e0800000000000000
+      internalID: -1830743425299888788
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_214
+      rect:
+        serializedVersion: 2
+        x: 479
+        y: 144
+        width: 48
+        height: 97
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 45d675c615dc35450800000000000000
+      internalID: 6076426071846645076
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_215
+      rect:
+        serializedVersion: 2
+        x: 528
+        y: 198
+        width: 48
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 56b7e52f1e935bb10800000000000000
+      internalID: 1996565652405386085
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_216
+      rect:
+        serializedVersion: 2
+        x: 575
+        y: 197
+        width: 50
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 011984c2735777b00800000000000000
+      internalID: 826257936472379664
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_217
+      rect:
+        serializedVersion: 2
+        x: 624
+        y: 195
+        width: 48
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2bf5d210fa4ce240800000000000000
+      internalID: 4822311695975578414
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_218
+      rect:
+        serializedVersion: 2
+        x: 672
+        y: 196
+        width: 97
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8e1d527338a789a90800000000000000
+      internalID: -7306955691424099864
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_219
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 193
+        width: 48
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 04977b17070f77670800000000000000
+      internalID: 8536555984438917440
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_220
+      rect:
+        serializedVersion: 2
+        x: 815
+        y: 193
+        width: 50
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: db5a3eb52dacce0f0800000000000000
+      internalID: -1086270405269543491
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_221
+      rect:
+        serializedVersion: 2
+        x: 864
+        y: 192
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 294ce36433e805ac0800000000000000
+      internalID: -3868435729038261102
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_222
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 146
+        width: 49
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a63cfbfb3bdb083d0800000000000000
+      internalID: -3206354354973981846
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_223
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 144
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 89e02aea5cbacee30800000000000000
+      internalID: 4534187790382010008
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_224
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 49
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b3dfdb61a19172a30800000000000000
+      internalID: 4190345578132929851
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_225
+      rect:
+        serializedVersion: 2
+        x: 194
+        y: 96
+        width: 44
+        height: 97
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ec6ca2ea59fcb0620800000000000000
+      internalID: 2741513039964194510
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_226
+      rect:
+        serializedVersion: 2
+        x: 338
+        y: 152
+        width: 45
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bdfdab88706398150800000000000000
+      internalID: 5875286594868142043
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_227
+      rect:
+        serializedVersion: 2
+        x: 386
+        y: 151
+        width: 44
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 338fdd0126a8345f0800000000000000
+      internalID: -773622557183182797
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_228
+      rect:
+        serializedVersion: 2
+        x: 431
+        y: 95
+        width: 50
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f5cf0f736b1b01f50800000000000000
+      internalID: 6850170429411228767
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_229
+      rect:
+        serializedVersion: 2
+        x: 527
+        y: 97
+        width: 48
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d2b9d9fddd2feebd0800000000000000
+      internalID: -2598872900192855251
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_230
+      rect:
+        serializedVersion: 2
+        x: 575
+        y: 157
+        width: 50
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a1e1bde297f56b10800000000000000
+      internalID: 1974256222096974249
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_231
+      rect:
+        serializedVersion: 2
+        x: 623
+        y: 153
+        width: 242
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7a58f3966ffaf2810800000000000000
+      internalID: 1742805053678257575
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_232
+      rect:
+        serializedVersion: 2
+        x: 867
+        y: 144
+        width: 43
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e934e7381ff89a000800000000000000
+      internalID: 47727538520081310
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_233
+      rect:
+        serializedVersion: 2
+        x: 912
+        y: 144
+        width: 48
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6e554ad59c00a07b0800000000000000
+      internalID: -5257388750142155290
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_234
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 96
+        width: 43
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f426f3212433dafc0800000000000000
+      internalID: -3482070578020523441
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_235
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 95
+        width: 47
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 917ecde9fd2397a50800000000000000
+      internalID: 6519297871619876633
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_236
+      rect:
+        serializedVersion: 2
+        x: 146
+        y: 96
+        width: 43
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c76a449801ab39b40800000000000000
+      internalID: 5445900954606282364
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_237
+      rect:
+        serializedVersion: 2
+        x: 241
+        y: 95
+        width: 47
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 54ae556b650425640800000000000000
+      internalID: 5067183271915678277
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_238
+      rect:
+        serializedVersion: 2
+        x: 291
+        y: 96
+        width: 43
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5fea6bfe34d6096f0800000000000000
+      internalID: -679923405180981515
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_239
+      rect:
+        serializedVersion: 2
+        x: 338
+        y: 96
+        width: 43
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e3e726ba6d841c080800000000000000
+      internalID: -9168967279514059202
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_240
+      rect:
+        serializedVersion: 2
+        x: 383
+        y: 47
+        width: 50
+        height: 91
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 16225fb200f177bb0800000000000000
+      internalID: -4938444380790513055
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_241
+      rect:
+        serializedVersion: 2
+        x: 479
+        y: 97
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 09cb12be5439d4da0800000000000000
+      internalID: -5958944803434414960
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_242
+      rect:
+        serializedVersion: 2
+        x: 575
+        y: 95
+        width: 49
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bb88c296827756f80800000000000000
+      internalID: -8113948138191157061
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_243
+      rect:
+        serializedVersion: 2
+        x: 623
+        y: 47
+        width: 146
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2540ff42bb94f5b10800000000000000
+      internalID: 1972376229939971154
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_244
+      rect:
+        serializedVersion: 2
+        x: 772
+        y: 99
+        width: 41
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ffb685c0c8f0e830800000000000000
+      internalID: 4098549167738503161
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_245
+      rect:
+        serializedVersion: 2
+        x: 820
+        y: 98
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bc4c39aeb696ec2b0800000000000000
+      internalID: -5562392577538014005
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_246
+      rect:
+        serializedVersion: 2
+        x: 863
+        y: 96
+        width: 97
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d18534bc035eaa50800000000000000
+      internalID: 6534251423389286866
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_247
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 47
+        width: 49
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd462905f812837c0800000000000000
+      internalID: -4091483362050284323
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_248
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 48
+        width: 43
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd510894d6b203370800000000000000
+      internalID: 8300181861628384733
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_249
+      rect:
+        serializedVersion: 2
+        x: 146
+        y: 49
+        width: 43
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ad790a04fcb0a4930800000000000000
+      internalID: 4128124993208883162
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_250
+      rect:
+        serializedVersion: 2
+        x: 193
+        y: 47
+        width: 45
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 304581132f74973e0800000000000000
+      internalID: -2055532649386585085
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_251
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 48
+        width: 50
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e0e575e0b913b6540800000000000000
+      internalID: 5002146353155366414
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_252
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 48
+        width: 48
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c49e882ccece89800800000000000000
+      internalID: 619505450383632716
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_253
+      rect:
+        serializedVersion: 2
+        x: 335
+        y: 47
+        width: 50
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b26606556e5f55f0800000000000000
+      internalID: -765789622301728079
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_254
+      rect:
+        serializedVersion: 2
+        x: 431
+        y: 48
+        width: 49
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d770be6bb36aacfd0800000000000000
+      internalID: -2320859882553931907
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_255
+      rect:
+        serializedVersion: 2
+        x: 479
+        y: 0
+        width: 50
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 97768e306df797fd0800000000000000
+      internalID: -2343701573904341127
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_256
+      rect:
+        serializedVersion: 2
+        x: 527
+        y: 0
+        width: 98
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a6ea848fb228eeae0800000000000000
+      internalID: -1518132899016561046
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_257
+      rect:
+        serializedVersion: 2
+        x: 672
+        y: 47
+        width: 49
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bc855030092d7cb90800000000000000
+      internalID: -7221571961497495349
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_258
+      rect:
+        serializedVersion: 2
+        x: 771
+        y: 47
+        width: 43
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5eeade7745297c2a0800000000000000
+      internalID: -6717239427712831771
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_259
+      rect:
+        serializedVersion: 2
+        x: 816
+        y: 48
+        width: 46
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 229dd682d199152f0800000000000000
+      internalID: -985838492906039006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_260
+      rect:
+        serializedVersion: 2
+        x: 863
+        y: 0
+        width: 49
+        height: 97
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5e988f17bad41da80800000000000000
+      internalID: -8443882427596109339
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_261
+      rect:
+        serializedVersion: 2
+        x: 913
+        y: 52
+        width: 46
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4bade5d825093beb0800000000000000
+      internalID: -4705258501438514508
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_262
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 3
+        width: 48
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a29d49bc39dbd9b70800000000000000
+      internalID: 8907484080482081066
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_263
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 3
+        width: 50
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 705c601eeeaad6330800000000000000
+      internalID: 3705806011350041863
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_264
+      rect:
+        serializedVersion: 2
+        x: 143
+        y: 0
+        width: 97
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0b8d2e3f2ec1c1fd0800000000000000
+      internalID: -2369987542823806800
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_265
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 0
+        width: 50
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6298697bd4aa7a150800000000000000
+      internalID: 5883858688952142118
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_266
+      rect:
+        serializedVersion: 2
+        x: 290
+        y: 0
+        width: 42
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8fbb51b99a0736fd0800000000000000
+      internalID: -2349910706803590152
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_267
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 0
+        width: 47
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3879d6270c4621380800000000000000
+      internalID: -9002021927443916925
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_268
+      rect:
+        serializedVersion: 2
+        x: 383
+        y: 1
+        width: 47
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 88b5dfce43d88a810800000000000000
+      internalID: 1776825311451503496
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_269
+      rect:
+        serializedVersion: 2
+        x: 431
+        y: 1
+        width: 49
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd675b212b6db1e70800000000000000
+      internalID: 9087092733456512731
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_270
+      rect:
+        serializedVersion: 2
+        x: 624
+        y: 0
+        width: 47
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f94cc614a7facb7f0800000000000000
+      internalID: -595408111101229921
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_271
+      rect:
+        serializedVersion: 2
+        x: 671
+        y: 1
+        width: 49
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 48c675c71e8875850800000000000000
+      internalID: 6365707100346608772
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_272
+      rect:
+        serializedVersion: 2
+        x: 719
+        y: 0
+        width: 50
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6fa4717f8b0ae52f0800000000000000
+      internalID: -982170952440263946
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_273
+      rect:
+        serializedVersion: 2
+        x: 769
+        y: 3
+        width: 46
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f8c5bc0202e9d5fa0800000000000000
+      internalID: -5810314083411731313
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WinIcons_48_274
+      rect:
+        serializedVersion: 2
+        x: 816
+        y: 2
+        width: 47
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b8442a39760042fe0800000000000000
+      internalID: -1214845554624674677
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      WinIcons_48_0: -3228397600675103836
+      WinIcons_48_1: -1387747178324207306
+      WinIcons_48_10: -5655962095107666528
+      WinIcons_48_100: 3561032958476219174
+      WinIcons_48_101: 4207639197390760016
+      WinIcons_48_102: 1251212823936055282
+      WinIcons_48_103: 3271510920678448843
+      WinIcons_48_104: -4922704273414171905
+      WinIcons_48_105: -463101576121542043
+      WinIcons_48_106: 3395024005430015597
+      WinIcons_48_107: -2526734968431787197
+      WinIcons_48_108: 311203103649920630
+      WinIcons_48_109: -8020864395332633222
+      WinIcons_48_11: 7226101367713009281
+      WinIcons_48_110: -8957880356914615469
+      WinIcons_48_111: 7014620255651146943
+      WinIcons_48_112: -1772104138184446378
+      WinIcons_48_113: -8792703537282048059
+      WinIcons_48_114: -6861908462293646697
+      WinIcons_48_115: -5950675540217712956
+      WinIcons_48_116: -2052181685394840698
+      WinIcons_48_117: 4863878833018575901
+      WinIcons_48_118: -6170353447325183073
+      WinIcons_48_119: 8293732902152981149
+      WinIcons_48_12: 5172674273234071218
+      WinIcons_48_120: -5675063230002866456
+      WinIcons_48_121: 3812887444887972960
+      WinIcons_48_122: 1265911596155892268
+      WinIcons_48_123: 3144341235705122411
+      WinIcons_48_124: 3226797306557874173
+      WinIcons_48_125: 1286781366694532904
+      WinIcons_48_126: 7993326187506173578
+      WinIcons_48_127: -6614191863877525688
+      WinIcons_48_128: 6101863909984775080
+      WinIcons_48_129: 6261749134863294351
+      WinIcons_48_13: -4852788905258360429
+      WinIcons_48_130: 8380812915562154822
+      WinIcons_48_131: -6637074046447020484
+      WinIcons_48_132: -2802732218824825017
+      WinIcons_48_133: 3447453294763365146
+      WinIcons_48_134: 5327526270665933445
+      WinIcons_48_135: 4466337609885350256
+      WinIcons_48_136: -541194045484504205
+      WinIcons_48_137: -8699021395695909631
+      WinIcons_48_138: 2373877360971237082
+      WinIcons_48_139: 7022749042859556195
+      WinIcons_48_14: 2385822202064440265
+      WinIcons_48_140: -6940227180807122729
+      WinIcons_48_141: -1525431246055822252
+      WinIcons_48_142: -3866800606944069927
+      WinIcons_48_143: 5660138296912230751
+      WinIcons_48_144: -7822408903565931321
+      WinIcons_48_145: 8704109555471218269
+      WinIcons_48_146: -7632932680187897786
+      WinIcons_48_147: 4791101175561391490
+      WinIcons_48_148: -4066450196116756305
+      WinIcons_48_149: 4240168186117715593
+      WinIcons_48_15: -3815492779344985975
+      WinIcons_48_150: 2421470752768154332
+      WinIcons_48_151: -2194875584962642501
+      WinIcons_48_152: 8650513884348963144
+      WinIcons_48_153: 5753932066316730990
+      WinIcons_48_154: -7258647800530101621
+      WinIcons_48_155: 7135343214611433929
+      WinIcons_48_156: 6807499713601051257
+      WinIcons_48_157: -7691646504246295737
+      WinIcons_48_158: 1679861466468836923
+      WinIcons_48_159: -9214719936734106017
+      WinIcons_48_16: -7378103706959159731
+      WinIcons_48_160: -6720381966433413267
+      WinIcons_48_161: 7689367024905242780
+      WinIcons_48_162: -2861216563904963730
+      WinIcons_48_163: 5289465950295397012
+      WinIcons_48_164: 6106074884388267549
+      WinIcons_48_165: -1038375253257637035
+      WinIcons_48_166: 1256389397240668013
+      WinIcons_48_167: 6111880329392515797
+      WinIcons_48_168: -815646284513274836
+      WinIcons_48_169: 6066113394753334121
+      WinIcons_48_17: -9055324469015798088
+      WinIcons_48_170: -8156121800443562939
+      WinIcons_48_171: -3937806208626909137
+      WinIcons_48_172: -7635680341886690861
+      WinIcons_48_173: -2344771536657945053
+      WinIcons_48_174: 248380599571387881
+      WinIcons_48_175: 6622017648765074760
+      WinIcons_48_176: -331127061644361677
+      WinIcons_48_177: -5388522254299739555
+      WinIcons_48_178: 5727339537108758489
+      WinIcons_48_179: 3684537806310714195
+      WinIcons_48_18: 2923707879229451807
+      WinIcons_48_180: 573203385805696299
+      WinIcons_48_181: 6611318926572769925
+      WinIcons_48_182: -6506902910278039436
+      WinIcons_48_183: 5886440339704362340
+      WinIcons_48_184: -8823556762112737403
+      WinIcons_48_185: -7498504347913958057
+      WinIcons_48_186: -8834902639005938349
+      WinIcons_48_187: -274272049003088494
+      WinIcons_48_188: -8142750574656160672
+      WinIcons_48_189: -5653842594552917355
+      WinIcons_48_19: -1592555239395343891
+      WinIcons_48_190: 2793255655685137978
+      WinIcons_48_191: -2316609811984590952
+      WinIcons_48_192: 435727832649286240
+      WinIcons_48_193: 963698027734987888
+      WinIcons_48_194: -3067309454236956505
+      WinIcons_48_195: -7723024263332903651
+      WinIcons_48_196: -1557248375617531886
+      WinIcons_48_197: -220396897167553973
+      WinIcons_48_198: -4888966952433079752
+      WinIcons_48_199: 2681106255207126074
+      WinIcons_48_2: 9117723850488559440
+      WinIcons_48_20: 2970348066404502353
+      WinIcons_48_200: 7453849811267887454
+      WinIcons_48_201: -1833031833412620852
+      WinIcons_48_202: 3439395400787460874
+      WinIcons_48_203: -5686171244202093107
+      WinIcons_48_204: 5058412263839930444
+      WinIcons_48_205: -4701534026937284631
+      WinIcons_48_206: -6444064058143914340
+      WinIcons_48_207: 8131709687508160755
+      WinIcons_48_208: -1637341544474270099
+      WinIcons_48_209: 1453322759267117099
+      WinIcons_48_21: 7369990328555235068
+      WinIcons_48_210: 1278038580996866180
+      WinIcons_48_211: -7971059138853103725
+      WinIcons_48_212: -4503261048337406682
+      WinIcons_48_213: -1830743425299888788
+      WinIcons_48_214: 6076426071846645076
+      WinIcons_48_215: 1996565652405386085
+      WinIcons_48_216: 826257936472379664
+      WinIcons_48_217: 4822311695975578414
+      WinIcons_48_218: -7306955691424099864
+      WinIcons_48_219: 8536555984438917440
+      WinIcons_48_22: -6000922279821129859
+      WinIcons_48_220: -1086270405269543491
+      WinIcons_48_221: -3868435729038261102
+      WinIcons_48_222: -3206354354973981846
+      WinIcons_48_223: 4534187790382010008
+      WinIcons_48_224: 4190345578132929851
+      WinIcons_48_225: 2741513039964194510
+      WinIcons_48_226: 5875286594868142043
+      WinIcons_48_227: -773622557183182797
+      WinIcons_48_228: 6850170429411228767
+      WinIcons_48_229: -2598872900192855251
+      WinIcons_48_23: 4692270251083056161
+      WinIcons_48_230: 1974256222096974249
+      WinIcons_48_231: 1742805053678257575
+      WinIcons_48_232: 47727538520081310
+      WinIcons_48_233: -5257388750142155290
+      WinIcons_48_234: -3482070578020523441
+      WinIcons_48_235: 6519297871619876633
+      WinIcons_48_236: 5445900954606282364
+      WinIcons_48_237: 5067183271915678277
+      WinIcons_48_238: -679923405180981515
+      WinIcons_48_239: -9168967279514059202
+      WinIcons_48_24: 3949538251751201025
+      WinIcons_48_240: -4938444380790513055
+      WinIcons_48_241: -5958944803434414960
+      WinIcons_48_242: -8113948138191157061
+      WinIcons_48_243: 1972376229939971154
+      WinIcons_48_244: 4098549167738503161
+      WinIcons_48_245: -5562392577538014005
+      WinIcons_48_246: 6534251423389286866
+      WinIcons_48_247: -4091483362050284323
+      WinIcons_48_248: 8300181861628384733
+      WinIcons_48_249: 4128124993208883162
+      WinIcons_48_25: -6478144443249872307
+      WinIcons_48_250: -2055532649386585085
+      WinIcons_48_251: 5002146353155366414
+      WinIcons_48_252: 619505450383632716
+      WinIcons_48_253: -765789622301728079
+      WinIcons_48_254: -2320859882553931907
+      WinIcons_48_255: -2343701573904341127
+      WinIcons_48_256: -1518132899016561046
+      WinIcons_48_257: -7221571961497495349
+      WinIcons_48_258: -6717239427712831771
+      WinIcons_48_259: -985838492906039006
+      WinIcons_48_26: -7084066270332646891
+      WinIcons_48_260: -8443882427596109339
+      WinIcons_48_261: -4705258501438514508
+      WinIcons_48_262: 8907484080482081066
+      WinIcons_48_263: 3705806011350041863
+      WinIcons_48_264: -2369987542823806800
+      WinIcons_48_265: 5883858688952142118
+      WinIcons_48_266: -2349910706803590152
+      WinIcons_48_267: -9002021927443916925
+      WinIcons_48_268: 1776825311451503496
+      WinIcons_48_269: 9087092733456512731
+      WinIcons_48_27: 4355142953797737895
+      WinIcons_48_270: -595408111101229921
+      WinIcons_48_271: 6365707100346608772
+      WinIcons_48_272: -982170952440263946
+      WinIcons_48_273: -5810314083411731313
+      WinIcons_48_274: -1214845554624674677
+      WinIcons_48_28: 8135965304479043406
+      WinIcons_48_29: -2674154875534789551
+      WinIcons_48_3: -3704463525830780219
+      WinIcons_48_30: -723762348082287664
+      WinIcons_48_31: 7387745731074887182
+      WinIcons_48_32: 4188106037246213236
+      WinIcons_48_33: -6596236887867640550
+      WinIcons_48_34: 877778423270505826
+      WinIcons_48_35: 6694505522262306940
+      WinIcons_48_36: 7108271178551517641
+      WinIcons_48_37: 364615517895323980
+      WinIcons_48_38: -711624639969424749
+      WinIcons_48_39: -8231007836156970011
+      WinIcons_48_4: -7904641143851799939
+      WinIcons_48_40: -2431024435837683885
+      WinIcons_48_41: -2976203195329862879
+      WinIcons_48_42: 5235579017144741243
+      WinIcons_48_43: -8857578888664078405
+      WinIcons_48_44: -505650042796268661
+      WinIcons_48_45: 4482730665194218307
+      WinIcons_48_46: -6606057074690927915
+      WinIcons_48_47: 7198310950624962699
+      WinIcons_48_48: -5657034970864458977
+      WinIcons_48_49: 3526715306534613052
+      WinIcons_48_5: 3197740208990903944
+      WinIcons_48_50: -744084729997574129
+      WinIcons_48_51: 8542818562187799614
+      WinIcons_48_52: 6630951875541204962
+      WinIcons_48_53: -7416405385069494729
+      WinIcons_48_54: -6576248191935446742
+      WinIcons_48_55: 7596877080896783108
+      WinIcons_48_56: 8593688358354281711
+      WinIcons_48_57: 7355132796346124563
+      WinIcons_48_58: 3334642440526867786
+      WinIcons_48_59: 5666005493413424306
+      WinIcons_48_6: -1431972502200007660
+      WinIcons_48_60: 7428687069827907603
+      WinIcons_48_61: 4295085690880810824
+      WinIcons_48_62: 6830253572899268152
+      WinIcons_48_63: 6290119466011050432
+      WinIcons_48_64: 3705764344530093726
+      WinIcons_48_65: 6007521110028281113
+      WinIcons_48_66: 8688196859005094357
+      WinIcons_48_67: -2918104905739908957
+      WinIcons_48_68: 2966577147086563730
+      WinIcons_48_69: -1683475936106174518
+      WinIcons_48_7: 9221710528095963153
+      WinIcons_48_70: 3762978254912953182
+      WinIcons_48_71: 2840882982741325917
+      WinIcons_48_72: 1035052562152602762
+      WinIcons_48_73: -297556977750661848
+      WinIcons_48_74: 5515217211735364674
+      WinIcons_48_75: -3139857269178947479
+      WinIcons_48_76: -7725629669038668760
+      WinIcons_48_77: 1475764757568065396
+      WinIcons_48_78: 838449728713745380
+      WinIcons_48_79: 6294474989182891820
+      WinIcons_48_8: -7114166200692222017
+      WinIcons_48_80: 8676896465159002926
+      WinIcons_48_81: -1499456965868072688
+      WinIcons_48_82: -8123862508784404438
+      WinIcons_48_83: 2393009197007173785
+      WinIcons_48_84: 3731139611210588670
+      WinIcons_48_85: 5991696979193185882
+      WinIcons_48_86: 2879882636852674639
+      WinIcons_48_87: -3646827940079142136
+      WinIcons_48_88: 8863375797223014930
+      WinIcons_48_89: -4988811711989301075
+      WinIcons_48_9: 882763792076805170
+      WinIcons_48_90: -3700802845234799488
+      WinIcons_48_91: 1852615392561792691
+      WinIcons_48_92: -5160521105701236280
+      WinIcons_48_93: 3171370585654708353
+      WinIcons_48_94: 1544058871470940380
+      WinIcons_48_95: -8533021277438428154
+      WinIcons_48_96: 2706988647163095954
+      WinIcons_48_97: 5325586826770603866
+      WinIcons_48_98: 8907377031222070848
+      WinIcons_48_99: 2608522492594705422
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

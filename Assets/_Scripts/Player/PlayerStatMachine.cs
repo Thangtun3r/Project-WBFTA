@@ -4,11 +4,16 @@ using _Scripts;
 public class PlayerStatMachine : MonoBehaviour
 {
     [SerializeField] private PlayerConfig config;
+    [SerializeField] private PlayerInventory inventory;
+
+    [Header("Base Stats (Set these)")]
+    [SerializeField] private float baseCritRate = 0.2f; // Renamed to "base" for clarity
+    [SerializeField] private float baseCritDamage = 1.5f; 
     
-    [Header("Crit Stats")]
-    [SerializeField] private float critRate = 0.2f; // 20% crit chance
-    [SerializeField] private float critDamage = 1.5f; // 1.5x damage on crit
-    
+    [Header("Live Stats (Read Only - Watch these update!)")]
+    [SerializeField] private float currentCritRateDisplay;
+    [SerializeField] private float currentDamageDisplay;
+
     private float _baseDamage;
     private float _baseHealth;
     private bool _wasLastAttackCrit;
@@ -23,83 +28,122 @@ public class PlayerStatMachine : MonoBehaviour
 
         _baseDamage = config.damage;
         _baseHealth = config.maxHealth;
+        
+        // Initialize our displays
+        RefreshInspectorStats(null); 
     }
+
+    // --- EVENT LISTENER SETUP ---
+    private void OnEnable()
+    {
+        // Listen to the inventory. Whenever it changes, update our Inspector!
+        if (inventory != null)
+        {
+            PlayerInventory.OnInventoryUpdated += RefreshInspectorStats;
+        }
+    }
+
+    private void OnDisable()
+    {
+        // Always unsubscribe when destroyed to prevent memory leaks
+        if (inventory != null)
+        {
+            PlayerInventory.OnInventoryUpdated -= RefreshInspectorStats;
+        }
+    }
+
+    /// <summary>
+    /// This runs automatically every time an item is added, removed, or stacked
+    /// </summary>
+    private void RefreshInspectorStats(ItemRuntime item)
+    {
+        currentCritRateDisplay = GetCalculatedCritRate();
+        currentDamageDisplay = _baseDamage; // Later, change this to GetCalculatedBaseDamage() if you add damage items!
+    }
+    // ----------------------------
 
     /// <summary>
     /// Calculates the actual damage output including crit chance and crit damage
     /// </summary>
     public float GetCalculatedAttackDamage()
-    {
-        float finalDamage = _baseDamage;
-        _wasLastAttackCrit = false;
+{
+    float finalDamage = _baseDamage;
+    _wasLastAttackCrit = false;
 
-        // Check if this attack is a crit
-        if (Random.value <= critRate)
+    // 1. Get the actual crit rate 
+    float currentCritRate = GetCalculatedCritRate();
+
+    if (Random.value <= currentCritRate)
+    {
+        // 2. Get the actual crit damage multiplier that includes items!
+        float currentCritDamage = GetCalculatedCritDamage();
+
+        // 3. Multiply by the calculated value, NOT the base value
+        finalDamage *= currentCritDamage;
+        
+        _wasLastAttackCrit = true;
+        Debug.Log($"CRIT! Damage: {finalDamage}");
+    }
+
+    return finalDamage;
+}
+
+    public bool WasLastAttackCrit() => _wasLastAttackCrit;
+    
+    public float GetBaseDamage() => _baseDamage;
+    
+    public float GetBaseHealth() => _baseHealth;
+
+    public float GetCalculatedCritDamage()
+    {
+        float totalCritDamage = baseCritDamage;
+
+        if (inventory != null)
         {
-            finalDamage *= critDamage;
-            _wasLastAttackCrit = true;
-            Debug.Log($"CRIT! Damage: {finalDamage}");
+            foreach (var item in inventory.GetActiveItems())
+            {
+                if (item.Logic is ICritDamageLogic critMod)
+                {
+                    totalCritDamage += critMod.AddCritDamageBonus();
+                }
+            }
         }
 
-        return finalDamage;
+        return totalCritDamage;
     }
 
     /// <summary>
-    /// Returns whether the last attack was a critical hit
+    /// Calculates the total crit rate by adding the base and all item bonuses
     /// </summary>
-    public bool WasLastAttackCrit()
+    public float GetCalculatedCritRate()
     {
-        return _wasLastAttackCrit;
+        float totalCrit = baseCritRate;
+
+        // Ensure inventory exists to prevent errors on startup
+        if (inventory != null)
+        {
+            foreach (var item in inventory.GetActiveItems()) 
+            {
+                if (item.Logic is ICritRateLogic critMod)
+                {
+                    totalCrit += critMod.AddCritRateBonus(); 
+                }
+            }
+        }
+
+        return Mathf.Clamp01(totalCrit);
     }
 
-    /// <summary>
-    /// Gets the base damage without crit calculations
-    /// </summary>
-    public float GetBaseDamage()
-    {
-        return _baseDamage;
-    }
 
-    /// <summary>
-    /// Gets the base health
-    /// </summary>
-    public float GetBaseHealth()
-    {
-        Debug.Log("PlayerStatMachine: Returning base health: " + _baseHealth);
-    
-        return _baseHealth;
-        
-    }
 
-    /// <summary>
-    /// Gets the current crit rate (0-1)
-    /// </summary>
-    public float GetCritRate()
-    {
-        return critRate;
-    }
-
-    /// <summary>
-    /// Gets the current crit damage multiplier
-    /// </summary>
-    public float GetCritDamage()
-    {
-        return critDamage;
-    }
-
-    /// <summary>
-    /// Sets new crit rate
-    /// </summary>
     public void SetCritRate(float newCritRate)
     {
-        critRate = Mathf.Clamp01(newCritRate);
+        baseCritRate = Mathf.Clamp01(newCritRate);
+        RefreshInspectorStats(null); // Update UI if we change this via code
     }
 
-    /// <summary>
-    /// Sets new crit damage multiplier
-    /// </summary>
     public void SetCritDamage(float newCritDamage)
     {
-        critDamage = Mathf.Max(1f, newCritDamage);
+        baseCritDamage = Mathf.Max(1f, newCritDamage);
     }
 }
