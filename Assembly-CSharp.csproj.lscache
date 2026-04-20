@@ -88,17 +88,24 @@ Assets/TextMesh Pro/Examples & Extras/Scripts/
  VertexZoom.cs
  WarpTextExample.cs
 Assets/_Item System/Scripts/
+ CurrentEnemyRegistry.cs
  DebugItemGiver.cs
+ GlobalEventManager.cs
  Interfaces/
+  IItemEffect.cs
   IItemLogic.cs
   IItemModifier.cs
  InventoryVisualManager.cs
  Item Logic/
+  ChainDamageLogic.cs
   CritDamageLogic.cs
   CritRateLogic.cs
   ItemLogicBase.cs
  ItemDatabaseFactory.cs
  ItemDefinition.cs
+ ItemEffect/
+  ChainDamageEffect.cs
+  EffectContext.cs
  ItemGlobalEventBus.cs
  ItemModifier.cs
  ItemRuntime.cs
@@ -137,8 +144,8 @@ Assets/_Scripts/Enemy/
   SlimeTrail.cs
   SpinAttackModule.cs
 Assets/_Scripts/
- FlaotingDamangePool.cs
  FloatingDamageText.cs
+ FloatingDamangePool.cs
  FSM/
   BaseState.cs
   StateMachine.cs

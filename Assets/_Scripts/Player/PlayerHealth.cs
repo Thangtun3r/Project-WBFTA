@@ -45,6 +45,11 @@ public class PlayerHealth : MonoBehaviour, IDamagable
         }
     }
 
+    public virtual Transform GetTransform()
+    {
+        return transform;
+    }
+
     public void Heal(float healAmount)
     {
         _currentHealth = Mathf.Min(_currentHealth + healAmount, _maxHealth);

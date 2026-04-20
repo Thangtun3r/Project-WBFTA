@@ -21,6 +21,20 @@ public class ItemRuntime
         _logic?.Initialize(this);
     }
 
+    public void TriggerEffect(EffectContext context)
+    {
+        // Safety check: if it's a passive item with no prefab, just stop
+        if (_definition.effectPrefab == null) return;
+
+        // 1. Spawn the visual prefab
+        UnityEngine.GameObject go = UnityEngine.Object.Instantiate(_definition.effectPrefab);
+
+        // 2. Pass the context to the prefab's logic
+        if (go.TryGetComponent<IItemEffect>(out var effect))
+        {
+            effect.ApplyEffect(context);
+        }
+    }
     public void AddStack(int amount = 1)
     {
         if (amount > 0) _stackSize += amount;

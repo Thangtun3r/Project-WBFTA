@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using _Scripts.Enemy;
 
 public enum AttackDetectionMethod
 {
@@ -47,30 +48,30 @@ public class PlayerAttack : MonoBehaviour
 
     private void HandleHit(Collider2D collider, Vector2 hitPoint)
     {
-        // 1. Layer Check: This replaces the "Exclude" logic. 
-        // If the object's layer is NOT in our Target Layers mask, we ignore it entirely.
         if (((1 << collider.gameObject.layer) & targetLayers) == 0) return;
-
-        // 2. Cooldown/Grace Period Check
         if (Time.time - _lastAttackTime < attackGraceTime) return;
 
-        // 3. Component Lookup
-        var damagable = collider.GetComponent<IDamagable>() ?? 
-                        collider.GetComponentInParent<IDamagable>();
+      
+        var damagable = collider.GetComponent<IDamagable>() ?? collider.GetComponentInParent<IDamagable>();
 
         if (damagable != null)
         {
-            // Get calculated damage from stat machine (includes crit)
             float finalDamage = _statMachine != null ? _statMachine.GetCalculatedAttackDamage() : damageAmount;
             bool isCrit = _statMachine != null ? _statMachine.WasLastAttackCrit() : false;
             
             damagable.TakeDamage(finalDamage);
             _lastAttackTime = Time.time;
             
-            // Fire event for VFX/UI (Camera shake, damage numbers, etc.)
             OnHitTarget?.Invoke(hitPoint, finalDamage, isCrit);
+            if (FloatingDamagePool.Instance != null)
+            {
+                FloatingDamagePool.Instance.SpawnDamage(hitPoint, finalDamage, isCrit);
+            }
+
+            // Broadcast the interface to the registry
+            GlobalEventManager.Instance.OnHit(damagable, finalDamage, isCrit);
         }
     }
-    
+        
     public void SetDamage(float newDamage) => damageAmount = newDamage;
 }

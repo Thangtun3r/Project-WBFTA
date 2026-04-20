@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Collections.Generic;
 public class FloatingDamagePool : MonoBehaviour
 {
+    public static FloatingDamagePool Instance { get; private set; }
+
     [SerializeField] private PlayerAttack player;
     [SerializeField] private FloatingDamageText prefab;
     [SerializeField] private int poolSize = 30;
@@ -10,6 +12,8 @@ public class FloatingDamagePool : MonoBehaviour
 
     private void Awake()
     {
+        Instance = this;
+
         for (int i = 0; i < poolSize; i++)
         {
             FloatingDamageText obj = Instantiate(prefab, transform);
@@ -22,7 +26,7 @@ public class FloatingDamagePool : MonoBehaviour
     private void OnEnable()
     
     {
-        player.OnHitTarget += SpawnDamage;
+        
     } 
     private void OnDisable() => player.OnHitTarget -= SpawnDamage;
 

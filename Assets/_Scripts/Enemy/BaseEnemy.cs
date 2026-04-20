@@ -1,5 +1,6 @@
 using UnityEngine;
 using _Scripts.Enemy.Modules;
+using System;
 
 namespace _Scripts.Enemy
 {
@@ -9,6 +10,7 @@ namespace _Scripts.Enemy
         [SerializeField] protected float maxHealth = 100f;
         [SerializeField] protected EnemyConfig config;
         [SerializeField] protected float deathReturnDelay = 3f;
+        
         
         
         protected int currentLevel;
@@ -45,6 +47,16 @@ namespace _Scripts.Enemy
             OnHealthChanged?.Invoke(currentHealth, maxHealth);
         }
 
+        void OnEnable()
+        {
+            CurrentEnemyRegistry.Instance?.Register(this);
+        }
+
+        void OnDisable()
+        {
+            CurrentEnemyRegistry.Instance?.Unregister(this);
+        }
+
         public void SetLevel(int level)
         {
             if (config == null) return;
@@ -78,6 +90,10 @@ namespace _Scripts.Enemy
             {
                 OnDeath();
             }
+        }
+        public virtual Transform GetTransform()
+        {
+            return transform;
         }
 
         public virtual void Die()

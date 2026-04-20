@@ -1,0 +1,74 @@
+using System.Diagnostics;
+
+public class ChainDamageLogic : ItemLogicBase
+{
+    public float procChance = 0.25f;
+    public int baseMaxBounces = 3;
+    public int extraBouncesPerStack = 2;
+    public float baseRadius = 20f;
+    public float radiusPerStack = 2f;
+    public float damageMultiplier = 0.8f;
+
+    public override void Dispose()
+    {
+        GlobalEventManager.Instance.HandleOnHit -= HandleHit;
+    }
+
+    protected override void OnInitialize()
+    {
+        GlobalEventManager.Instance.HandleOnHit += HandleHit;
+    }
+
+    private void HandleHit(IDamagable target, float damage, bool isCrit)
+    {
+        if (target == null || target.GetTransform() == null)
+        {
+            UnityEngine.Debug.Log("ChainDamageLogic: Target is null or has no transform");
+            return;
+        }
+        if (CurrentEnemyRegistry.Instance == null)
+        {
+            UnityEngine.Debug.Log("ChainDamageLogic: CurrentEnemyRegistry is null");
+            return;
+        }
+        if (Owner == null)
+        {
+            UnityEngine.Debug.Log("ChainDamageLogic: Owner is null");
+            return;
+        }
+        UnityEngine.Debug.Log($"ChainDamageLogic triggered on hit against {target.GetTransform().name} with damage {damage} and crit {isCrit}");
+
+        if (UnityEngine.Random.value > procChance) return;
+
+        int stackCount = UnityEngine.Mathf.Max(Owner.StackSize, 1);
+        int maxBounces = baseMaxBounces + ((stackCount - 1) * extraBouncesPerStack);
+        float searchRadius = baseRadius + ((stackCount - 1) * radiusPerStack);
+
+        var nearby = CurrentEnemyRegistry.Instance.GetTargetsInRadius(
+            target.GetTransform().position,
+            searchRadius,
+            maxBounces
+        );
+
+        foreach (var enemy in nearby)
+        {
+            if (enemy == null || enemy.gameObject == null || enemy.gameObject == target.GetTransform().gameObject) continue;
+
+            float chainDamage = damage * damageMultiplier;
+            enemy.TakeDamage(chainDamage);
+            
+            if (FloatingDamagePool.Instance != null)
+            {
+                FloatingDamagePool.Instance.SpawnDamage(enemy.transform.position, chainDamage, isCrit);
+            }
+
+            EffectContext context = new EffectContext {
+                Origin = target.GetTransform().position,
+                Destination = enemy.transform.position,
+                Radius = searchRadius
+            };
+
+            Owner.TriggerEffect(context);
+        }
+    }
+}
