@@ -4,10 +4,10 @@ public class ChainDamageLogic : ItemLogicBase
 {
     public float procChance = 0.25f;
     public int baseMaxBounces = 3;
-    public int extraBouncesPerStack = 2;
+    public int extraBouncesPerStack = 1;
     public float baseRadius = 20f;
-    public float radiusPerStack = 2f;
-    public float damageMultiplier = 0.8f;
+    public float radiusPerStack = 1f;
+    public float damageMultiplier = 0.7f;
 
     public override void Dispose()
     {
