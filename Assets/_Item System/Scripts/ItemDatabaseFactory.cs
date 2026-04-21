@@ -85,6 +85,19 @@ public class ItemDatabaseFactory : MonoBehaviour
         return _entryLookup.TryGetValue(itemId, out var entry) ? entry.Definition : null;
     }
 
+    public string GetRandomItemId()
+    {
+        if (_entryLookup == null || _entryLookup.Count == 0)
+        {
+            Debug.LogWarning("ItemDatabaseFactory: No items available in the database.");
+            return null;
+        }
+
+        var itemIds = _entryLookup.Keys;
+        int randomIndex = UnityEngine.Random.Range(0, itemIds.Count);
+        return System.Linq.Enumerable.ElementAt(itemIds, randomIndex);
+    }
+
     private IItemLogic CreateLogicInstance(string className)
     {
         if (string.IsNullOrWhiteSpace(className))

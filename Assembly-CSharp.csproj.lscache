@@ -87,6 +87,10 @@ Assets/TextMesh Pro/Examples & Extras/Scripts/
  VertexShakeB.cs
  VertexZoom.cs
  WarpTextExample.cs
+Assets/_Item System/Chest/
+ Chest.cs
+ HoverEffect.cs
+ ItemDrop.cs
 Assets/_Item System/Scripts/
  CurrentEnemyRegistry.cs
  DebugItemGiver.cs
