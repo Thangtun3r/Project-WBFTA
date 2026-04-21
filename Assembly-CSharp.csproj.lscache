@@ -89,6 +89,7 @@ Assets/TextMesh Pro/Examples & Extras/Scripts/
  WarpTextExample.cs
 Assets/_Item System/Chest/
  Chest.cs
+ ChestManager.cs
  HoverEffect.cs
  ItemDrop.cs
 Assets/_Item System/Scripts/
@@ -177,9 +178,11 @@ Assets/_Scripts/
   Projectile.cs
   ProjectilePool.cs
   Spawner.cs
+  VideoCharging.cs
  Temp/
   CurveCollision.cs
   PenTool.cs
+ TriggerButton2D.cs
 Temp/obj/Assembly-CSharp/.NETStandard,Version=v2.1.AssemblyAttributes.cs
 
 [metadataReferences]

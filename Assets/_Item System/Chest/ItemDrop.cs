@@ -76,11 +76,10 @@ public class ItemDrop : MonoBehaviour
             SpriteRenderer shadowRenderer = shadowObject.GetComponent<SpriteRenderer>();
             if (shadowRenderer != null)
             {
-                Color shadowColor = shadowRenderer.color;
-                shadowColor.a = 0f;
-                shadowRenderer.color = shadowColor;
+            
+            
 
-                shadowRenderer.DOFade(1f, landingDuration).SetEase(Ease.OutBack);
+                //shadowRenderer.DOFade(1f, landingDuration).SetEase(Ease.OutBack);
             }
         }
     }
