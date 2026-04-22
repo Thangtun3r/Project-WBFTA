@@ -24,6 +24,7 @@ public class EnemyRewardManager : MonoBehaviour
         float variance = Random.Range(0.9f, 1.1f);
         int finalReward = Mathf.RoundToInt(rawReward * variance);
 
+        Debug.Log($"Enemy Defeated | Tier: {enemyTier}, Level: {enemyLevel} | Base: {rawReward:F1}, Final: {finalReward}");
         EconomyManager.Instance.AddMoney(finalReward);
     }
     

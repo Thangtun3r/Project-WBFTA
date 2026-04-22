@@ -13,14 +13,11 @@ public class HUDManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI levelText;
     [SerializeField] private Volume postProcessVolume;
 
-    [Header("Money Display")]
-    [SerializeField] private float moneyChangeSpeed = 120f;
-
     [Header("Vignette Settings")]
     [SerializeField] private float damageFlashIntensity = 0.6f;
     [SerializeField] private float damageFlashDuration = 0.3f;
     [SerializeField] private float lowHealthVignetteIntensity = 0.4f;
-    [SerializeField] private float lowHealthThreshold = 0.3f; // Trigger vignette when health is below 30%
+    [SerializeField] private float lowHealthThreshold = 0.3f; 
     [SerializeField] private float vignetteTransitionSpeed = 2f;
 
     private float _maxHealth;
@@ -28,9 +25,6 @@ public class HUDManager : MonoBehaviour
     private Vignette _vignette;
     private float _targetVignetteIntensity;
     private float _damageFlashTimer;
-
-    private int _displayedMoney;
-    private int _targetMoney;
 
     private void OnEnable()
     {
@@ -61,12 +55,6 @@ public class HUDManager : MonoBehaviour
 
     private void Update()
     {
-        if (moneyText != null && _displayedMoney != _targetMoney)
-        {
-            _displayedMoney = (int)Mathf.MoveTowards(_displayedMoney, _targetMoney, moneyChangeSpeed * Time.deltaTime);
-            moneyText.text = $"${_displayedMoney:F0}";
-        }
-
         if (_vignette == null)
             return;
 
@@ -76,7 +64,7 @@ public class HUDManager : MonoBehaviour
             _damageFlashTimer -= Time.deltaTime;
         }
 
-        // Smoothly transition vignette intensity to target value
+        // Smoothly transition vignette intensity
         float currentIntensity = _vignette.intensity.value;
         _vignette.intensity.value = Mathf.Lerp(currentIntensity, _targetVignetteIntensity, vignetteTransitionSpeed * Time.deltaTime);
     }
@@ -86,29 +74,24 @@ public class HUDManager : MonoBehaviour
         _currentHealth = currentHealth;
         _maxHealth = maxHealth;
 
-        // Update the fill image (0 to 1)
         if (healthFillImage != null)
         {
             healthFillImage.fillAmount = currentHealth / maxHealth;
         }
 
-        // Update the text display (current / max)
         if (healthText != null)
         {
             healthText.text = $"{currentHealth:F0}/{maxHealth:F0}";
         }
 
-        // Handle vignette effects
         if (_vignette != null)
         {
             if (!isHealing)
             {
-                // Damage taken: flash vignette
                 _vignette.intensity.value = damageFlashIntensity;
                 _damageFlashTimer = damageFlashDuration;
             }
 
-            // Update target vignette intensity based on health
             float healthPercent = currentHealth / maxHealth;
             if (healthPercent <= lowHealthThreshold)
             {
@@ -135,11 +118,10 @@ public class HUDManager : MonoBehaviour
 
     private void UpdateMoneyDisplay(int currentMoney)
     {
-        _targetMoney = currentMoney;
-
-        if (_displayedMoney == _targetMoney && moneyText != null)
+        // Money now updates instantly
+        if (moneyText != null)
         {
-            moneyText.text = $"${currentMoney:F0}";
+            moneyText.text = $"${currentMoney}";
         }
     }
 

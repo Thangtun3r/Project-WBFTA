@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1688e3d992d587a4cb72a25515fe8c35, type: 3}
+  m_Name: DefaultConfig
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySpawnerDatabase
+  allEnemies:
+  - enemyName: 
+    prefab: {fileID: 1362645100913559232, guid: f7a5fa5037516374fa7095d660fdb41b, type: 3}
+    cost: 4
+    weight: 100
+    tier: 0
+    preference: 2
+  - enemyName: 
+    prefab: {fileID: 9203883233185218907, guid: dc8fe1119b118264691c5f9a5eca0c7e, type: 3}
+    cost: 4
+    weight: 19.3
+    tier: 0
+    preference: 1
+  - enemyName: 
+    prefab: {fileID: 8980048317678214775, guid: 61124440380a9ba49b5a79b2e232d55b, type: 3}
+    cost: 4
+    weight: 84.1
+    tier: 0
+    preference: 1

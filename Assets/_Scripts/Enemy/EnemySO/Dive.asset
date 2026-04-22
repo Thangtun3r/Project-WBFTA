@@ -19,9 +19,9 @@ MonoBehaviour:
   detectionRange: 171.7
   attackRange: 11.58
   attackExitBuffer: 1
-  damage: 44.6
+  damage: 16
   tier: 1
   level: 1
   maxHealth: 14
   healthIncreasePerLevel: 2.8
-  damageIncreasePerLevel: 20
+  damageIncreasePerLevel: 2.4

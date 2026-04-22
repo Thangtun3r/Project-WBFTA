@@ -45,6 +45,9 @@ TagManager:
   - name: Sky
     uniqueID: 3644782821
     locked: 0
+  - name: Windows
+    uniqueID: 591094157
+    locked: 0
   - name: Cursor
     uniqueID: 2921200039
     locked: 0

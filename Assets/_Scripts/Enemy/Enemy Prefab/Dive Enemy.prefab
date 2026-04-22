@@ -10037,8 +10037,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: -650184475
-  m_SortingLayer: 1
+  m_SortingLayerID: 591094157
+  m_SortingLayer: 2
   m_SortingOrder: 3
   m_MaskInteraction: 0
   m_Sprite: {fileID: 1685466781249751904, guid: 358ad8d9114976c498b30105fabc6159, type: 3}
@@ -10285,8 +10285,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: -650184475
-  m_SortingLayer: 1
+  m_SortingLayerID: 591094157
+  m_SortingLayer: 2
   m_SortingOrder: 2
   m_MaskInteraction: 0
   m_Sprite: {fileID: 8453890923445766294, guid: 8812c9def8b3a614f96f1ad4699fc7fa, type: 3}
@@ -10378,8 +10378,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: -650184475
-  m_SortingLayer: 1
+  m_SortingLayerID: 591094157
+  m_SortingLayer: 2
   m_SortingOrder: 3
   m_MaskInteraction: 0
   m_Sprite: {fileID: 8235649167535019888, guid: 81769f30b4a37a94e86189efcdb8870b, type: 3}
@@ -10438,11 +10438,11 @@ GameObject:
   - component: {fileID: 8117696635605427870}
   - component: {fileID: 9061026683208069}
   - component: {fileID: 7095941779809538676}
-  - component: {fileID: 1707816837203448857}
   - component: {fileID: 7762089808454066623}
   - component: {fileID: 6591575548536718574}
   - component: {fileID: 779344508739937072}
   - component: {fileID: 63893162374213508}
+  - component: {fileID: 6216513820252581102}
   m_Layer: 6
   m_Name: Dive Enemy
   m_TagString: 'Enemy '
@@ -10495,6 +10495,7 @@ MonoBehaviour:
   maxHealth: 10
   config: {fileID: 11400000, guid: 570ba9e7e4b54a94c86c6f21a46dc159, type: 2}
   deathReturnDelay: 0.2
+  sourcePrefab: {fileID: 0}
 --- !u!114 &9061026683208069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10554,19 +10555,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!114 &1707816837203448857
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9203883233185218907}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2109ad25d536e44c9d5decd21e7c4b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Enemy.Modules.DiveEnemySensor
-  viewportInset: 0.05
 --- !u!114 &7762089808454066623
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10664,6 +10652,19 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0.02487874, y: -0.041958094}
   m_Radius: 2.65
+--- !u!114 &6216513820252581102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9203883233185218907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ca28ff065f09c943ab3dc8848beba12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Enemy.Modules.EnemySensor
+  viewportBuffer: 0.1
 --- !u!1001 &5294360757556164233
 PrefabInstance:
   m_ObjectHideFlags: 0
