@@ -5,9 +5,9 @@ namespace _Scripts.Enemy.Modules
 {
     public class EnemySensor : MonoBehaviour, ITargetSensor
     {
-        private EnemyConfig config;
-        private Transform _player;
-        private Camera _mainCamera;
+        public EnemyConfig config;
+        public Transform _player;
+        public Camera _mainCamera;
 
         [Header("Viewport Optimization")]
         [Tooltip("Extra margin outside the screen (0.1 = 10%) so enemies don't 'deactivate' the millisecond they touch the edge.")]

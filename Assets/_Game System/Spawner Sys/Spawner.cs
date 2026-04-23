@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using _Scripts.Enemy; // Ensure this matches your BaseEnemy namespace
+using _Scripts.Enemy; 
 
 public class DirectorSpawner2D : MonoBehaviour
 {
@@ -12,11 +12,13 @@ public class DirectorSpawner2D : MonoBehaviour
     [Header("Economy (Exponential)")]
     public float initialCredits = 25f;
     public float baseCreditsPerSecond = 1.5f;
-    [Tooltip("Multiplier per level (e.g., 1.12 = 12% increase)")]
     public float incomeGrowthMultiplier = 1.12f; 
     public float spawnInterval = 3f;
-    [Tooltip("Director waits until it has this many credits to dump a wave.")]
     public float spawnThreshold = 10f;
+
+    [Header("Ambush Settings")]
+    [Range(0f, 1f), Tooltip("Chance for any enemy to ignore its preference and drop on the player.")]
+    public float ambushChance = 0.1f; 
 
     [Header("Capacity & Spawning")]
     public int baseMaxCap = 20;
@@ -31,7 +33,7 @@ public class DirectorSpawner2D : MonoBehaviour
     public Transform playerTransform;
     public Transform enemyParent;
 
-    [Header("Debug Info (Read Only)")]
+    [Header("Debug Info")]
     [SerializeField] private float _currentCredits;
     [SerializeField] private int _currentMaxCap;
     [SerializeField] private float _activeCreditsPerSec;
@@ -44,14 +46,49 @@ public class DirectorSpawner2D : MonoBehaviour
 
     private void OnEnable()
     {
-        // Listen to GameManager for level ups
         GameManager.OnLevelChanged += UpdateDifficultyStats;
+        StageTransitionManager.OnNextStageTriggered += HandleStageTransition;
     }
 
     private void OnDisable()
     {
-        // Cleanup subscription
         GameManager.OnLevelChanged -= UpdateDifficultyStats;
+        StageTransitionManager.OnNextStageTriggered -= HandleStageTransition;
+    }
+
+    private void HandleStageTransition()
+    {
+        StopAllCoroutines(); // Stops any pending SpawnRoutines
+        _pendingSpawnCount = 0;
+
+        // Return all current enemies to the pool
+        foreach (var enemy in _activeEnemies)
+        {
+            if (enemy == null) continue;
+            
+            BaseEnemy enemyScript = enemy.GetComponent<BaseEnemy>();
+            if (enemyScript != null && enemyScript.sourcePrefab != null && EnemyPoolManager.Instance != null)
+            {
+                EnemyPoolManager.Instance.Return(enemyScript.sourcePrefab, enemy);
+            }
+            else
+            {
+                enemy.SetActive(false);
+            }
+        }
+        _activeEnemies.Clear();
+
+        // Clean up any orphaned loading prefabs that were interrupted mid-spawn
+        if (enemyParent != null)
+        {
+            foreach (Transform child in enemyParent)
+            {
+                if (child != null && child.gameObject.activeInHierarchy && child.GetComponent<BaseEnemy>() == null)
+                {
+                    Destroy(child.gameObject);
+                }
+            }
+        }
     }
 
     private void Start()
@@ -59,10 +96,8 @@ public class DirectorSpawner2D : MonoBehaviour
         _gameStartTime = Time.time;
         _currentCredits = initialCredits;
         
-        // Default parent to this object if not assigned
         if (enemyParent == null) enemyParent = this.transform;
 
-        // Sync with GameManager's initial level
         int startLevel = (GameManager.Instance != null) ? GameManager.Instance.CurrentLevel : 1;
         UpdateDifficultyStats(startLevel);
 
@@ -72,52 +107,39 @@ public class DirectorSpawner2D : MonoBehaviour
     private void Update()
     {
         _currentCredits += _activeCreditsPerSec * Time.deltaTime;
-        
-        // CLEANUP: Removes destroyed objects OR objects simply disabled (returned to pool)
         _activeEnemies.RemoveAll(e => e == null || !e.activeInHierarchy);
     }
 
-    /// <summary>
-    /// Triggered by GameManager.OnLevelChanged or initial Start.
-    /// Scales both income and cap exponentially.
-    /// </summary>
     public void UpdateDifficultyStats(int level)
     {
-        // Income keeps growing (so the Director can buy better/more expensive enemies)
         _activeCreditsPerSec = baseCreditsPerSecond * Mathf.Pow(incomeGrowthMultiplier, level - 1);
-        
-        // Capacity grows exponentially but HITS A WALL at hardMaxCap
         int calculatedCap = Mathf.RoundToInt(baseMaxCap * Mathf.Pow(capGrowthMultiplier, level - 1));
         _currentMaxCap = Mathf.Min(calculatedCap, hardMaxCap);
-        
-        Debug.Log($"Director Updated | Level: {level} | Credits/Sec: {_activeCreditsPerSec:F2} | Cap: {_currentMaxCap}/{hardMaxCap}");
     }
 
     private void ExecuteSpawnCycle()
     {
-        // Only spawn if we meet the "Wave" budget
         if (_currentCredits < spawnThreshold) return;
 
-        // Respect cap by including enemies that are still "loading"
         int availableSlots = _currentMaxCap - (_activeEnemies.Count + _pendingSpawnCount);
         if (availableSlots <= 0) return;
 
-        // Ask the Sorter for a manifest of enemies we can afford
         var manifest = _sorter.CreateManifest(database, _currentCredits, availableSlots);
 
         foreach (var entry in manifest)
         {
             _currentCredits -= entry.cost;
-            _pendingSpawnCount++; // Reserve the slot immediately
+            _pendingSpawnCount++; 
             StartCoroutine(SpawnRoutine(entry));
         }
     }
 
     private IEnumerator SpawnRoutine(EnemySpawnerDatabase.EnemyEntry entry)
     {
-        Vector3 spawnPos = CalculateSmartPosition(entry.preference);
+        // Check for surprise ambush
+        bool isAmbush = Random.value < ambushChance;
+        Vector3 spawnPos = CalculateSmartPosition(entry.preference, isAmbush);
 
-        // 1. Telegraph/Loading Effect
         if (loadingPrefab != null)
         {
             GameObject loader = Instantiate(loadingPrefab, spawnPos, Quaternion.identity, enemyParent);
@@ -125,18 +147,13 @@ public class DirectorSpawner2D : MonoBehaviour
             if (loader != null) Destroy(loader);
         }
 
-        // 2. Pull from Pool
         GameObject enemyObj = EnemyPoolManager.Instance.Get(entry.prefab, spawnPos, Quaternion.identity);
         enemyObj.transform.SetParent(enemyParent); 
 
-        // 3. Initialize the Enemy
         BaseEnemy enemyScript = enemyObj.GetComponent<BaseEnemy>();
         if (enemyScript != null)
         {
-            // Set the pool return reference
             enemyScript.sourcePrefab = entry.prefab; 
-            
-            // Set the level stats from GameManager
             int level = (GameManager.Instance != null) ? GameManager.Instance.CurrentLevel : 1;
             enemyScript.SetLevel(level); 
         }
@@ -145,13 +162,16 @@ public class DirectorSpawner2D : MonoBehaviour
         _pendingSpawnCount--;
     }
 
-    private Vector3 CalculateSmartPosition(EnemySpawnerDatabase.SpawnPreference pref)
+    private Vector3 CalculateSmartPosition(EnemySpawnerDatabase.SpawnPreference pref, bool forceAmbush)
     {
         if (playerTransform == null) return GetRandomPoint();
         
-        // Forced safety zone at the start of the game
         bool inGrace = (Time.time - _gameStartTime) < initialGracePeriod;
         if (inGrace) return GetPointFarFromPlayer();
+
+        // Handle forced ambush or OnPlayer preference
+        if (forceAmbush || pref == EnemySpawnerDatabase.SpawnPreference.OnPlayer)
+            return GetPointOnPlayer();
 
         switch (pref)
         {
@@ -159,9 +179,19 @@ public class DirectorSpawner2D : MonoBehaviour
                 return GetPointNearPlayer();
             case EnemySpawnerDatabase.SpawnPreference.FarFromPlayer: 
                 return GetPointFarFromPlayer();
+            case EnemySpawnerDatabase.SpawnPreference.Random:
             default: 
-                return Random.value < 0.3f ? GetPointNearPlayer() : GetRandomPoint();
+                float roll = Random.value;
+                if (roll < 0.1f) return GetPointOnPlayer(); // 10% random chance to drop on player
+                if (roll < 0.4f) return GetPointNearPlayer();
+                return GetRandomPoint();
         }
+    }
+
+    private Vector3 GetPointOnPlayer()
+    {
+        Vector2Int p = gridManager.GetGridPosition(playerTransform.position);
+        return GridToWorld(p.x, p.y);
     }
 
     private Vector3 GetPointNearPlayer()
@@ -189,7 +219,6 @@ public class DirectorSpawner2D : MonoBehaviour
     private Vector3 GridToWorld(int x, int y) 
     {
         Vector3 basePos = gridManager.GetWorldPosition(x, y);
-        // Only apply X/Y offset to center in cell; keep Z at 0
         return basePos + new Vector3(gridManager.cellSize * 0.5f, gridManager.cellSize * 0.5f, 0f);
     }
 }

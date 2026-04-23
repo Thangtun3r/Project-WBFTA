@@ -5,7 +5,6 @@ public class ItemDrop : MonoBehaviour
 {
     private string itemId;
     private PlayerInventory playerInventory;
-    private bool playerInRange = false;
     
     [SerializeField] private GameObject visualObject;
     [SerializeField] private GameObject shadowObject;
@@ -99,23 +98,7 @@ public class ItemDrop : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
-        {
-            playerInRange = true;
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player"))
-        {
-            playerInRange = false;
-        }
-    }
-
-    private void Update()
-    {
-        if (playerInRange && Input.GetKeyDown(KeyCode.E) && playerInventory != null)
+        if (collision.CompareTag("Player") && playerInventory != null)
         {
             PickupItem();
         }
@@ -129,8 +112,7 @@ public class ItemDrop : MonoBehaviour
             visualObject.transform.DOKill();
         }
 
-        // Disable collision and range detection
-        playerInRange = false;
+        // Disable collision
         Collider2D collider = GetComponent<Collider2D>();
         if (collider != null)
         {

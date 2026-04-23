@@ -12,6 +12,20 @@ public class VideoPortalManager : MonoBehaviour
     public GridManager gridManager;
     public Transform playerTransform;
 
+    [Header("Spawn Settings")]
+    [Tooltip("Minimum distance in grid units from any grid edge.")]
+    public int edgeDeadzone = 2;
+
+    private void OnEnable()
+    {
+        StageTransitionManager.OnNextStageTriggered += HandleStageTransition;
+    }
+
+    private void OnDisable()
+    {
+        StageTransitionManager.OnNextStageTriggered -= HandleStageTransition;
+    }
+
     void Start()
     {
         // Auto-assign if missing
@@ -19,6 +33,28 @@ public class VideoPortalManager : MonoBehaviour
             gridManager = Object.FindFirstObjectByType<GridManager>();
 
         SpawnPortal();
+    }
+
+    private void HandleStageTransition()
+    {
+        ClearPortals();
+        SpawnPortal();
+    }
+
+    [ContextMenu("Test Spawn Portal")]
+    private void TestSpawnPortal()
+    {
+        ClearPortals();
+        SpawnPortal();
+    }
+
+    private void ClearPortals()
+    {
+        Transform parent = portalParent != null ? portalParent : transform;
+        foreach (Transform child in parent)
+        {
+            Destroy(child.gameObject);
+        }
     }
 
     public void SpawnPortal()
@@ -32,12 +68,23 @@ public class VideoPortalManager : MonoBehaviour
         int attempts = 0;
 
         // 2. Search for a spot far enough away
+        int minX = Mathf.Clamp(edgeDeadzone, 0, gridManager.width - 1);
+        int maxX = Mathf.Clamp(gridManager.width - edgeDeadzone, 0, gridManager.width);
+        int minY = Mathf.Clamp(edgeDeadzone, 0, gridManager.height - 1);
+        int maxY = Mathf.Clamp(gridManager.height - edgeDeadzone, 0, gridManager.height);
+
+        if (minX >= maxX || minY >= maxY)
+        {
+            Debug.LogWarning("VideoPortalManager: edgeDeadzone is too large for the current grid size.");
+            return;
+        }
+
         while (!validSpotFound && attempts < 100)
         {
             attempts++;
             
-            int x = Random.Range(0, gridManager.width);
-            int y = Random.Range(0, gridManager.height);
+            int x = Random.Range(minX, maxX);
+            int y = Random.Range(minY, maxY);
             spawnCell = new Vector2Int(x, y);
 
             // Calculate distance in grid units

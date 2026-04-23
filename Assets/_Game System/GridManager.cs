@@ -9,6 +9,10 @@ public class GridManager : MonoBehaviour
     public Color defaultColor = Color.cyan;
     public Color activeColor = Color.red;
 
+    [Header("Grid Bounds")]
+    [SerializeField] private bool useGridBounds = false;
+    [SerializeField] private GameObject gridBoundsObject;
+
     [Header("References")]
     public Transform playerTransform;
 
@@ -19,6 +23,15 @@ public class GridManager : MonoBehaviour
     {
         if (!drawGizmos)
             return;
+
+        // Update grid dimensions from bounds object if enabled
+        if (useGridBounds && gridBoundsObject != null)
+        {
+            Vector3 boundsScale = gridBoundsObject.transform.localScale;
+            width = Mathf.Max(1, Mathf.RoundToInt(boundsScale.x / cellSize));
+            height = Mathf.Max(1, Mathf.RoundToInt(boundsScale.y / cellSize));
+        }
+
         // Fallback: Try to find player if reference is null (useful for Editor testing)
         if (playerTransform == null)
         {
@@ -62,5 +75,16 @@ public class GridManager : MonoBehaviour
     public Vector3 GetWorldPosition(int x, int y)
     {
         return new Vector3(x, y) * cellSize + transform.position;
+    }
+
+    private void Update()
+    {
+        // Update grid dimensions at runtime if bounds object is assigned and toggle is on
+        if (useGridBounds && gridBoundsObject != null)
+        {
+            Vector3 boundsScale = gridBoundsObject.transform.localScale;
+            width = Mathf.Max(1, Mathf.RoundToInt(boundsScale.x / cellSize));
+            height = Mathf.Max(1, Mathf.RoundToInt(boundsScale.y / cellSize));
+        }
     }
 }

@@ -68,7 +68,11 @@ namespace _Scripts.Enemy
             ResetStats();
             if (_collider != null) _collider.enabled = true;
             if (_visuals != null) _visuals.ShowVisual();
-            // Optional: Reset FSM to Idle if needed
+            // Reset FSM to Patrol when pulled from the pool
+            if (_fsm != null)
+            {
+                _fsm.QueueNextState(EnemyFSM.EnemyState.Patrol);
+            }
         }
 
         public void SetLevel(int level)

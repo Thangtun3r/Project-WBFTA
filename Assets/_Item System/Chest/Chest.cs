@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using DG.Tweening;
+using TMPro;
 
 public class Chest : MonoBehaviour
 {
@@ -9,34 +10,133 @@ public class Chest : MonoBehaviour
     public static event Action<Transform> OnChestClick;
 
     [SerializeField] private GameObject ChestVisual;
-    [SerializeField] private GameObject itemDropPrefab;
     
     [Header("Settings")]
     [SerializeField] private float clickPunchStrength = 10f;
+    [SerializeField] private int moneyRequired = 0;
+    [SerializeField] private GameObject chestInfoGameObject;
+    [SerializeField] private TextMeshProUGUI moneyText;
     
     private Vector3 originalScale;
+    private Vector3 originalPosition;
     private bool isPlayerInside = false;
+    private bool isOpened = false;
 
     private void Awake()
     {
-        // Store the default scale set in the Inspector
         if (ChestVisual != null)
+        {
             originalScale = ChestVisual.transform.localScale;
+            originalPosition = ChestVisual.transform.localPosition;
+        }
+    }
+
+    private void OnEnable()
+    {
+        ResetChest();
+    }
+
+    private void ResetChest()
+    {
+        if (ChestVisual != null)
+        {
+            ChestVisual.transform.DOKill();
+            
+            SpriteRenderer spriteRenderer = ChestVisual.GetComponent<SpriteRenderer>();
+            if (spriteRenderer != null)
+            {
+                spriteRenderer.color = Color.white;
+            }
+
+            ChestVisual.transform.localScale = originalScale;
+            ChestVisual.transform.localPosition = originalPosition;
+            ChestVisual.transform.rotation = Quaternion.identity;
+        }
+
+        if (chestInfoGameObject != null)
+        {
+            chestInfoGameObject.SetActive(true);
+        }
+
+        if (moneyText != null)
+        {
+            moneyText.text = moneyRequired.ToString() + "$";
+        }
+
+        isPlayerInside = false;
+        isOpened = false;
     }
 
     private void Update()
     {
-        if (isPlayerInside && Input.GetMouseButtonDown(0))
+        if (isPlayerInside && !isOpened && Input.GetMouseButtonDown(0))
         {
-            PlayClickAnimation();
-            SpawnItemDrop();
-            OnChestClick?.Invoke(transform);
+            TryOpenChest();
+        }
+    }
+
+    private void TryOpenChest()
+    {
+        if (EconomyManager.Instance.CurrentMoney < moneyRequired)
+        {
+            PlayInsufficientFundsAnimation();
+            return;
+        }
+
+        if (!EconomyManager.Instance.TryRemoveMoney(moneyRequired))
+        {
+            PlayInsufficientFundsAnimation();
+            return;
+        }
+
+        isOpened = true;
+        PlayClickAnimation();
+        TintVisualGray();
+        DisableChestInfo();
+        OnChestClick?.Invoke(transform);
+    }
+
+    private void PlayInsufficientFundsAnimation()
+    {
+        var target = ChestVisual.transform;
+        
+        target.DOKill(true);
+        target.localPosition = originalPosition;
+
+        SpriteRenderer spriteRenderer = ChestVisual.GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null)
+        {
+            DOTween.Sequence()
+                .Append(spriteRenderer.DOColor(Color.red, 0.1f))
+                .Append(spriteRenderer.DOColor(Color.white, 0.1f));
+        }
+
+        // Changed OnTerminate to OnKill
+        target.DOShakePosition(0.4f, strength: new Vector3(0.3f, 0f, 0f), vibrato: 10, randomness: 0.5f)
+            .OnComplete(() => target.localPosition = originalPosition)
+            .OnKill(() => target.localPosition = originalPosition);
+    }
+
+    private void TintVisualGray()
+    {
+        SpriteRenderer spriteRenderer = ChestVisual.GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.color = new Color(0x6A / 255f, 0x6A / 255f, 0x6A / 255f, 1f);
+        }
+    }
+
+    private void DisableChestInfo()
+    {
+        if (chestInfoGameObject != null)
+        {
+            chestInfoGameObject.SetActive(false);
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.CompareTag("Player") && !isOpened)
         {
             isPlayerInside = true;
             PlayHoverAnimation();
@@ -58,53 +158,17 @@ public class Chest : MonoBehaviour
     {
         var target = ChestVisual.transform;
         target.DOKill();
-
-        // 1.1x the original scale
         target.DOScale(originalScale * 1.1f, 0.25f).SetEase(Ease.OutBack);
     }
 
     private void PlayClickAnimation()
     {
         var target = ChestVisual.transform;
-        
-        // Kill previous and snap to current hover rotation for consistency
         target.DOKill(true);
-
-        // DOPunchRotation is consistent/non-random compared to Shake
-        // It will "kick" the rotation and wobble back to the start point
-        target.DOPunchRotation(new Vector3(0, 0, clickPunchStrength), 0.2f, 10, 1f);
-    }
-
-    private void SpawnItemDrop()
-    {
-        if (itemDropPrefab == null)
-        {
-            Debug.LogWarning("Chest: ItemDropPrefab is not assigned.");
-            return;
-        }
-
-        string randomItemId = ItemDatabaseFactory.Instance.GetRandomItemId();
-        if (randomItemId == null)
-        {
-            Debug.LogWarning("Chest: Could not get a random item from the database.");
-            return;
-        }
-
-        GameObject spawnedDrop = Instantiate(itemDropPrefab, transform.position, Quaternion.identity);
-        ItemDrop itemDrop = spawnedDrop.GetComponent<ItemDrop>();
         
-        if (itemDrop != null)
-        {
-            itemDrop.Initialize(randomItemId);
-            
-            // Animate the item in an arc upward and outward
-            Vector3 landPosition = transform.position + new Vector3(UnityEngine.Random.Range(-2f, 2f), 0f, 0f);
-            spawnedDrop.transform.DOJump(landPosition, jumpPower: 2f, numJumps: 1, duration: 0.6f).SetEase(Ease.OutQuad);
-        }
-        else
-        {
-            Debug.LogWarning("Chest: Spawned prefab does not have an ItemDrop component.");
-        }
+        // Changed OnTerminate to OnKill
+        target.DOPunchRotation(new Vector3(0, 0, clickPunchStrength), 0.2f, 10, 1f)
+              .OnKill(() => target.rotation = Quaternion.identity);
     }
 
     private void ResetToIdle()
@@ -112,8 +176,8 @@ public class Chest : MonoBehaviour
         var target = ChestVisual.transform;
         target.DOKill();
 
-        // Return to the exact original scale and zero rotation
         target.DOScale(originalScale, 0.2f).SetEase(Ease.OutSine);
         target.DORotate(Vector3.zero, 0.2f).SetEase(Ease.OutSine);
+        target.DOLocalMove(originalPosition, 0.2f).SetEase(Ease.OutSine);
     }
 }

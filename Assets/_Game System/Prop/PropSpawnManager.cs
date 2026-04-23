@@ -1,14 +1,15 @@
+
 using UnityEngine;
 using System.Collections.Generic;
 
-public class ChestManager : MonoBehaviour
+public class PropSpawnManager : MonoBehaviour
 {
-    [Header("Settings")]
-    public GameObject chestPrefab;
-    public int chestCount = 8;
-    [Tooltip("Minimum distance in grid cells between chests")]
-    public int minDistance = 3; 
-    public Transform chestParent;
+    [Header("Spawn Settings")]
+    public GameObject[] propPrefabs;
+    public int propCount = 5;
+    [Tooltip("Minimum distance in grid cells between props")]
+    public int minDistance = 2;
+    public Transform propParent;
 
     [Header("References")]
     public GridManager gridManager;
@@ -18,11 +19,13 @@ public class ChestManager : MonoBehaviour
     private void OnEnable()
     {
         StageTransitionManager.OnNextStageTriggered += HandleStageTransition;
+        GameManager.OnLevelChanged += UpdatePropLevels;
     }
 
     private void OnDisable()
     {
         StageTransitionManager.OnNextStageTriggered -= HandleStageTransition;
+        GameManager.OnLevelChanged -= UpdatePropLevels;
     }
 
     void Start()
@@ -30,34 +33,47 @@ public class ChestManager : MonoBehaviour
         if (gridManager == null)
             gridManager = Object.FindFirstObjectByType<GridManager>();
 
-        SpawnChests();
+        SpawnProps();
     }
 
     private void HandleStageTransition()
     {
-        ClearChests();
-        SpawnChests();
+        ClearProps();
+        SpawnProps();
     }
 
-    private void ClearChests()
+    private void UpdatePropLevels(int level)
+    {
+        Transform parent = propParent != null ? propParent : transform;
+        foreach (Transform child in parent)
+        {
+            PropBase prop = child.GetComponent<PropBase>();
+            if (prop != null)
+            {
+                prop.SetLevel(level);
+            }
+        }
+    }
+
+    private void ClearProps()
     {
         _occupiedCells.Clear();
-        Transform parent = chestParent != null ? chestParent : transform;
+        Transform parent = propParent != null ? propParent : transform;
         foreach (Transform child in parent)
         {
             Destroy(child.gameObject);
         }
     }
 
-    public void SpawnChests()
+    public void SpawnProps()
     {
-        if (chestPrefab == null || gridManager == null) return;
+        if (propPrefabs == null || propPrefabs.Length == 0 || gridManager == null) return;
 
         int spawned = 0;
         int attempts = 0;
-        int maxAttempts = 200; // Increased safety break for distance logic
+        int maxAttempts = 200;
 
-        while (spawned < chestCount && attempts < maxAttempts)
+        while (spawned < propCount && attempts < maxAttempts)
         {
             attempts++;
 
@@ -65,12 +81,19 @@ public class ChestManager : MonoBehaviour
             int randomY = Random.Range(0, gridManager.height);
             Vector2Int potentialCell = new Vector2Int(randomX, randomY);
 
-            // NEW: Check if this cell is far enough from all existing chests
             if (IsCellValid(potentialCell))
             {
                 Vector3 worldPos = GetCenteredWorldPos(randomX, randomY);
-                Instantiate(chestPrefab, worldPos, Quaternion.identity, chestParent != null ? chestParent : transform);
-                
+                int randomPrefabIndex = Random.Range(0, propPrefabs.Length);
+                GameObject spawnedProp = Instantiate(propPrefabs[randomPrefabIndex], worldPos, Quaternion.identity, propParent != null ? propParent : transform);
+
+                PropBase propScript = spawnedProp.GetComponent<PropBase>();
+                if (propScript != null)
+                {
+                    int currentLevel = GameManager.Instance?.CurrentLevel ?? 1;
+                    propScript.SetLevel(currentLevel);
+                }
+
                 _occupiedCells.Add(potentialCell);
                 spawned++;
             }
@@ -81,7 +104,6 @@ public class ChestManager : MonoBehaviour
     {
         foreach (var occupied in _occupiedCells)
         {
-            // Manhattan distance check (cheaper) or use Vector2Int.Distance
             float dist = Vector2Int.Distance(cell, occupied);
             if (dist < minDistance)
             {

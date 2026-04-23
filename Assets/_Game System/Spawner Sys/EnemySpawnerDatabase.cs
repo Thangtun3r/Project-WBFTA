@@ -7,8 +7,13 @@ public class EnemySpawnerDatabase : ScriptableObject
 {
     public enum EnemyTier { Fodder, Elite, MiniBoss, Boss }
     
-    // NEW: Proximity Preference
-    public enum SpawnPreference { NearPlayer, FarFromPlayer, Random }
+    public enum SpawnPreference 
+    { 
+        NearPlayer, 
+        FarFromPlayer, 
+        Random, 
+        OnPlayer // Forces spawn exactly at the player's grid position
+    }
 
     [System.Serializable]
     public class EnemyEntry
@@ -16,20 +21,50 @@ public class EnemySpawnerDatabase : ScriptableObject
         public string enemyName;
         public GameObject prefab;
         public float cost;
-        [Range(0, 100)] public float weight = 10f; // NEW: Higher = more common
+        [Range(0, 100)] public float weight = 10f;
         public EnemyTier tier;
         public SpawnPreference preference;
     }
 
     public List<EnemyEntry> allEnemies = new List<EnemyEntry>();
 
-    public EnemyEntry GetCheapest() => allEnemies.OrderBy(e => e.cost).FirstOrDefault();
-    
-    public List<EnemyEntry> GetPotentialUpgrades(float currentCost) => 
-        allEnemies.Where(e => e.cost > currentCost).OrderBy(e => e.cost).ToList();
+    private EnemyEntry _cheapestCache;
 
+    public EnemyEntry GetCheapest()
+    {
+        if (allEnemies == null || allEnemies.Count == 0) return null;
+        
+        if (_cheapestCache == null)
+        {
+            _cheapestCache = allEnemies.OrderBy(e => e.cost).FirstOrDefault();
+        }
+        return _cheapestCache;
+    }
+    
+    public List<EnemyEntry> GetPotentialUpgrades(float currentCost)
+    {
+        return allEnemies
+            .Where(e => e.cost > currentCost)
+            .OrderBy(e => e.cost)
+            .ToList();
+    }
+
+    [ContextMenu("Sort Database")]
     public void SortDatabase()
     {
-        allEnemies = allEnemies.OrderBy(e => e.tier).ThenBy(e => e.cost).ToList();
+        if (allEnemies == null) return;
+
+        allEnemies = allEnemies
+            .OrderBy(e => e.tier)
+            .ThenBy(e => e.cost)
+            .ThenBy(e => e.enemyName)
+            .ToList();
+        
+        _cheapestCache = null;
+    }
+
+    private void OnValidate()
+    {
+        _cheapestCache = null;
     }
 }

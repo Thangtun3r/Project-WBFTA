@@ -100,6 +100,10 @@ Assets/_Game System/
  PlayerStats.cs
  Projectile.cs
  ProjectilePool.cs
+ Prop/
+  GoldProp.cs
+  PropBase.cs
+  PropSpawnManager.cs
  Spawner Sys/
   EnemyEntryDrawer.cs
   EnemyPoolManager.cs
@@ -114,6 +118,7 @@ Assets/_Item System/Chest/
  ChestManager.cs
  HoverEffect.cs
  ItemDrop.cs
+ ItemDropSpawner.cs
 Assets/_Item System/Scripts/
  CurrentEnemyRegistry.cs
  DebugItemGiver.cs

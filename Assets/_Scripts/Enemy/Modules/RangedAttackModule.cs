@@ -42,6 +42,16 @@ namespace _Scripts.Enemy.Modules
             }
         }
 
+        private void OnDisable()
+        {
+            if (_attackRoutine != null)
+            {
+                StopCoroutine(_attackRoutine);
+                _attackRoutine = null;
+            }
+            ResetVisuals();
+        }
+
         private IEnumerator AttackLoop()
         {
             while (true)
