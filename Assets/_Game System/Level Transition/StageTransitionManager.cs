@@ -10,6 +10,12 @@ public class StageTransitionManager : MonoBehaviour
     [Header("References")]
     [SerializeField] private Image transitionOverlay; 
     [SerializeField] private SpriteRenderer targetSprite; 
+    [SerializeField] private Transform playerTransform;
+    [SerializeField] private GridManager gridManager;
+
+    [Header("Spawn Settings")]
+    [Tooltip("Minimum number of grid cells away from the edge when respawning the player.")]
+    [SerializeField] private int playerSpawnDeadzone = 1;
 
     [Header("Timing Settings")]
     [SerializeField] private float fadeInSpeed = 0.5f;
@@ -37,7 +43,6 @@ public class StageTransitionManager : MonoBehaviour
         // If we are already fading, ignore any further input/triggers
         if (_isTransitioning) return;
 
-        OnNextStageTriggered?.Invoke();
         StartCoroutine(TransitionSequence());
     }
 
@@ -48,7 +53,12 @@ public class StageTransitionManager : MonoBehaviour
         // 1. FADE IN
         yield return StartCoroutine(FadeGuiAlpha(0, 1, fadeInSpeed));
 
+        // 1.5 SPAWN PLAYER WHILE SCREEN IS OPAQUE
+        SpawnPlayerRandomly();
+
         // --- MIDDLE CHANGE ---
+        OnNextStageTriggered?.Invoke();
+
         if (targetSprite != null)
         {
             int nextIndex;
@@ -69,6 +79,25 @@ public class StageTransitionManager : MonoBehaviour
         yield return StartCoroutine(FadeGuiAlpha(1, 0, fadeOutSpeed));
 
         _isTransitioning = false; // Unlock the method
+    }
+
+    private void SpawnPlayerRandomly()
+    {
+        if (playerTransform == null || gridManager == null) return;
+
+        int minX = Mathf.Clamp(playerSpawnDeadzone, 0, gridManager.width - 1);
+        int maxX = Mathf.Clamp(gridManager.width - playerSpawnDeadzone, 0, gridManager.width);
+        int minY = Mathf.Clamp(playerSpawnDeadzone, 0, gridManager.height - 1);
+        int maxY = Mathf.Clamp(gridManager.height - playerSpawnDeadzone, 0, gridManager.height);
+
+        if (minX >= maxX || minY >= maxY) return;
+
+        int randomX = UnityEngine.Random.Range(minX, maxX);
+        int randomY = UnityEngine.Random.Range(minY, maxY);
+
+        Vector3 worldPos = gridManager.GetWorldPosition(randomX, randomY);
+        float offset = gridManager.cellSize * 0.5f;
+        playerTransform.position = new Vector3(worldPos.x + offset, worldPos.y + offset, playerTransform.position.z);
     }
 
     private IEnumerator FadeGuiAlpha(float start, float end, float duration)

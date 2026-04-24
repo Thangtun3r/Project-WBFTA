@@ -165,13 +165,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Spawner
   database: {fileID: 11400000, guid: b4818cbf2eb2bb3439a58b031b05f9e4, type: 2}
-  initialCredits: 120
+  initialCredits: 40
   baseCreditsPerSecond: 2
   incomeGrowthMultiplier: 1.2
   spawnInterval: 2
   spawnThreshold: 10
-  ambushChance: 0.25
-  baseMaxCap: 40
+  ambushChance: 0.186
+  baseMaxCap: 30
   hardMaxCap: 150
   capGrowthMultiplier: 1.15
   initialGracePeriod: 5
@@ -9587,9 +9587,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1003ae9875e0022439abf353800a8f47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  timeFactor: 0.05
+  timeFactor: 0.25
   stageFactor: 1.15
-  levelUpInterval: 120
+  levelUpInterval: 60
 --- !u!114 &1421364084
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10539,6 +10539,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelTransitionManager
   transitionOverlay: {fileID: 482818268}
   targetSprite: {fileID: 1845066498}
+  playerTransform: {fileID: 0}
+  gridManager: {fileID: 0}
+  playerSpawnDeadzone: 1
   fadeInSpeed: 0.5
   holdDuration: 2
   fadeOutSpeed: 0.5

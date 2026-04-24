@@ -27,14 +27,11 @@ public class ChestManager : MonoBehaviour
     private void OnEnable()
     {
         StageTransitionManager.OnNextStageTriggered += HandleStageTransition;
-        // NEW: Subscribe to the Difficulty Brain
-        GameManager.OnDifficultyChanged += UpdateAllChestPrices;
     }
 
     private void OnDisable()
     {
         StageTransitionManager.OnNextStageTriggered -= HandleStageTransition;
-        GameManager.OnDifficultyChanged -= UpdateAllChestPrices;
     }
 
     void Start()
@@ -49,18 +46,6 @@ public class ChestManager : MonoBehaviour
     {
         ClearChests();
         SpawnChests();
-    }
-
-    private void UpdateAllChestPrices(float difficulty)
-    {
-        // This ensures prices tick up live if the player takes too long
-        foreach (var chest in _spawnedChests)
-        {
-            if (chest != null)
-            {
-                chest.UpdateScalingPrice(baseChestPrice, priceExponent, difficulty);
-            }
-        }
     }
 
     private void ClearChests()
@@ -106,7 +91,8 @@ public class ChestManager : MonoBehaviour
                 if (chest != null)
                 {
                     _spawnedChests.Add(chest);
-                    chest.UpdateScalingPrice(baseChestPrice, priceExponent, GameManager.Instance.DifficultyCoefficient);
+                    float difficulty = (GameManager.Instance != null) ? GameManager.Instance.DifficultyCoefficient : 1f;
+                    chest.UpdateScalingPrice(baseChestPrice, priceExponent, difficulty);
                 }
 
                 _occupiedCells.Add(potentialCell);

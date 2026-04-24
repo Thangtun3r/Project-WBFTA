@@ -36,6 +36,11 @@ public class VideoCharging : MonoBehaviour
     [SerializeField] private GameObject videoStopObject;
     [SerializeField] private Image chargeFillImage;
 
+    [Header("Spawner Reference")]
+    [SerializeField] private DirectorSpawner2D spawner;
+
+    private float _originalAmbushChance;
+
     private float _currentCharge;
     private bool _chargeComplete;
     private bool _isVideoStarted;
@@ -153,16 +158,23 @@ public class VideoCharging : MonoBehaviour
         _chargeComplete = true;
         Debug.Log("Charge Complete!");
 
-        // 1. Clean up animations
+        // 1. Wipe all active enemies
+        if (spawner != null)
+        {
+            spawner.WipeAllEnemies();
+            spawner.ambushChance = _originalAmbushChance;
+        }
+
+        // 2. Clean up animations
         HandlePulseAnimation(false);
 
-        // 2. Shrink the static radius visual to 0
+        // 3. Shrink the static radius visual to 0
         if (chargeRadiusVisualization != null)
         {
             chargeRadiusVisualization.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InBack);
         }
 
-        // 3. Toggle Objects
+        // 4. Toggle Objects
         if (chargingTab != null) chargingTab.SetActive(false);
         if (videoStopObject != null) videoStopObject.SetActive(false);
         if (videoDoneObject != null) videoDoneObject.SetActive(true);
@@ -196,6 +208,14 @@ public class VideoCharging : MonoBehaviour
         _visualizationTimer = 0f;
         _currentCharge = 0f;
         _chargeComplete = false;
+
+        // Disable 30% of current active enemies and boost ambush to 70%
+        if (spawner != null)
+        {
+            spawner.DisablePercentageOfEnemies(0.3f);
+            _originalAmbushChance = spawner.ambushChance;
+            spawner.ambushChance = 0.7f;
+        }
 
         if (videoGameObject != null) videoGameObject.SetActive(true);
         if (chargingTab != null) chargingTab.SetActive(true);

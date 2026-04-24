@@ -41,6 +41,7 @@ public class DirectorSpawner2D : MonoBehaviour
     [SerializeField] private List<GameObject> _activeEnemies = new List<GameObject>();
 
     private float _gameStartTime;
+    private bool _ambushUsedThisCycle = false;
 
     private void Awake() => _sorter = new SpawnSorter();
 
@@ -124,6 +125,7 @@ public class DirectorSpawner2D : MonoBehaviour
         int availableSlots = _currentMaxCap - (_activeEnemies.Count + _pendingSpawnCount);
         if (availableSlots <= 0) return;
 
+        _ambushUsedThisCycle = false; // Reset ambush flag for this cycle
         var manifest = _sorter.CreateManifest(database, _currentCredits, availableSlots);
 
         foreach (var entry in manifest)
@@ -136,8 +138,10 @@ public class DirectorSpawner2D : MonoBehaviour
 
     private IEnumerator SpawnRoutine(EnemySpawnerDatabase.EnemyEntry entry)
     {
-        // Check for surprise ambush
-        bool isAmbush = Random.value < ambushChance;
+        // Check for surprise ambush (only allow one per cycle)
+        bool isAmbush = !_ambushUsedThisCycle && Random.value < ambushChance;
+        if (isAmbush)
+            _ambushUsedThisCycle = true;
         Vector3 spawnPos = CalculateSmartPosition(entry.preference, isAmbush);
 
         if (loadingPrefab != null)
@@ -155,7 +159,8 @@ public class DirectorSpawner2D : MonoBehaviour
         {
             enemyScript.sourcePrefab = entry.prefab; 
             int level = (GameManager.Instance != null) ? GameManager.Instance.CurrentLevel : 1;
-            enemyScript.SetLevel(level); 
+            enemyScript.SetLevel(level);
+            Debug.Log($"Enemy spawned - Level: {level}");
         }
 
         _activeEnemies.Add(enemyObj);
@@ -220,5 +225,36 @@ public class DirectorSpawner2D : MonoBehaviour
     {
         Vector3 basePos = gridManager.GetWorldPosition(x, y);
         return basePos + new Vector3(gridManager.cellSize * 0.5f, gridManager.cellSize * 0.5f, 0f);
+    }
+
+    public void DisablePercentageOfEnemies(float percentage)
+    {
+        int enemiesToDisable = Mathf.RoundToInt(_activeEnemies.Count * percentage);
+        for (int i = 0; i < enemiesToDisable && i < _activeEnemies.Count; i++)
+        {
+            if (_activeEnemies[i] != null)
+            {
+                _activeEnemies[i].SetActive(false);
+            }
+        }
+    }
+
+    public void WipeAllEnemies()
+    {
+        foreach (var enemy in _activeEnemies)
+        {
+            if (enemy == null) continue;
+            
+            BaseEnemy enemyScript = enemy.GetComponent<BaseEnemy>();
+            if (enemyScript != null && enemyScript.sourcePrefab != null && EnemyPoolManager.Instance != null)
+            {
+                EnemyPoolManager.Instance.Return(enemyScript.sourcePrefab, enemy);
+            }
+            else
+            {
+                enemy.SetActive(false);
+            }
+        }
+        _activeEnemies.Clear();
     }
 }
