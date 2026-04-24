@@ -1109,7 +1109,7 @@ MonoBehaviour:
   playerTag: Player
   playerLayerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 512
   chargeRadiusVisualization: {fileID: 537726286062377798}
   visualizationGrowDuration: 1
   chargeLoopVisual: {fileID: 6173186841905069425}

@@ -22,13 +22,14 @@ namespace _Scripts.Enemy.Modules
         {
             get
             {
-                if (_player == null)
+                if (_player == null || !_player.gameObject.activeInHierarchy)
                 {
                     // Finds the player dynamically (fixes issues with pooled/spawned players)
                     var playerObj = GameObject.FindWithTag("Player");
                     if (playerObj != null) _player = playerObj.transform;
+                    else _player = null;
                 }
-                return _player != null;
+                return _player != null && _player.gameObject.activeInHierarchy;
             }
         }
         

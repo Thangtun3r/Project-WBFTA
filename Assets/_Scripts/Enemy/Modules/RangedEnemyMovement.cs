@@ -15,6 +15,11 @@ namespace _Scripts.Enemy.Modules
             config = GetComponentInParent<BaseEnemy>()?.Config;
         }
 
+        private void OnEnable()
+        {
+            _currentVelocity = Vector2.zero;
+        }
+
         public void MoveTowards(Vector2 targetPosition)
         {
             if (config == null) return;

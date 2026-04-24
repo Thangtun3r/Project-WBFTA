@@ -165,14 +165,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Spawner
   database: {fileID: 11400000, guid: b4818cbf2eb2bb3439a58b031b05f9e4, type: 2}
-  initialCredits: 80
-  baseCreditsPerSecond: 1
+  initialCredits: 120
+  baseCreditsPerSecond: 2
   incomeGrowthMultiplier: 1.2
   spawnInterval: 2
   spawnThreshold: 10
-  ambushChance: 0.1
-  baseMaxCap: 25
-  hardMaxCap: 100
+  ambushChance: 0.25
+  baseMaxCap: 40
+  hardMaxCap: 150
   capGrowthMultiplier: 1.15
   initialGracePeriod: 5
   loadingPrefab: {fileID: 6414776186518300151, guid: 58ba6645079fb4d4090780b1572d92a1, type: 3}
@@ -446,7 +446,7 @@ GameObject:
   - component: {fileID: 63283475}
   - component: {fileID: 63283471}
   - component: {fileID: 63283472}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1192,6 +1192,63 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!1001 &332606236
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1700265813868968938, guid: ec10217807454854cbfde3a8fa11e4a9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 7.967146
+      objectReference: {fileID: 0}
+    - target: {fileID: 1700265813868968938, guid: ec10217807454854cbfde3a8fa11e4a9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.57711244
+      objectReference: {fileID: 0}
+    - target: {fileID: 1700265813868968938, guid: ec10217807454854cbfde3a8fa11e4a9, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1700265813868968938, guid: ec10217807454854cbfde3a8fa11e4a9, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1700265813868968938, guid: ec10217807454854cbfde3a8fa11e4a9, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1700265813868968938, guid: ec10217807454854cbfde3a8fa11e4a9, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1700265813868968938, guid: ec10217807454854cbfde3a8fa11e4a9, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1700265813868968938, guid: ec10217807454854cbfde3a8fa11e4a9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1700265813868968938, guid: ec10217807454854cbfde3a8fa11e4a9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1700265813868968938, guid: ec10217807454854cbfde3a8fa11e4a9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5013201734635679052, guid: ec10217807454854cbfde3a8fa11e4a9, type: 3}
+      propertyPath: m_Name
+      value: Chest Item
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ec10217807454854cbfde3a8fa11e4a9, type: 3}
 --- !u!1001 &469358077
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1344,11 +1401,11 @@ MonoBehaviour:
   - tagName: Chest
     mapColor:
       serializedVersion: 2
-      rgba: 16771373
+      rgba: 2315249965
   - tagName: Video
     mapColor:
       serializedVersion: 2
-      rgba: 2970111
+      rgba: 2787987967
   fogColor:
     serializedVersion: 2
     rgba: 4278190080
@@ -1372,7 +1429,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &482818267
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2382,7 +2439,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 789415004}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: cursor
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3107,9 +3164,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03e482b15d27dfd4f8aa5f7fc7e53dbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ChestManager
+  baseChestPrice: 10
+  priceExponent: 1.25
   chestPrefab: {fileID: 5013201734635679052, guid: ec10217807454854cbfde3a8fa11e4a9, type: 3}
   chestCount: 10
   minDistance: 3
+  edgeDeadzone: 1
   chestParent: {fileID: 902499844}
   gridManager: {fileID: 2067817546}
 --- !u!1001 &911949101
@@ -3246,7 +3306,7 @@ GameObject:
   - component: {fileID: 974492388}
   - component: {fileID: 974492390}
   - component: {fileID: 974492389}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Hit Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8170,7 +8230,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1007846587}
   - component: {fileID: 1007846588}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: cursor_visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9527,10 +9587,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1003ae9875e0022439abf353800a8f47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  baseDifficulty: 1
-  timeScalar: 0.05
-  stageMultiplier: 1.15
-  levelUpInterval: 60
+  timeFactor: 0.05
+  stageFactor: 1.15
+  levelUpInterval: 120
 --- !u!114 &1421364084
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10027,7 +10086,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1595315625}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Player System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10211,8 +10270,8 @@ Transform:
   m_GameObject: {fileID: 1659874489}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1808.42, y: -1024.3651, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -1803, y: -1027.1, z: 0}
+  m_LocalScale: {x: 0.75251, y: 0.66785264, z: 0.75251}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 295135719}
@@ -10646,7 +10705,7 @@ Transform:
   m_GameObject: {fileID: 2067817544}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1923, y: -1117.4, z: 1}
+  m_LocalPosition: {x: -1887.4, y: -1087.1, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10664,8 +10723,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17c29c82ad9ee3e4fb8951aa7bc73af4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GridManager
-  width: 87
-  height: 66
+  width: 66
+  height: 43
   cellSize: 2.9
   defaultColor: {r: 0, g: 1, b: 1, a: 1}
   activeColor: {r: 1, g: 0, b: 0, a: 1}
@@ -11132,11 +11191,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3526367780042481598, guid: f7a5fa5037516374fa7095d660fdb41b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1781.3427
+      value: -1790.03
       objectReference: {fileID: 0}
     - target: {fileID: 3526367780042481598, guid: f7a5fa5037516374fa7095d660fdb41b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1019.8847
+      value: -1028.83
       objectReference: {fileID: 0}
     - target: {fileID: 3526367780042481598, guid: f7a5fa5037516374fa7095d660fdb41b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -16106,11 +16165,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 952738740523826985, guid: dc8fe1119b118264691c5f9a5eca0c7e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1790.0026
+      value: -1784.55
       objectReference: {fileID: 0}
     - target: {fileID: 952738740523826985, guid: dc8fe1119b118264691c5f9a5eca0c7e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1030.7646
+      value: -1034.77
       objectReference: {fileID: 0}
     - target: {fileID: 952738740523826985, guid: dc8fe1119b118264691c5f9a5eca0c7e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -16524,3 +16583,4 @@ SceneRoots:
   - {fileID: 850277043}
   - {fileID: 126468983907518635}
   - {fileID: 2044306945}
+  - {fileID: 332606236}

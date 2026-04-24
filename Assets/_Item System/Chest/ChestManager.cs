@@ -3,26 +3,38 @@ using System.Collections.Generic;
 
 public class ChestManager : MonoBehaviour
 {
-    [Header("Settings")]
+    [Header("Scaling Settings (Spreadsheet)")]
+    [Tooltip("Base price for a chest at the start of the game.")]
+    [SerializeField] private float baseChestPrice = 10f; 
+    [Tooltip("How aggressively prices scale compared to difficulty.")]
+    [SerializeField] private float priceExponent = 1.25f; 
+
+    [Header("Grid Settings")]
     public GameObject chestPrefab;
     public int chestCount = 8;
     [Tooltip("Minimum distance in grid cells between chests")]
-    public int minDistance = 3; 
+    public int minDistance = 3;
+    [Tooltip("Minimum number of grid cells from any grid edge where chests can spawn.")]
+    public int edgeDeadzone = 1;
     public Transform chestParent;
 
     [Header("References")]
     public GridManager gridManager;
 
     private List<Vector2Int> _occupiedCells = new List<Vector2Int>();
+    private List<Chest> _spawnedChests = new List<Chest>(); // Track for dynamic price updates
 
     private void OnEnable()
     {
         StageTransitionManager.OnNextStageTriggered += HandleStageTransition;
+        // NEW: Subscribe to the Difficulty Brain
+        GameManager.OnDifficultyChanged += UpdateAllChestPrices;
     }
 
     private void OnDisable()
     {
         StageTransitionManager.OnNextStageTriggered -= HandleStageTransition;
+        GameManager.OnDifficultyChanged -= UpdateAllChestPrices;
     }
 
     void Start()
@@ -39,9 +51,23 @@ public class ChestManager : MonoBehaviour
         SpawnChests();
     }
 
+    private void UpdateAllChestPrices(float difficulty)
+    {
+        // This ensures prices tick up live if the player takes too long
+        foreach (var chest in _spawnedChests)
+        {
+            if (chest != null)
+            {
+                chest.UpdateScalingPrice(baseChestPrice, priceExponent, difficulty);
+            }
+        }
+    }
+
     private void ClearChests()
     {
         _occupiedCells.Clear();
+        _spawnedChests.Clear(); // Clear our tracking list
+
         Transform parent = chestParent != null ? chestParent : transform;
         foreach (Transform child in parent)
         {
@@ -49,28 +75,40 @@ public class ChestManager : MonoBehaviour
         }
     }
 
-    public void SpawnChests()
+    private void SpawnChests()
     {
-        if (chestPrefab == null || gridManager == null) return;
+        if (gridManager == null) return;
 
         int spawned = 0;
+        int minX = edgeDeadzone;
+        int maxX = gridManager.width - 1 - edgeDeadzone;
+        int minY = edgeDeadzone;
+        int maxY = gridManager.height - 1 - edgeDeadzone;
+
         int attempts = 0;
-        int maxAttempts = 200; // Increased safety break for distance logic
+        int maxAttempts = 200; 
 
         while (spawned < chestCount && attempts < maxAttempts)
         {
             attempts++;
 
-            int randomX = Random.Range(0, gridManager.width);
-            int randomY = Random.Range(0, gridManager.height);
+            int randomX = Random.Range(minX, maxX);
+            int randomY = Random.Range(minY, maxY);
             Vector2Int potentialCell = new Vector2Int(randomX, randomY);
 
-            // NEW: Check if this cell is far enough from all existing chests
             if (IsCellValid(potentialCell))
             {
                 Vector3 worldPos = GetCenteredWorldPos(randomX, randomY);
-                Instantiate(chestPrefab, worldPos, Quaternion.identity, chestParent != null ? chestParent : transform);
+                GameObject go = Instantiate(chestPrefab, worldPos, Quaternion.identity, chestParent != null ? chestParent : transform);
                 
+                // NEW: Initialize the chest with current scaling data
+                Chest chest = go.GetComponent<Chest>();
+                if (chest != null)
+                {
+                    _spawnedChests.Add(chest);
+                    chest.UpdateScalingPrice(baseChestPrice, priceExponent, GameManager.Instance.DifficultyCoefficient);
+                }
+
                 _occupiedCells.Add(potentialCell);
                 spawned++;
             }
@@ -81,7 +119,6 @@ public class ChestManager : MonoBehaviour
     {
         foreach (var occupied in _occupiedCells)
         {
-            // Manhattan distance check (cheaper) or use Vector2Int.Distance
             float dist = Vector2Int.Distance(cell, occupied);
             if (dist < minDistance)
             {
@@ -95,6 +132,6 @@ public class ChestManager : MonoBehaviour
     {
         Vector3 basePos = gridManager.GetWorldPosition(x, y);
         float offset = gridManager.cellSize * 0.5f;
-        return basePos + new Vector3(offset, offset, 0f);
+        return new Vector3(basePos.x + offset, basePos.y + offset, basePos.z);
     }
 }

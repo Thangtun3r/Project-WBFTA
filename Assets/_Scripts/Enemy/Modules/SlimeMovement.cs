@@ -33,7 +33,10 @@ namespace _Scripts.Enemy.Modules
         private void Awake()
         {
             config = GetComponentInParent<BaseEnemy>()?.Config;
-            
+        }
+
+        private void OnEnable()
+        {
             // Offset the time and slightly randomize freq/amp per enemy instance
             // so they never move in perfectly synchronized formation
             _timeOffset = Random.Range(0f, 100f);
@@ -42,6 +45,8 @@ namespace _Scripts.Enemy.Modules
 
             _isMovingPhase = true;
             _phaseTimer = Random.Range(moveDurationMin, moveDurationMax);
+            _lockedDirection = Vector2.zero;
+            _currentVelocity = Vector2.zero;
         }
 
         public void MoveTowards(Vector2 targetPosition)

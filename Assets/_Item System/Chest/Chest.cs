@@ -74,6 +74,14 @@ public class Chest : MonoBehaviour
             TryOpenChest();
         }
     }
+    public void UpdateScalingPrice(float basePrice, float exponent, float difficulty)
+    {
+        // Price = Base * (C ^ Exponent)
+        moneyRequired = Mathf.RoundToInt(basePrice * Mathf.Pow(difficulty, exponent));
+        
+        if (moneyText != null) 
+            moneyText.text = $"${moneyRequired}";
+    }
 
     private void TryOpenChest()
     {

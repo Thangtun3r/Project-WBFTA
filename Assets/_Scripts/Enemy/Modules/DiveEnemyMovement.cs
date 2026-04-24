@@ -55,6 +55,18 @@ namespace _Scripts.Enemy.Modules
             }
         }
 
+        private void OnEnable()
+        {
+            ChangeState(DiveState.Chasing);
+            _currentVelocity = Vector2.zero;
+            _diveTarget = Vector2.zero;
+            
+            if (visualRoot != null)
+            {
+                visualRoot.localPosition = Vector3.zero;
+            }
+        }
+
         private void ChangeState(DiveState newState)
         {
             if (visualRoot != null) visualRoot.DOKill();

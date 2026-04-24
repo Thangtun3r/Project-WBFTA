@@ -5077,7 +5077,7 @@ GameObject:
   - component: {fileID: 5350866785774286098}
   - component: {fileID: 437461593691479439}
   - component: {fileID: 3784190653150313854}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: 'Hit Particles '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10039,7 +10039,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 591094157
   m_SortingLayer: 2
-  m_SortingOrder: 3
+  m_SortingOrder: 4
   m_MaskInteraction: 0
   m_Sprite: {fileID: 1685466781249751904, guid: 358ad8d9114976c498b30105fabc6159, type: 3}
   m_Color: {r: 1, g: 0.5990566, b: 0.62977445, a: 1}
@@ -10130,9 +10130,9 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 591094157
+  m_SortingLayer: 2
+  m_SortingOrder: 4
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
   m_Color: {r: 1, g: 0.6556604, b: 0.6556604, a: 1}
@@ -10287,7 +10287,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 591094157
   m_SortingLayer: 2
-  m_SortingOrder: 2
+  m_SortingOrder: 4
   m_MaskInteraction: 0
   m_Sprite: {fileID: 8453890923445766294, guid: 8812c9def8b3a614f96f1ad4699fc7fa, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -10380,7 +10380,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 591094157
   m_SortingLayer: 2
-  m_SortingOrder: 3
+  m_SortingOrder: 4
   m_MaskInteraction: 0
   m_Sprite: {fileID: 8235649167535019888, guid: 81769f30b4a37a94e86189efcdb8870b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
@@ -10664,6 +10664,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ca28ff065f09c943ab3dc8848beba12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Enemy.Modules.EnemySensor
+  config: {fileID: 0}
+  _player: {fileID: 0}
+  _mainCamera: {fileID: 0}
   viewportBuffer: 0.1
 --- !u!1001 &5294360757556164233
 PrefabInstance:
@@ -10677,9 +10680,25 @@ PrefabInstance:
       propertyPath: m_PresetInfoIsWorld
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 94091021109197454, guid: 35967a18c9e464349bdfb90754bfd68c, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 830580884430728989, guid: 35967a18c9e464349bdfb90754bfd68c, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2037717733290970954, guid: 35967a18c9e464349bdfb90754bfd68c, type: 3}
       propertyPath: m_Name
       value: 'Health Bar '
+      objectReference: {fileID: 0}
+    - target: {fileID: 2037717733290970954, guid: 35967a18c9e464349bdfb90754bfd68c, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3730887493224864977, guid: 35967a18c9e464349bdfb90754bfd68c, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6674740045596294840, guid: 35967a18c9e464349bdfb90754bfd68c, type: 3}
       propertyPath: m_Pivot.x
@@ -10760,6 +10779,10 @@ PrefabInstance:
     - target: {fileID: 6674740045596294840, guid: 35967a18c9e464349bdfb90754bfd68c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7073916011649917827, guid: 35967a18c9e464349bdfb90754bfd68c, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
