@@ -173,7 +173,7 @@ MonoBehaviour:
   ambushChance: 0.148
   baseMaxCap: 45
   hardMaxCap: 150
-  capGrowthMultiplier: 1.15
+  capGrowthMultiplier: 1.1
   initialGracePeriod: 5
   loadingPrefab: {fileID: 6414776186518300151, guid: 58ba6645079fb4d4090780b1572d92a1, type: 3}
   loadingDuration: 1.2
@@ -9604,7 +9604,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   timeFactor: 0.25
   stageFactor: 1.15
-  levelUpInterval: 60
+  levelUpInterval: 120
 --- !u!114 &1421364084
 MonoBehaviour:
   m_ObjectHideFlags: 0
