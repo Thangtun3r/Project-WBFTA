@@ -165,13 +165,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Spawner
   database: {fileID: 11400000, guid: b4818cbf2eb2bb3439a58b031b05f9e4, type: 2}
-  initialCredits: 40
+  initialCredits: 80
   baseCreditsPerSecond: 2
   incomeGrowthMultiplier: 1.2
   spawnInterval: 2
   spawnThreshold: 10
   ambushChance: 0.186
-  baseMaxCap: 30
+  baseMaxCap: 45
   hardMaxCap: 150
   capGrowthMultiplier: 1.15
   initialGracePeriod: 5
@@ -3165,11 +3165,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ChestManager
   baseChestPrice: 10
-  priceExponent: 1.25
+  priceExponent: 1.7
   chestPrefab: {fileID: 5013201734635679052, guid: ec10217807454854cbfde3a8fa11e4a9, type: 3}
-  chestCount: 10
-  minDistance: 3
-  edgeDeadzone: 1
+  chestCount: 6
+  minDistance: 10
+  edgeDeadzone: 10
   chestParent: {fileID: 902499844}
   gridManager: {fileID: 2067817546}
 --- !u!1001 &911949101

@@ -58,9 +58,10 @@ public class Chest : MonoBehaviour
             chestInfoGameObject.SetActive(true);
         }
 
-        if (moneyText != null)
+        // Wait for UpdateScalingPrice to set the text
+        if (moneyText != null && moneyRequired > 0)
         {
-            moneyText.text = moneyRequired.ToString() + "$";
+            moneyText.text = "$" + moneyRequired.ToString();
         }
 
         isPlayerInside = false;

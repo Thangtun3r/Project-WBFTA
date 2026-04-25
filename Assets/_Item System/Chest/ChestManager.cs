@@ -51,18 +51,20 @@ public class ChestManager : MonoBehaviour
     private void ClearChests()
     {
         _occupiedCells.Clear();
-        _spawnedChests.Clear(); // Clear our tracking list
-
-        Transform parent = chestParent != null ? chestParent : transform;
-        foreach (Transform child in parent)
+        
+        // Instead of destroying, just disable them so we can reuse them
+        foreach (Chest chest in _spawnedChests)
         {
-            Destroy(child.gameObject);
+            if (chest != null)
+                chest.gameObject.SetActive(false);
         }
     }
 
     private void SpawnChests()
     {
         if (gridManager == null) return;
+
+        int targetSpawnCount = Mathf.Max(0, Random.Range(chestCount - 1, chestCount + 2));
 
         int spawned = 0;
         int minX = edgeDeadzone;
@@ -73,7 +75,7 @@ public class ChestManager : MonoBehaviour
         int attempts = 0;
         int maxAttempts = 200; 
 
-        while (spawned < chestCount && attempts < maxAttempts)
+        while (spawned < targetSpawnCount && attempts < maxAttempts)
         {
             attempts++;
 
@@ -84,14 +86,35 @@ public class ChestManager : MonoBehaviour
             if (IsCellValid(potentialCell))
             {
                 Vector3 worldPos = GetCenteredWorldPos(randomX, randomY);
-                GameObject go = Instantiate(chestPrefab, worldPos, Quaternion.identity, chestParent != null ? chestParent : transform);
+                Chest chest = null;
+
+                // Reuse existing chest if available
+                if (spawned < _spawnedChests.Count)
+                {
+                    chest = _spawnedChests[spawned];
+                    if (chest != null)
+                    {
+                        chest.transform.position = worldPos;
+                        chest.gameObject.SetActive(true);
+                    }
+                }
                 
-                // NEW: Initialize the chest with current scaling data
-                Chest chest = go.GetComponent<Chest>();
+                // If not enough chests in pool, create a new one
+                if (chest == null)
+                {
+                    GameObject go = Instantiate(chestPrefab, worldPos, Quaternion.identity, chestParent != null ? chestParent : transform);
+                    chest = go.GetComponent<Chest>();
+                    if (chest != null)
+                    {
+                        _spawnedChests.Add(chest);
+                    }
+                }
+                
                 if (chest != null)
                 {
-                    _spawnedChests.Add(chest);
-                    float difficulty = (GameManager.Instance != null) ? GameManager.Instance.DifficultyCoefficient : 1f;
+                    float difficulty = (GameManager.Instance != null && GameManager.Instance.DifficultyCoefficient > 0) 
+                        ? GameManager.Instance.DifficultyCoefficient 
+                        : 1f;
                     chest.UpdateScalingPrice(baseChestPrice, priceExponent, difficulty);
                 }
 

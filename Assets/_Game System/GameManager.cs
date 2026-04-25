@@ -32,6 +32,11 @@ public class GameManager : MonoBehaviour
         Instance = this;
     }
 
+    private void Start()
+    {
+        StartGame();
+    }
+
     private void Update()
     {
         if (IsGameActive)
