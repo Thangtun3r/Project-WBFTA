@@ -35,6 +35,12 @@ public class EconomyManager : MonoBehaviour
         Debug.Log($"Added {amount} money! Current money: {CurrentMoney}");
     }
 
+    public void ResetMoney()
+    {
+        CurrentMoney = 0;
+        OnMoneyChanged?.Invoke(CurrentMoney);
+        Debug.Log("Money reset to 0!");
+    }
     public void RemoveMoney(int amount)
     {
         if (amount <= 0)

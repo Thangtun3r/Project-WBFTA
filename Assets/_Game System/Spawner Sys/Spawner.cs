@@ -40,7 +40,7 @@ public class DirectorSpawner2D : MonoBehaviour
     [SerializeField] private int _pendingSpawnCount = 0;
     [SerializeField] private List<GameObject> _activeEnemies = new List<GameObject>();
 
-    private float _gameStartTime;
+    private float _graceStartTime;
     private bool _ambushUsedThisCycle = false;
 
     private void Awake() => _sorter = new SpawnSorter();
@@ -61,6 +61,7 @@ public class DirectorSpawner2D : MonoBehaviour
     {
         StopAllCoroutines(); // Stops any pending SpawnRoutines
         _pendingSpawnCount = 0;
+        _graceStartTime = Time.time; // Reset grace period on stage transition
 
         // Return all current enemies to the pool
         foreach (var enemy in _activeEnemies)
@@ -94,7 +95,7 @@ public class DirectorSpawner2D : MonoBehaviour
 
     private void Start()
     {
-        _gameStartTime = Time.time;
+        _graceStartTime = Time.time;
         _currentCredits = initialCredits;
         
         if (enemyParent == null) enemyParent = this.transform;
@@ -171,7 +172,7 @@ public class DirectorSpawner2D : MonoBehaviour
     {
         if (playerTransform == null) return GetRandomPoint();
         
-        bool inGrace = (Time.time - _gameStartTime) < initialGracePeriod;
+        bool inGrace = (Time.time - _graceStartTime) < initialGracePeriod;
         if (inGrace) return GetPointFarFromPlayer();
 
         // Handle forced ambush or OnPlayer preference

@@ -71,6 +71,7 @@ namespace _Scripts.Enemy
             // Reset FSM to Patrol when pulled from the pool
             if (_fsm != null)
             {
+                _fsm.enabled = true;
                 _fsm.QueueNextState(EnemyFSM.EnemyState.Patrol);
             }
         }
@@ -90,8 +91,24 @@ namespace _Scripts.Enemy
             if (currentHealth <= 0f) return;
             currentHealth -= damage;
             _visuals?.PlayHitEffects();
+            
+            if (_fsm != null && currentHealth > 0f)
+            {
+                _fsm.enabled = false;
+                CancelInvoke(nameof(EndHitStun));
+                Invoke(nameof(EndHitStun), 0.15f); // Freeze movement briefly when hit
+            }
+
             OnHealthChanged?.Invoke(currentHealth, maxHealth);
             if (currentHealth <= 0) OnDeath();
+        }
+
+        protected virtual void EndHitStun()
+        {
+            if (currentHealth > 0f && _fsm != null)
+            {
+                _fsm.enabled = true;
+            }
         }
 
         protected virtual void OnDeath()

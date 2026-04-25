@@ -572,6 +572,7 @@ MonoBehaviour:
   maxHealth: 80
   config: {fileID: 11400000, guid: 15add2e8c82731949862c43a703e04f2, type: 2}
   deathReturnDelay: 0.2
+  sourcePrefab: {fileID: 0}
 --- !u!114 &9142992029018296394
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -647,7 +648,7 @@ CircleCollider2D:
     m_Bits: 64
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 567
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2

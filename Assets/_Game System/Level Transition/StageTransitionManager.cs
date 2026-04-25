@@ -43,6 +43,9 @@ public class StageTransitionManager : MonoBehaviour
         // If we are already fading, ignore any further input/triggers
         if (_isTransitioning) return;
 
+        //reset money 
+        EconomyManager.Instance.ResetMoney();
+
         StartCoroutine(TransitionSequence());
     }
 
