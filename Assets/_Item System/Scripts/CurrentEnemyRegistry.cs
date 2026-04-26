@@ -5,8 +5,7 @@ using _Scripts.Enemy;
 public class CurrentEnemyRegistry : MonoBehaviour
 {
     public static CurrentEnemyRegistry Instance { get; private set; }
-    
-    // Using a HashSet makes additions/removals O(1)
+
     private readonly HashSet<BaseEnemy> _activeEnemies = new HashSet<BaseEnemy>();
     public IEnumerable<BaseEnemy> ActiveEnemies => _activeEnemies;
 

@@ -15,6 +15,17 @@ public class PlayerHealth : MonoBehaviour, IDamagable
 
     private float _lastDamageTime = -Mathf.Infinity;
 
+
+    void OnEnable()
+    {
+        HealthOrb.OnHealthOrbCollected += Heal;
+    }
+
+    void OnDisable()
+    {
+        HealthOrb.OnHealthOrbCollected -= Heal;
+    }
+
     private void Update()
     {
         // Check if enough time has passed since last damage to start healing

@@ -7,7 +7,7 @@ using System;
 public class GlobalEventManager : MonoBehaviour
 {
     public static GlobalEventManager Instance { get; private set; }
-    public event Action<IDamagable, float, bool> HandleOnHit;
+    public event Action<GameObject,IDamagable, float, bool> HandleOnHit;
 
     private void Awake()
     {
@@ -20,9 +20,9 @@ public class GlobalEventManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public void OnHit(IDamagable target, float damage, bool isCrit)
+    public void OnHit(GameObject attacker, IDamagable target, float damage, bool isCrit)
     {
-        HandleOnHit?.Invoke(target, damage, isCrit);
+        HandleOnHit?.Invoke(attacker,target, damage, isCrit);
     }
 
 

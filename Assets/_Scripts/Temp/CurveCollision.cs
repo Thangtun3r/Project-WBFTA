@@ -41,7 +41,7 @@ public class CurveDamageProcessor : MonoBehaviour
                 {
                     if (!lastHitTimes.ContainsKey(target) || Time.time >= lastHitTimes[target] + damageInterval)
                     {
-                        GlobalEventManager.Instance.OnHit(target, damagePerTick, false); 
+                        GlobalEventManager.Instance.OnHit(gameObject,target, damagePerTick, false); 
                         target.TakeDamage(damagePerTick);
                         lastHitTimes[target] = Time.time;
 

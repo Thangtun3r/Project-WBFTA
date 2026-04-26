@@ -69,7 +69,7 @@ public class PlayerAttack : MonoBehaviour
             }
 
             // Broadcast the interface to the registry
-            GlobalEventManager.Instance.OnHit(damagable, finalDamage, isCrit);
+            GlobalEventManager.Instance.OnHit(gameObject, damagable, finalDamage, isCrit);
         }
     }
         

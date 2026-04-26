@@ -113,17 +113,19 @@ Assets/_Game System/
  Video Charging/
   VideoCharging.cs
   VideoPortalManager.cs
-Assets/_Item System/Chest/
+Assets/_Item System/Scripts/Chest/
  Chest.cs
  ChestManager.cs
  HoverEffect.cs
  ItemDrop.cs
  ItemDropSpawner.cs
 Assets/_Item System/Scripts/
+ Collectible Objects/HealthOrb.cs
+ Collectible.cs
  CurrentEnemyRegistry.cs
- DebugItemGiver.cs
  GlobalEventManager.cs
  Interfaces/
+  ICollectible.cs
   IItemEffect.cs
   IItemLogic.cs
   IItemModifier.cs
@@ -133,12 +135,12 @@ Assets/_Item System/Scripts/
   CritDamageLogic.cs
   CritRateLogic.cs
   ItemLogicBase.cs
+ ItemCollectibleManager.cs
  ItemDatabaseFactory.cs
  ItemDefinition.cs
  ItemEffect/
   ChainDamageEffect.cs
   EffectContext.cs
- ItemGlobalEventBus.cs
  ItemModifier.cs
  ItemRuntime.cs
  ItemRuntimeVisual.cs
@@ -183,6 +185,7 @@ Assets/_Scripts/
   StateMachine.cs
  IDamagable.cs
  Player/
+  CollectibleCollector.cs
   Cursor.cs
   Movement.cs
   Player.cs

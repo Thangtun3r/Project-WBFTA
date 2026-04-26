@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using UnityEngine;
 
 public class ChainDamageLogic : ItemLogicBase
 {
@@ -19,7 +20,7 @@ public class ChainDamageLogic : ItemLogicBase
         GlobalEventManager.Instance.HandleOnHit += HandleHit;
     }
 
-    private void HandleHit(IDamagable target, float damage, bool isCrit)
+    private void HandleHit(GameObject attacker, IDamagable target, float damage, bool isCrit)
     {
         if (target == null || target.GetTransform() == null)
         {

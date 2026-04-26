@@ -42,6 +42,7 @@ public class DirectorSpawner2D : MonoBehaviour
 
     private float _graceStartTime;
     private bool _ambushUsedThisCycle = false;
+    private bool _isSpawning = false;
 
     private void Awake() => _sorter = new SpawnSorter();
 
@@ -121,6 +122,7 @@ public class DirectorSpawner2D : MonoBehaviour
 
     private void ExecuteSpawnCycle()
     {
+        if (_isSpawning) return; // Don't start a new spawn if one is already in progress
         if (_currentCredits < spawnThreshold) return;
 
         int availableSlots = _currentMaxCap - (_activeEnemies.Count + _pendingSpawnCount);
@@ -129,10 +131,13 @@ public class DirectorSpawner2D : MonoBehaviour
         _ambushUsedThisCycle = false; // Reset ambush flag for this cycle
         var manifest = _sorter.CreateManifest(database, _currentCredits, availableSlots);
 
-        foreach (var entry in manifest)
+        // Only spawn one enemy at a time
+        if (manifest.Count > 0)
         {
+            var entry = manifest[0];
             _currentCredits -= entry.cost;
-            _pendingSpawnCount++; 
+            _pendingSpawnCount++;
+            _isSpawning = true;
             StartCoroutine(SpawnRoutine(entry));
         }
     }
@@ -166,6 +171,7 @@ public class DirectorSpawner2D : MonoBehaviour
 
         _activeEnemies.Add(enemyObj);
         _pendingSpawnCount--;
+        _isSpawning = false; // Spawn complete, allow next spawn
     }
 
     private Vector3 CalculateSmartPosition(EnemySpawnerDatabase.SpawnPreference pref, bool forceAmbush)
