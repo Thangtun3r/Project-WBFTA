@@ -125,7 +125,6 @@ Assets/_Item System/Scripts/
  CurrentEnemyRegistry.cs
  GlobalEventManager.cs
  Interfaces/
-  ICollectible.cs
   IItemEffect.cs
   IItemLogic.cs
   IItemModifier.cs

@@ -1,7 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
 
-public class ItemDrop : MonoBehaviour
+public class ItemDrop : Collectible
 {
     private string itemId;
     private PlayerInventory playerInventory;
@@ -96,27 +96,12 @@ public class ItemDrop : MonoBehaviour
             .SetLoops(-1, LoopType.Yoyo);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player") && playerInventory != null)
-        {
-            PickupItem();
-        }
-    }
-
-    private void PickupItem()
+    public override void OnCollected()
     {
         // Kill floating animation
         if (visualObject != null)
         {
             visualObject.transform.DOKill();
-        }
-
-        // Disable collision
-        Collider2D collider = GetComponent<Collider2D>();
-        if (collider != null)
-        {
-            collider.enabled = false;
         }
 
         // Scale down to 0 and destroy
@@ -125,13 +110,19 @@ public class ItemDrop : MonoBehaviour
             visualObject.transform.DOScale(Vector3.zero, pickupDuration).SetEase(Ease.InQuad)
                 .OnComplete(() =>
                 {
-                    playerInventory.ProcessPickup(itemId);
+                    if (playerInventory != null)
+                    {
+                        playerInventory.ProcessPickup(itemId);
+                    }
                     Destroy(gameObject);
                 });
         }
         else
         {
-            playerInventory.ProcessPickup(itemId);
+            if (playerInventory != null)
+            {
+                playerInventory.ProcessPickup(itemId);
+            }
             Destroy(gameObject);
         }
     }

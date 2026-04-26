@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class HealthOrb : Collectible, ICollectible
+public class HealthOrb : Collectible
 {
     public float healAmount = 20f;
     public static event Action<float> OnHealthOrbCollected;
@@ -12,6 +12,9 @@ public class HealthOrb : Collectible, ICollectible
         // Add a debug log to verify it's working in the console
         Debug.Log("Health Orb collected!");
 
+        EconomyManager.Instance.AddMoney((int)healAmount); // Add currency to the player
+
+         // Trigger the healing effect on the player
         // Trigger the gameplay logic
         OnHealthOrbCollected?.Invoke(healAmount);
 
@@ -21,9 +24,5 @@ public class HealthOrb : Collectible, ICollectible
         gameObject.SetActive(false); 
     }
 
-    // You can keep this for compatibility with other systems using ICollectible
-    public void Collect(GameObject collector)
-    {
-        OnCollected();
-    }
+
 }
