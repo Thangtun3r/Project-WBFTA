@@ -3,8 +3,7 @@ using UnityEngine;
 
 public class HealthOrb : Collectible, IWorldObjectSpawner // Added the interface
 {
-    public float healAmount = 20f;
-    public static event Action<float> OnHealthOrbCollected;
+    public float healAmount;
 
     // This is where we "Pull the data out"
     public void OnSpawn(object data)
@@ -21,8 +20,7 @@ public class HealthOrb : Collectible, IWorldObjectSpawner // Added the interface
         PlayerHealth playerHealth = collector.GetComponent<PlayerHealth>();
         if (playerHealth != null)
         {
-            playerHealth.Heal(healAmount);
-            OnHealthOrbCollected?.Invoke(healAmount);
+            playerHealth.Heal(0f, healAmount);
         }
 
         // todo: maybe use object pooling for this later on

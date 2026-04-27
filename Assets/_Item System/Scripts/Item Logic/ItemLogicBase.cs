@@ -11,6 +11,11 @@ public abstract class ItemLogicBase : IItemLogic
         OnInitialize();
     }
 
+    public virtual void OnStackChanged(int amountChanged)
+    {
+        // Override in specific item logic scripts if stacking affects stats
+    }
+
     protected abstract void OnInitialize();
     public abstract void Dispose();
 }

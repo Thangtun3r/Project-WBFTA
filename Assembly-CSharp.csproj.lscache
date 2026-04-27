@@ -170,6 +170,7 @@ Assets/_Item System/Scripts/
   CritRateLogic.cs
   HealOrbOnKillLogic.cs
   ItemLogicBase.cs
+  SpeedBoostLogic.cs
  ItemDatabaseFactory.cs
  ItemDefinition.cs
  ItemDrop.cs

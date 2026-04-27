@@ -37,7 +37,7 @@ public class PlayerInventory : MonoBehaviour
     private void AddNewItem(ItemDefinition definition, IItemLogic logic)
     {
         ItemRuntime newItem = new ItemRuntime();
-        newItem.Initialize(definition, logic);
+        newItem.Initialize(definition, logic, this.gameObject);
         activeItems.Add(newItem);
         InventoryUpdated?.Invoke(newItem);
     }

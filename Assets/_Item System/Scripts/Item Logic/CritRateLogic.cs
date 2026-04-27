@@ -5,11 +5,35 @@ public class CritRateLogic : ItemLogicBase, ICritRateLogic
 
     public float AddCritRateBonus()
     {
-        // 'Owner' is inherited from ItemLogicBase
         int stackCount = Owner.StackSize;
         return critRateBonus + (stackCount - 1) * increasePerStack;
     }
 
-    protected override void OnInitialize() { /* Passive, no setup needed */ }
-    public override void Dispose() { /* Passive, no cleanup needed */ }
+    protected override void OnInitialize() 
+    {
+        var stats = Owner.OwnerObject.GetComponent<PlayerStatMachine>();
+        if (stats != null)
+        {
+            stats.AddCritRateModifier(critRateBonus);
+        }
+    }
+
+    public override void OnStackChanged(int amountChanged)
+    {
+        var stats = Owner.OwnerObject.GetComponent<PlayerStatMachine>();
+        if (stats != null)
+        {
+            // amountChanged preserves the sign (+1 or -1 typically)
+            stats.AddCritRateModifier(amountChanged * increasePerStack);
+        }
+    }
+
+    public override void Dispose() 
+    {
+        var stats = Owner.OwnerObject.GetComponent<PlayerStatMachine>();
+        if (stats != null)
+        {
+            stats.AddCritRateModifier(-AddCritRateBonus());
+        }
+    }
 }

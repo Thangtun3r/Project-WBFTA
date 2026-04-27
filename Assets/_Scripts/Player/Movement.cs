@@ -19,6 +19,7 @@ namespace _Scripts
         [Header("Settings")]
         [SerializeField] private MovementMode movementMode = MovementMode.Both;
         [SerializeField] private float moveSpeed = 5f;
+        [SerializeField] private float speedMultiplier = 1f;
         [SerializeField] private float dampTime = 0.1f;
         [SerializeField] private float edgeThreshold = 50f;
 
@@ -52,12 +53,17 @@ namespace _Scripts
             _moveAction?.Disable();
         }
 
+        public void AddSpeedMultiplier(float amount)
+        {
+            speedMultiplier += amount;
+        }
+
         private void Update()
         {
             Vector2 combinedInput = CalculateInput();
 
             // Apply movement to the targetObject instead of transform
-            Vector3 moveDirection = new Vector3(combinedInput.x, combinedInput.y, 0f) * moveSpeed;
+            Vector3 moveDirection = new Vector3(combinedInput.x, combinedInput.y, 0f) * (moveSpeed * speedMultiplier);
             
             targetObject.position = Vector3.SmoothDamp(
                 targetObject.position, 

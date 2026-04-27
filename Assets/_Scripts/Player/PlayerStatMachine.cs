@@ -96,42 +96,26 @@ public class PlayerStatMachine : MonoBehaviour
 
     public float GetCalculatedCritDamage()
     {
-        float totalCritDamage = baseCritDamage;
-
-        if (inventory != null)
-        {
-            foreach (var item in inventory.GetActiveItems())
-            {
-                if (item.Logic is ICritDamageLogic critMod)
-                {
-                    totalCritDamage += critMod.AddCritDamageBonus();
-                }
-            }
-        }
-
-        return totalCritDamage;
+        return baseCritDamage; 
     }
-
-    /// <summary>
-    /// Calculates the total crit rate by adding the base and all item bonuses
-    /// </summary>
+    
     public float GetCalculatedCritRate()
     {
-        float totalCrit = baseCritRate;
+        return Mathf.Clamp01(baseCritRate);
+    }
+    
+    // --- Modifier Methods called by Items ---
+    
+    public void AddCritRateModifier(float amount)
+    {
+        baseCritRate += amount;
+        RefreshInspectorStats(null);
+    }
 
-        // Ensure inventory exists to prevent errors on startup
-        if (inventory != null)
-        {
-            foreach (var item in inventory.GetActiveItems()) 
-            {
-                if (item.Logic is ICritRateLogic critMod)
-                {
-                    totalCrit += critMod.AddCritRateBonus(); 
-                }
-            }
-        }
-
-        return Mathf.Clamp01(totalCrit);
+    public void AddCritDamageModifier(float amount)
+    {
+        baseCritDamage += amount;
+        RefreshInspectorStats(null);
     }
 
 

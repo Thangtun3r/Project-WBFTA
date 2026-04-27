@@ -520,7 +520,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Movement
   targetObject: {fileID: 1357160421}
   movementMode: 0
-  moveSpeed: 7
+  moveSpeed: 5
+  speedMultiplier: 1
   dampTime: 0.5
   edgeThreshold: 120
 --- !u!114 &63283470
@@ -736,6 +737,9 @@ MonoBehaviour:
   - ItemID: HealOrb
     Definition: {fileID: 11400000, guid: 25c784688d99dd24ca91c32f31ceb0ee, type: 2}
     LogicClassName: HealOrbOnKillLogic
+  - ItemID: SpeedBoost
+    Definition: {fileID: 11400000, guid: a64c70192dd90cf4ab5fd29c205eb75e, type: 2}
+    LogicClassName: SpeedBoostLogic
 --- !u!114 &134792001
 MonoBehaviour:
   m_ObjectHideFlags: 0

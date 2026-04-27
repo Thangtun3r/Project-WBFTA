@@ -38,7 +38,6 @@ public class PlayerHealth : MonoBehaviour, IDamagable
         _currentHealth -= damage;
         _lastDamageTime = Time.time; // Reset the healing delay timer
         OnHealthChanged?.Invoke(_currentHealth, _maxHealth, false);
-        Debug.Log($"Player took {damage} damage! Current health: {_currentHealth}/{_maxHealth}");
 
         if (_currentHealth <= 0)
         {
@@ -51,20 +50,23 @@ public class PlayerHealth : MonoBehaviour, IDamagable
         return transform;
     }
 
-    public void Heal(float healAmount)
+    /// <summary>
+    /// Heals the player by a combination of raw amount and/or percentage of max health.
+    /// </summary>
+    /// <param name="rawAmount">Direct heal amount in HP. Default is 0.</param>
+    /// <param name="percentageAmount">Heal amount as a percentage of max health (0-100). Default is 0.</param>
+    public void Heal(float rawAmount = 0f, float percentageAmount = 0f)
     {
-        _currentHealth = Mathf.Min(_currentHealth + healAmount, _maxHealth);
+        float percentageHeal = _maxHealth * percentageAmount / 100f;
+        float totalHealAmount = rawAmount + percentageHeal;
+        _currentHealth = Mathf.Min(_currentHealth + totalHealAmount, _maxHealth);
         OnHealthChanged?.Invoke(_currentHealth, _maxHealth, true);
-    
     }
 
     private void ApplyPassiveHealing()
     {
         // Calculate time since damage (after the delay has passed)
         float timeSinceDamage = Time.time - _lastDamageTime - healingDelay;
-        
-        // Exponential healing multiplier: 1 + (timeSinceDamage ^ exponent)
-        // This makes healing accelerate faster the longer without damage
         float healingMultiplier = 1f + Mathf.Pow(timeSinceDamage, healingExponent);
         
         float healThisFrame = baseHealingRate * healingMultiplier * Time.deltaTime;
