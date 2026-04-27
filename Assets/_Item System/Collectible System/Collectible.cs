@@ -44,5 +44,5 @@ public abstract class Collectible : MonoBehaviour
         }
     }
 
-    public abstract void OnCollected();
+    public abstract void OnCollected(GameObject collector);
 }

@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class CollectibleCollector : MonoBehaviour
+public class PlayerCollectibleCollector : MonoBehaviour
 {
     public float pickupRadius = 8.57f;
     public float collectionRadius = 0.5f;
@@ -14,25 +14,25 @@ public class CollectibleCollector : MonoBehaviour
         // Optimized query: only checks items in the 9-cell neighborhood
         List<Collectible> nearbyItems = ItemCollectibleManager.Instance.GetNearbyItems(transform.position);
         
-        float pSq = pickupRadius * pickupRadius;
-        float cSq = collectionRadius * collectionRadius;
+        float pickupRadiusSquared = pickupRadius * pickupRadius;
+        float collectionRadiusSquared = collectionRadius * collectionRadius;
 
-        for (int i = 0; i < nearbyItems.Count; i++)
+        for (int itemIndex = 0; itemIndex < nearbyItems.Count; itemIndex++)
         {
-            Collectible item = nearbyItems[i];
-            float dSq = (item.transform.position - transform.position).sqrMagnitude;
+            Collectible item = nearbyItems[itemIndex];
+            float distanceSquared = (item.transform.position - transform.position).sqrMagnitude;
 
-            if (dSq < pSq)
+            if (distanceSquared < pickupRadiusSquared)
             {
-                // Magnetize towards collector
+                // Magnetize item towards collector
                 item.transform.position = Vector3.MoveTowards(item.transform.position, transform.position, moveSpeed * Time.deltaTime);
                 
-                // Crucial: Update grid position while moving so manager can still find it
+                // Update grid position while moving so the manager can still track it
                 item.UpdateGridStatus();
 
-                if (dSq < cSq)
+                if (distanceSquared < collectionRadiusSquared)
                 {
-                    item.OnCollected();
+                    item.OnCollected(gameObject);
                 }
             }
         }

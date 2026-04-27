@@ -36,14 +36,6 @@ public class ItemDrop : Collectible
     public void Initialize(string itemId)
     {
         this.itemId = itemId;
-        
-        // Find the player inventory in the scene
-        playerInventory = FindObjectOfType<PlayerInventory>();
-        
-        if (playerInventory == null)
-        {
-            Debug.LogWarning("ItemDrop: No PlayerInventory found in scene.");
-        }
 
         // Get item definition and set the sprite
         ItemDefinition definition = ItemDatabaseFactory.Instance.GetDefinition(itemId);
@@ -63,24 +55,6 @@ public class ItemDrop : Collectible
         {
             Debug.LogWarning($"ItemDrop: Could not find definition for item '{itemId}'.");
         }
-
-        // Animate shadow scale on landing
-        PlayLandingAnimation();
-    }
-
-    private void PlayLandingAnimation()
-    {
-        if (shadowObject != null)
-        {
-            SpriteRenderer shadowRenderer = shadowObject.GetComponent<SpriteRenderer>();
-            if (shadowRenderer != null)
-            {
-            
-            
-
-                //shadowRenderer.DOFade(1f, landingDuration).SetEase(Ease.OutBack);
-            }
-        }
     }
 
     private void PlayFloatingAnimation()
@@ -96,34 +70,21 @@ public class ItemDrop : Collectible
             .SetLoops(-1, LoopType.Yoyo);
     }
 
-    public override void OnCollected()
+    public override void OnCollected(GameObject collector)
     {
-        // Kill floating animation
-        if (visualObject != null)
+        PlayerInventory inventory = collector.GetComponent<PlayerInventory>();
+        if (inventory != null)
         {
-            visualObject.transform.DOKill();
-        }
-
-        // Scale down to 0 and destroy
-        if (visualObject != null)
-        {
-            visualObject.transform.DOScale(Vector3.zero, pickupDuration).SetEase(Ease.InQuad)
-                .OnComplete(() =>
-                {
-                    if (playerInventory != null)
-                    {
-                        playerInventory.ProcessPickup(itemId);
-                    }
-                    Destroy(gameObject);
-                });
+            inventory.ProcessPickup(itemId);
+            Destroy(gameObject);
+        
         }
         else
         {
-            if (playerInventory != null)
-            {
-                playerInventory.ProcessPickup(itemId);
-            }
-            Destroy(gameObject);
+            Debug.LogWarning("ItemDrop: Collector does not have a PlayerInventory component.");
         }
+
+
+
     }
 }
