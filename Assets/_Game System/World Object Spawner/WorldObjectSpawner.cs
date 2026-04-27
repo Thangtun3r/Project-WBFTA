@@ -27,20 +27,20 @@ public class WorldObjectSpawner : MonoBehaviour
         }
     }
 
-    public GameObject Spawn(string key, Vector3 position)
+    public GameObject Spawn(string key, Vector3 position, object data = null)
     {
         if (_lookup.TryGetValue(key, out GameObject prefab))
         {
             GameObject instance = Instantiate(prefab, position, Quaternion.identity);
             
-            // Apply pop-in animation
-            instance.transform.localScale = Vector3.zero;
-            instance.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutBack);
+    
+            if (instance.TryGetComponent<IWorldObjectSpawner>(out var spawnable))
+            {
+                spawnable.OnSpawn(data);
+            }
             
             return instance;
         }
-
-        Debug.LogWarning($"WorldObjectSpawner: Key '{key}' not found!");
         return null;
     }
 }

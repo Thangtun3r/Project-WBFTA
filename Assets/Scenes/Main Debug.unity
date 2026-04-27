@@ -9054,7 +9054,6 @@ MonoBehaviour:
   library:
   - key: HealOrb
     prefab: {fileID: 642326293139919925, guid: aa9693c500a06e74c850c596f407828f, type: 3}
-  spawnOffsetRange: 1.5
 --- !u!1 &1275952472
 GameObject:
   m_ObjectHideFlags: 0
