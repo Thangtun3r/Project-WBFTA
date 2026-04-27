@@ -85,67 +85,7 @@ Assets/TextMesh Pro/Examples & Extras/Scripts/
  VertexShakeB.cs
  VertexZoom.cs
  WarpTextExample.cs
-Assets/_Game System/
- EconomyManager.cs
- EnemyRewardManager.cs
- GameManager.cs
- GridManager.cs
- HealthbarDamp.cs
- HUDManager.cs
- Level Transition/StageTransitionManager.cs
- Map Sys/MapManager.cs
- MiniMap.cs
- ModifierManager.cs
- PlayerSO.cs
- PlayerStats.cs
- Projectile.cs
- ProjectilePool.cs
- Prop/
-  GoldProp.cs
-  PropBase.cs
-  PropSpawnManager.cs
- Spawner Sys/
-  EnemyEntryDrawer.cs
-  EnemyPoolManager.cs
-  EnemySpawnerDatabase.cs
-  Spawner.cs
-  SpawnSorter.cs
- Video Charging/
-  VideoCharging.cs
-  VideoPortalManager.cs
-Assets/_Item System/Collectible System/
- Collectible Objects/HealthOrb.cs
- Collectible.cs
- ItemCollectibleManager.cs
-Assets/_Item System/Scripts/Chest/
- Chest.cs
- ChestManager.cs
- HoverEffect.cs
- ItemDrop.cs
- ItemDropSpawner.cs
-Assets/_Item System/Scripts/
- CurrentEnemyRegistry.cs
- GlobalEventManager.cs
- Interfaces/
-  IItemEffect.cs
-  IItemLogic.cs
-  IItemModifier.cs
- InventoryVisualManager.cs
- Item Logic/
-  ChainDamageLogic.cs
-  CritDamageLogic.cs
-  CritRateLogic.cs
-  ItemLogicBase.cs
- ItemDatabaseFactory.cs
- ItemDefinition.cs
- ItemEffect/
-  ChainDamageEffect.cs
-  EffectContext.cs
- ItemModifier.cs
- ItemRuntime.cs
- ItemRuntimeVisual.cs
- PlayerInventory.cs
-Assets/_Scripts/Enemy/
+Assets/_Enemy/
  BaseEnemy.cs
  DefaultEnemy.cs
  Enemy FSM/
@@ -177,6 +117,68 @@ Assets/_Scripts/Enemy/
   SlimeMovement.cs
   SlimeTrail.cs
   SpinAttackModule.cs
+Assets/_Game System/
+ EconomyManager.cs
+ EnemyRewardManager.cs
+ GameManager.cs
+ GridManager.cs
+ HealthbarDamp.cs
+ HUDManager.cs
+ Level Transition/StageTransitionManager.cs
+ Map Sys/MapManager.cs
+ MiniMap.cs
+ ModifierManager.cs
+ PlayerSO.cs
+ PlayerStats.cs
+ Projectile.cs
+ ProjectilePool.cs
+ Prop/
+  GoldProp.cs
+  PropBase.cs
+  PropSpawnManager.cs
+ Spawner Sys/
+  EnemyEntryDrawer.cs
+  EnemyPoolManager.cs
+  EnemySpawnerDatabase.cs
+  Spawner.cs
+  SpawnSorter.cs
+ Video Charging/
+  VideoCharging.cs
+  VideoPortalManager.cs
+ WorldObjectSpawner.cs
+Assets/_Item System/Collectible System/
+ Collectible Objects/HealthOrb.cs
+ Collectible.cs
+ ItemCollectibleManager.cs
+Assets/_Item System/Scripts/Chest/
+ Chest.cs
+ ChestManager.cs
+ HoverEffect.cs
+Assets/_Item System/Scripts/
+ CurrentEnemyRegistry.cs
+ GlobalEventManager.cs
+ Interfaces/
+  IItemEffect.cs
+  IItemLogic.cs
+  IItemModifier.cs
+ InventoryVisualManager.cs
+ Item Logic/
+  ChainDamageLogic.cs
+  CritDamageLogic.cs
+  CritRateLogic.cs
+  HealOrbOnKillLogic.cs
+  ItemLogicBase.cs
+ ItemDatabaseFactory.cs
+ ItemDefinition.cs
+ ItemDrop.cs
+ ItemDropSpawner.cs
+ ItemEffect/
+  ChainDamageEffect.cs
+  EffectContext.cs
+ ItemModifier.cs
+ ItemRuntime.cs
+ ItemRuntimeVisual.cs
+ PlayerInventory.cs
 Assets/_Scripts/
  FloatingDamageText.cs
  FloatingDamangePool.cs

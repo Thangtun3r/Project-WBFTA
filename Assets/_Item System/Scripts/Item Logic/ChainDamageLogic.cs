@@ -22,22 +22,7 @@ public class ChainDamageLogic : ItemLogicBase
 
     private void HandleHit(GameObject attacker, IDamagable target, float damage, bool isCrit)
     {
-        if (target == null || target.GetTransform() == null)
-        {
-            UnityEngine.Debug.Log("ChainDamageLogic: Target is null or has no transform");
-            return;
-        }
-        if (CurrentEnemyRegistry.Instance == null)
-        {
-            UnityEngine.Debug.Log("ChainDamageLogic: CurrentEnemyRegistry is null");
-            return;
-        }
-        if (Owner == null)
-        {
-            UnityEngine.Debug.Log("ChainDamageLogic: Owner is null");
-            return;
-        }
-        UnityEngine.Debug.Log($"ChainDamageLogic triggered on hit against {target.GetTransform().name} with damage {damage} and crit {isCrit}");
+
 
         if (UnityEngine.Random.value > procChance) return;
 

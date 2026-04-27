@@ -733,6 +733,9 @@ MonoBehaviour:
   - ItemID: ChainDMG
     Definition: {fileID: 11400000, guid: 4e6e41c450789e641b8a13a9ecee9f07, type: 2}
     LogicClassName: ChainDamageLogic
+  - ItemID: HealOrb
+    Definition: {fileID: 11400000, guid: 25c784688d99dd24ca91c32f31ceb0ee, type: 2}
+    LogicClassName: HealOrbOnKillLogic
 --- !u!114 &134792001
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2410,6 +2413,7 @@ Transform:
   - {fileID: 19736060}
   - {fileID: 845619000}
   - {fileID: 705568808}
+  - {fileID: 1268793663}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &789415003
@@ -3217,12 +3221,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03e482b15d27dfd4f8aa5f7fc7e53dbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ChestManager
-  baseChestPrice: 10
+  baseChestPrice: 0
   priceExponent: 1.7
   chestPrefab: {fileID: 5013201734635679052, guid: ec10217807454854cbfde3a8fa11e4a9, type: 3}
-  chestCount: 7
-  minDistance: 10
-  edgeDeadzone: 10
+  chestCount: 50
+  minDistance: 0
+  edgeDeadzone: 0
   chestParent: {fileID: 902499844}
   gridManager: {fileID: 2067817546}
 --- !u!1001 &911949101
@@ -9003,6 +9007,54 @@ MonoBehaviour:
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
   FollowOffset: {x: 0, y: 0, z: -10}
+--- !u!1 &1268793662
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1268793663}
+  - component: {fileID: 1268793664}
+  m_Layer: 0
+  m_Name: World Object Spawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1268793663
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1268793662}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 760100953}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1268793664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1268793662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2982a9a2e0bfbe34da064b9a16d5e64e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WorldObjectSpawner
+  library:
+  - key: HealOrb
+    prefab: {fileID: 642326293139919925, guid: aa9693c500a06e74c850c596f407828f, type: 3}
+  spawnOffsetRange: 1.5
 --- !u!1 &1275952472
 GameObject:
   m_ObjectHideFlags: 0
@@ -10843,6 +10895,63 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 952738740523826985, guid: dc8fe1119b118264691c5f9a5eca0c7e, type: 3}
   m_PrefabInstance: {fileID: 5891274400583614801}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2935596508863807
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 642326293139919925, guid: aa9693c500a06e74c850c596f407828f, type: 3}
+      propertyPath: m_Name
+      value: HealOrb
+      objectReference: {fileID: 0}
+    - target: {fileID: 1678105978878592780, guid: aa9693c500a06e74c850c596f407828f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 3.73272
+      objectReference: {fileID: 0}
+    - target: {fileID: 1678105978878592780, guid: aa9693c500a06e74c850c596f407828f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -3.51542
+      objectReference: {fileID: 0}
+    - target: {fileID: 1678105978878592780, guid: aa9693c500a06e74c850c596f407828f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1678105978878592780, guid: aa9693c500a06e74c850c596f407828f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1678105978878592780, guid: aa9693c500a06e74c850c596f407828f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1678105978878592780, guid: aa9693c500a06e74c850c596f407828f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1678105978878592780, guid: aa9693c500a06e74c850c596f407828f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1678105978878592780, guid: aa9693c500a06e74c850c596f407828f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1678105978878592780, guid: aa9693c500a06e74c850c596f407828f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1678105978878592780, guid: aa9693c500a06e74c850c596f407828f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: aa9693c500a06e74c850c596f407828f, type: 3}
 --- !u!114 &122819772614990842
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17723,3 +17832,4 @@ SceneRoots:
   - {fileID: 850277043}
   - {fileID: 126468983907518635}
   - {fileID: 2044306945}
+  - {fileID: 2935596508863807}

@@ -166,7 +166,7 @@ public class DirectorSpawner2D : MonoBehaviour
             enemyScript.sourcePrefab = entry.prefab; 
             int level = (GameManager.Instance != null) ? GameManager.Instance.CurrentLevel : 1;
             enemyScript.SetLevel(level);
-            Debug.Log($"Enemy spawned - Level: {level}");
+        
         }
 
         _activeEnemies.Add(enemyObj);

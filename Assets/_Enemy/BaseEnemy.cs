@@ -6,6 +6,8 @@ namespace _Scripts.Enemy
 {
     public abstract class BaseEnemy : MonoBehaviour, IDamagable, IHealthObservable
     {
+        public static event Action<BaseEnemy> OnEnemyDeath;
+
         [Header("Base Stats")]
         [SerializeField] protected float maxHealth = 100f;
         [SerializeField] protected EnemyConfig config;
@@ -123,7 +125,7 @@ namespace _Scripts.Enemy
             _fsm?.QueueNextState(EnemyFSM.EnemyState.Dead);
             RewardPlayer(config.tier, currentLevel);
             Die();
-            
+            OnEnemyDeath?.Invoke(this);
             Invoke(nameof(DeactivateObject), deathReturnDelay);
         }
 
