@@ -23,6 +23,7 @@ public class ItemDefinition: ScriptableObject
     public ItemType itemType;
     public ItemRarity itemRarity;
     public Sprite icon;
+    public bool isModifiable;
     public string description;
 
     public GameObject effectPrefab;
