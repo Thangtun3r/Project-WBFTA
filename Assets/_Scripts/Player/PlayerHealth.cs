@@ -63,6 +63,20 @@ public class PlayerHealth : MonoBehaviour, IDamagable
         OnHealthChanged?.Invoke(_currentHealth, _maxHealth, true);
     }
 
+    public void AddMaxHealthModifier(float amount)
+    {
+        _maxHealth += amount;
+        
+        // Prevent current health from exceeding the new max health if max health was reduced
+        if (_currentHealth > _maxHealth)
+        {
+            _currentHealth = _maxHealth;
+        }
+
+        // Notify UI/systems that max health has changed (true = beneficial change, no damage vignette)
+        OnHealthChanged?.Invoke(_currentHealth, _maxHealth, true);
+    }
+
     private void ApplyPassiveHealing()
     {
         // Calculate time since damage (after the delay has passed)

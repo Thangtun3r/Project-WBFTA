@@ -691,7 +691,7 @@ GameObject:
   - component: {fileID: 134792000}
   - component: {fileID: 134792001}
   m_Layer: 0
-  m_Name: Item Manager
+  m_Name: Item Database Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -740,6 +740,9 @@ MonoBehaviour:
   - ItemID: SpeedBoost
     Definition: {fileID: 11400000, guid: a64c70192dd90cf4ab5fd29c205eb75e, type: 2}
     LogicClassName: SpeedBoostLogic
+  - ItemID: MaxHealthIncrease
+    Definition: {fileID: 11400000, guid: 3cd00c21565138744b94e8ce4970169a, type: 2}
+    LogicClassName: MaxHealthIncreaseLogic
 --- !u!114 &134792001
 MonoBehaviour:
   m_ObjectHideFlags: 0
