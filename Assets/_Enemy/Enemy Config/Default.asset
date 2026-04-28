@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b95d3861f0680f46873221010712c1a, type: 3}
   m_Name: Default
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Enemy.EnemyConfig
-  moveSpeed: 10
-  acceleration: 12
+  moveSpeed: 15
+  acceleration: 15
   deceleration: 15
   stopDistance: 3
   detectionRange: 43.8

@@ -5592,9 +5592,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f5d72912896a53409edd9aceb588035, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Enemy.Modules.RangedAttackModule
-  cooldown: 3
+  cooldown: 2
   windupDuration: 0.5
-  projSpeed: 15
+  projSpeed: 20
   turnSpeed: 10
   firePoint: {fileID: 3662739255391230774}
   rotationTarget: {fileID: 5035293590262120749}

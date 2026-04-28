@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using _Scripts.Enemy; 
+using _Scripts.Enemy;
 
 public class DirectorSpawner2D : MonoBehaviour
 {
@@ -12,13 +12,12 @@ public class DirectorSpawner2D : MonoBehaviour
     [Header("Economy (Exponential)")]
     public float initialCredits = 25f;
     public float baseCreditsPerSecond = 1.5f;
-    public float incomeGrowthMultiplier = 1.12f; 
+    public float incomeGrowthMultiplier = 1.12f;
     public float spawnInterval = 3f;
-    public float spawnThreshold = 10f;
 
     [Header("Ambush Settings")]
     [Range(0f, 1f), Tooltip("Chance for any enemy to ignore its preference and drop on the player.")]
-    public float ambushChance = 0.1f; 
+    public float ambushChance = 0.1f;
 
     [Header("Capacity & Spawning")]
     public int baseMaxCap = 20;
@@ -37,12 +36,10 @@ public class DirectorSpawner2D : MonoBehaviour
     [SerializeField] private float _currentCredits;
     [SerializeField] private int _currentMaxCap;
     [SerializeField] private float _activeCreditsPerSec;
-    [SerializeField] private int _pendingSpawnCount = 0;
     [SerializeField] private List<GameObject> _activeEnemies = new List<GameObject>();
 
     private float _graceStartTime;
     private bool _ambushUsedThisCycle = false;
-    private bool _isSpawning = false;
 
     private void Awake() => _sorter = new SpawnSorter();
 
@@ -60,36 +57,27 @@ public class DirectorSpawner2D : MonoBehaviour
 
     private void HandleStageTransition()
     {
-        StopAllCoroutines(); // Stops any pending SpawnRoutines
-        _pendingSpawnCount = 0;
-        _graceStartTime = Time.time; // Reset grace period on stage transition
+        StopAllCoroutines();
+        _graceStartTime = Time.time;
 
-        // Return all current enemies to the pool
         foreach (var enemy in _activeEnemies)
         {
             if (enemy == null) continue;
-            
+
             BaseEnemy enemyScript = enemy.GetComponent<BaseEnemy>();
             if (enemyScript != null && enemyScript.sourcePrefab != null && EnemyPoolManager.Instance != null)
-            {
                 EnemyPoolManager.Instance.Return(enemyScript.sourcePrefab, enemy);
-            }
             else
-            {
                 enemy.SetActive(false);
-            }
         }
         _activeEnemies.Clear();
 
-        // Clean up any orphaned loading prefabs that were interrupted mid-spawn
         if (enemyParent != null)
         {
             foreach (Transform child in enemyParent)
             {
                 if (child != null && child.gameObject.activeInHierarchy && child.GetComponent<BaseEnemy>() == null)
-                {
                     Destroy(child.gameObject);
-                }
             }
         }
     }
@@ -98,7 +86,7 @@ public class DirectorSpawner2D : MonoBehaviour
     {
         _graceStartTime = Time.time;
         _currentCredits = initialCredits;
-        
+
         if (enemyParent == null) enemyParent = this.transform;
 
         int startLevel = (GameManager.Instance != null) ? GameManager.Instance.CurrentLevel : 1;
@@ -122,32 +110,42 @@ public class DirectorSpawner2D : MonoBehaviour
 
     private void ExecuteSpawnCycle()
     {
-        if (_isSpawning) return; // Don't start a new spawn if one is already in progress
-        if (_currentCredits < spawnThreshold) return;
+        if (database == null) return;
 
-        int availableSlots = _currentMaxCap - (_activeEnemies.Count + _pendingSpawnCount);
+        // Derive the threshold directly from the database — no magic number needed
+        var cheapest = database.GetCheapest();
+        if (cheapest == null || _currentCredits < cheapest.cost) return;
+
+        int availableSlots = _currentMaxCap - _activeEnemies.Count;
         if (availableSlots <= 0) return;
 
-        _ambushUsedThisCycle = false; // Reset ambush flag for this cycle
-        var manifest = _sorter.CreateManifest(database, _currentCredits, availableSlots);
+        _ambushUsedThisCycle = false;
 
-        // Only spawn one enemy at a time
-        if (manifest.Count > 0)
-        {
-            var entry = manifest[0];
+        var manifest = _sorter.CreateManifest(database, _currentCredits, availableSlots);
+        if (manifest.Count == 0) return;
+
+        // Deduct total cost upfront
+        foreach (var entry in manifest)
             _currentCredits -= entry.cost;
-            _pendingSpawnCount++;
-            _isSpawning = true;
+
+        // Spawn each enemy with a small stagger so they don't all appear simultaneously
+        StartCoroutine(SpawnManifestRoutine(manifest));
+    }
+
+    private IEnumerator SpawnManifestRoutine(List<EnemySpawnerDatabase.EnemyEntry> manifest)
+    {
+        foreach (var entry in manifest)
+        {
             StartCoroutine(SpawnRoutine(entry));
+            yield return new WaitForSeconds(0.05f); // Minimal delay so they don't all load at once
         }
     }
 
     private IEnumerator SpawnRoutine(EnemySpawnerDatabase.EnemyEntry entry)
     {
-        // Check for surprise ambush (only allow one per cycle)
         bool isAmbush = !_ambushUsedThisCycle && Random.value < ambushChance;
-        if (isAmbush)
-            _ambushUsedThisCycle = true;
+        if (isAmbush) _ambushUsedThisCycle = true;
+
         Vector3 spawnPos = CalculateSmartPosition(entry.preference, isAmbush);
 
         if (loadingPrefab != null)
@@ -158,43 +156,39 @@ public class DirectorSpawner2D : MonoBehaviour
         }
 
         GameObject enemyObj = EnemyPoolManager.Instance.Get(entry.prefab, spawnPos, Quaternion.identity);
-        enemyObj.transform.SetParent(enemyParent); 
+        enemyObj.transform.SetParent(enemyParent);
 
         BaseEnemy enemyScript = enemyObj.GetComponent<BaseEnemy>();
         if (enemyScript != null)
         {
-            enemyScript.sourcePrefab = entry.prefab; 
+            enemyScript.sourcePrefab = entry.prefab;
             int level = (GameManager.Instance != null) ? GameManager.Instance.CurrentLevel : 1;
             enemyScript.SetLevel(level);
-        
         }
 
         _activeEnemies.Add(enemyObj);
-        _pendingSpawnCount--;
-        _isSpawning = false; // Spawn complete, allow next spawn
     }
 
     private Vector3 CalculateSmartPosition(EnemySpawnerDatabase.SpawnPreference pref, bool forceAmbush)
     {
         if (playerTransform == null) return GetRandomPoint();
-        
+
         bool inGrace = (Time.time - _graceStartTime) < initialGracePeriod;
         if (inGrace) return GetPointFarFromPlayer();
 
-        // Handle forced ambush or OnPlayer preference
         if (forceAmbush || pref == EnemySpawnerDatabase.SpawnPreference.OnPlayer)
             return GetPointOnPlayer();
 
         switch (pref)
         {
-            case EnemySpawnerDatabase.SpawnPreference.NearPlayer: 
+            case EnemySpawnerDatabase.SpawnPreference.NearPlayer:
                 return GetPointNearPlayer();
-            case EnemySpawnerDatabase.SpawnPreference.FarFromPlayer: 
+            case EnemySpawnerDatabase.SpawnPreference.FarFromPlayer:
                 return GetPointFarFromPlayer();
             case EnemySpawnerDatabase.SpawnPreference.Random:
-            default: 
+            default:
                 float roll = Random.value;
-                if (roll < 0.1f) return GetPointOnPlayer(); // 10% random chance to drop on player
+                if (roll < 0.1f) return GetPointOnPlayer();
                 if (roll < 0.4f) return GetPointNearPlayer();
                 return GetRandomPoint();
         }
@@ -222,13 +216,14 @@ public class DirectorSpawner2D : MonoBehaviour
             x = Random.Range(0, gridManager.width);
             y = Random.Range(0, gridManager.height);
             attempts++;
-        } while (Vector2Int.Distance(new Vector2Int(x, y), p) < 5 && attempts < 10); 
+        } while (Vector2Int.Distance(new Vector2Int(x, y), p) < 5 && attempts < 10);
         return GridToWorld(x, y);
     }
 
-    private Vector3 GetRandomPoint() => GridToWorld(Random.Range(0, gridManager.width), Random.Range(0, gridManager.height));
+    private Vector3 GetRandomPoint() =>
+        GridToWorld(Random.Range(0, gridManager.width), Random.Range(0, gridManager.height));
 
-    private Vector3 GridToWorld(int x, int y) 
+    private Vector3 GridToWorld(int x, int y)
     {
         Vector3 basePos = gridManager.GetWorldPosition(x, y);
         return basePos + new Vector3(gridManager.cellSize * 0.5f, gridManager.cellSize * 0.5f, 0f);
@@ -240,9 +235,7 @@ public class DirectorSpawner2D : MonoBehaviour
         for (int i = 0; i < enemiesToDisable && i < _activeEnemies.Count; i++)
         {
             if (_activeEnemies[i] != null)
-            {
                 _activeEnemies[i].SetActive(false);
-            }
         }
     }
 
@@ -251,16 +244,12 @@ public class DirectorSpawner2D : MonoBehaviour
         foreach (var enemy in _activeEnemies)
         {
             if (enemy == null) continue;
-            
+
             BaseEnemy enemyScript = enemy.GetComponent<BaseEnemy>();
             if (enemyScript != null && enemyScript.sourcePrefab != null && EnemyPoolManager.Instance != null)
-            {
                 EnemyPoolManager.Instance.Return(enemyScript.sourcePrefab, enemy);
-            }
             else
-            {
                 enemy.SetActive(false);
-            }
         }
         _activeEnemies.Clear();
     }
