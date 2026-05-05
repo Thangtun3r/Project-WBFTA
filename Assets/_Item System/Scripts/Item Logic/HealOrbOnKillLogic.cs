@@ -3,8 +3,8 @@ using System.Diagnostics;
 using _Scripts.Enemy;
 public class HealOrbOnKillLogic : ItemLogicBase
 {
-    private float spawnChance = 0.9f; // 90% chance to spawn a heal orb on kill
-        private float healAmount = 2f; //heal amount as a percentage of max health
+    private float spawnChance = 0.2f; // 20% chance to spawn a heal orb on kill
+        private float healAmount = 0.1f; //heal amount as a percentage of max health
 
     private void HandleEnemyDeath(BaseEnemy enemy)
     {

@@ -7,6 +7,9 @@ public class EnemyRewardManager : MonoBehaviour
     [Tooltip("The 'Base Reward' from your spreadsheet weighted average (e.g., 9)")]
     public int baseReward = 9;
 
+    [Tooltip("Reward coefficient multiplier for this manager (e.g., 1.0 = normal, 1.5 = 50% more rewards)")]
+    public float rewardCoefficient = 1.0f;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -30,7 +33,8 @@ public class EnemyRewardManager : MonoBehaviour
         // 2. Combine all three factors:
         // (Base * Tier * Level) = The 'Physical' value of the enemy
         // (* inflation) = Ensures this value stays relevant as chest prices rise
-        float rawReward = baseReward * enemyTier * enemyLevel * inflation;
+        // (* rewardCoefficient) = Manager-specific reward multiplier
+        float rawReward = baseReward * enemyTier * enemyLevel * inflation * rewardCoefficient;
         
         // 3. Add +/- 10% variance for a more natural feel
         float variance = Random.Range(0.9f, 1.1f);

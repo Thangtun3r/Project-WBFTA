@@ -183,6 +183,10 @@ Assets/_Item System/Scripts/
  ItemRuntime.cs
  ItemRuntimeVisual.cs
  PlayerInventory.cs
+Assets/_Player/
+ DragableCursor.cs
+ DragComponent.cs
+ IDragable.cs
 Assets/_Scripts/
  FloatingDamageText.cs
  FloatingDamangePool.cs
