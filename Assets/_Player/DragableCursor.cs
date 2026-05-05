@@ -3,75 +3,110 @@ using UnityEngine;
 public class DragableCursor : MonoBehaviour
 {
     [Header("Draggable Settings")]
-    [SerializeField] private float throwForceMultiplier = 10f;
-    [SerializeField] private float throwSpeed = 1f;
+    [SerializeField] private float throwSensitivity = 1f;
     [SerializeField] private LayerMask dragMask;
     [SerializeField] private float detectionRadius = 0.5f;
 
     [Header("Throw Force Limits")]
     [SerializeField] private float minThrowForce = 1f;
     [SerializeField] private float maxThrowForce = 20f;
+    [SerializeField] private float minThrowDistance = 10f;
 
-    private IDragable selectedDragable = null;
-    public Rigidbody2D selectedRb = null;
-    private Vector2 dragOffset = Vector2.zero;
-    private Vector2 lastCursorWorldPos;
+    private IDragable selectedDragable;
+    private Rigidbody2D selectedRb;
+    private Vector2 dragOffset;
     private Vector2 lastCursorScreenPos;
+    private Vector2 cursorVelocity;
     private Camera mainCamera;
-    private Transform playerTransform;
-    private Rigidbody2D playerRb;
-    private GameObject cursorGameObject;
+    private MouseFollower mouseFollower;
 
     private void Awake()
     {
         mainCamera = Camera.main;
-        // Try to find the player transform
-        GameObject playerGO = GameObject.FindGameObjectWithTag("Player");
-        if (playerGO != null)
-        {
-            playerTransform = playerGO.transform;
-            playerRb = playerGO.GetComponent<Rigidbody2D>();
-        }
-        else
-        {
-            playerTransform = transform; // Fallback to self if player not found
-            playerRb = GetComponent<Rigidbody2D>();
-        }
-        
-        // Find the cursor GameObject
-        MouseFollower mouseFollower = FindObjectOfType<MouseFollower>();
-        if (mouseFollower != null && mouseFollower.cursor != null)
-            cursorGameObject = mouseFollower.cursor;
+        mouseFollower = FindObjectOfType<MouseFollower>();
     }
 
     private void Update()
     {
-        Vector2 cursorScreenPos = cursorGameObject != null
-            ? (Vector2)mainCamera.WorldToScreenPoint(cursorGameObject.transform.position)
-            : (Vector2)Input.mousePosition;
-
-        Vector2 cursorWorldPos = cursorGameObject != null
-            ? (Vector2)cursorGameObject.transform.position
-            : mainCamera.ScreenToWorldPoint(cursorScreenPos);
+        Vector2 cursorScreenPos = GetCursorScreenPos();
+        Vector2 cursorWorldPos = GetCursorWorldPos(cursorScreenPos);
 
         if (Input.GetMouseButtonDown(0))
-            TryGrabObject(cursorWorldPos, cursorScreenPos);
+            TryBeginDrag(cursorWorldPos, cursorScreenPos);
 
         if (Input.GetMouseButton(0) && selectedDragable != null)
-            DragObject(cursorWorldPos, cursorScreenPos);
+            UpdateDrag(cursorWorldPos, cursorScreenPos);
 
         if (Input.GetMouseButtonUp(0) && selectedDragable != null)
-                ReleaseObject(cursorWorldPos, cursorScreenPos);
+            EndDrag(cursorWorldPos, cursorScreenPos);
     }
 
-            private void TryGrabObject(Vector2 cursorWorldPos, Vector2 cursorScreenPos)
+    private Vector2 GetCursorScreenPos()
     {
-        // Use OverlapCircle to find objects at cursor position
+        return mouseFollower != null
+            ? mouseFollower.virtualScreenPos
+            : (Vector2)Input.mousePosition;
+    }
+
+    private Vector2 GetCursorWorldPos(Vector2 cursorScreenPos)
+    {
+        Vector3 worldPos = mainCamera.ScreenToWorldPoint(new Vector3(cursorScreenPos.x, cursorScreenPos.y, 10f));
+        return (Vector2)worldPos;
+    }
+
+    private void TryBeginDrag(Vector2 cursorWorldPos, Vector2 cursorScreenPos)
+    {
         Collider2D[] hits = Physics2D.OverlapCircleAll(cursorWorldPos, detectionRadius, dragMask);
-        
         if (hits.Length == 0) return;
 
-        // If multiple objects overlap, get the topmost one (highest Z position)
+        Collider2D topCollider = FindTopmostCollider(hits);
+
+        selectedDragable = topCollider.GetComponent<IDragable>();
+        if (selectedDragable == null) return;
+
+        selectedRb = selectedDragable.GetRigidbody();
+        dragOffset = (Vector2)selectedDragable.GetTransform().position - cursorWorldPos;
+        lastCursorScreenPos = cursorScreenPos;
+        cursorVelocity = Vector2.zero;
+        selectedDragable.OnStartDrag();
+    }
+
+    private void UpdateDrag(Vector2 cursorWorldPos, Vector2 cursorScreenPos)
+    {
+        cursorVelocity = (cursorScreenPos - lastCursorScreenPos) / Time.deltaTime;
+        lastCursorScreenPos = cursorScreenPos;
+
+        Vector2 targetPos = cursorWorldPos + dragOffset;
+        selectedRb.MovePosition(targetPos);
+        selectedDragable.OnDrag(targetPos);
+    }
+
+    private void EndDrag(Vector2 cursorWorldPos, Vector2 cursorScreenPos)
+    {
+        float pixelsPerUnit = Screen.height / (mainCamera.orthographicSize * 2f);
+        Vector2 worldVelocity = cursorVelocity / pixelsPerUnit;
+
+        Vector2 impulse = worldVelocity * throwSensitivity;
+
+        float clampedMagnitude = Mathf.Clamp(impulse.magnitude, minThrowForce, maxThrowForce);
+        impulse = impulse.magnitude > 0f ? impulse.normalized * clampedMagnitude : Vector2.zero;
+
+        float screenDelta = (cursorScreenPos - lastCursorScreenPos).magnitude;
+        if (screenDelta >= minThrowDistance || cursorVelocity.magnitude > 0f)
+            selectedDragable.OnEndDrag(impulse);
+        else
+            selectedDragable.OnEndDrag(Vector2.zero);
+
+        if (selectedRb != null)
+            selectedRb.linearVelocity = impulse;
+
+        selectedDragable = null;
+        selectedRb = null;
+        cursorVelocity = Vector2.zero;
+    }
+
+    private static Collider2D FindTopmostCollider(Collider2D[] hits)
+    {
         Collider2D topCollider = hits[0];
         for (int i = 1; i < hits.Length; i++)
         {
@@ -79,59 +114,6 @@ public class DragableCursor : MonoBehaviour
                 topCollider = hits[i];
         }
 
-        selectedDragable = topCollider.GetComponent<IDragable>();
-        if (selectedDragable == null) return;
-
-        selectedRb = selectedDragable.GetRigidbody();
-        dragOffset = (Vector2)selectedDragable.GetTransform().position - cursorWorldPos;
-        lastCursorWorldPos = cursorWorldPos;
-        lastCursorScreenPos = cursorScreenPos;
-        selectedDragable.OnStartDrag();
-    }
-
-    private void DragObject(Vector2 cursorWorldPos, Vector2 cursorScreenPos)
-    {
-        selectedRb.MovePosition(cursorWorldPos + dragOffset);
-        selectedDragable.OnDrag(cursorWorldPos + dragOffset);
-        lastCursorWorldPos = cursorWorldPos;
-        lastCursorScreenPos = cursorScreenPos;
-    }
-
-    private void ReleaseObject(Vector2 cursorWorldPos, Vector2 cursorScreenPos)
-    {
-        Vector2 screenDelta = cursorScreenPos - lastCursorScreenPos;
-        // Convert screen pixels to world units using camera orthographic size
-        float pixelsPerUnit = Screen.height / (mainCamera.orthographicSize * 2f);
-        Vector2 worldDelta = screenDelta / pixelsPerUnit;
-        Vector2 throwVelocity = worldDelta / Time.deltaTime;
-        
-        // Subtract player velocity so throw is relative to player movement
-        if (playerRb != null)
-            throwVelocity -= playerRb.linearVelocity;
-        
-        Vector2 impulse = throwVelocity * throwForceMultiplier * throwSpeed;
-
-        float clampedMagnitude = Mathf.Clamp(impulse.magnitude, minThrowForce, maxThrowForce);
-        if (impulse != Vector2.zero)
-            impulse = impulse.normalized * clampedMagnitude;
-
-        selectedDragable.OnEndDrag(impulse);
-        if (selectedRb != null)
-        {
-            selectedRb.linearVelocity = impulse;
-        }
-
-        selectedDragable = null;
-        selectedRb = null;
-    }
-
-    /// <summary>
-    /// Forcefully release the object if we are in the middle of a drag.
-    /// Pass lastCursorWorldPos so the release velocity is zero (a clean drop).
-    /// </summary>
-    public void ForceReleaseIfDragging()
-    {
-        if (selectedDragable != null)
-            ReleaseObject(lastCursorWorldPos, lastCursorScreenPos);
+        return topCollider;
     }
 }

@@ -475,6 +475,7 @@ GameObject:
   - component: {fileID: 5136368147752457549}
   - component: {fileID: 1222249493712441910}
   - component: {fileID: 3501485475971311491}
+  - component: {fileID: 2438556267612266067}
   m_Layer: 6
   m_Name: Dummy Enemy
   m_TagString: 'Enemy '
@@ -572,10 +573,10 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDamping: 1
+  m_LinearDamping: 3
   m_AngularDamping: 0.05
   m_GravityScale: 0
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 4c3ddbbfefb5cc542bac4b6661ddadac, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -619,10 +620,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DragComponent
   visualContainer: {fileID: 8835633295400733654}
-  wiggleAmount: 5
-  wiggleSpeed: 10
-  scaleMultiplier: 1.1
-  scaleSpeed: 0.2
   throwForceMultiplier: 10
 --- !u!61 &3501485475971311491
 BoxCollider2D:
@@ -670,6 +667,26 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 3.0291746, y: 3.5590863}
   m_EdgeRadius: 0
+--- !u!114 &2438556267612266067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2940639773880226567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5409978a86cc374eab93284c0118102, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DragImpactDamage
+  logImpact: 1
+  drawImpactRay: 1
+  impactColor: {r: 1, g: 0, b: 0, a: 1}
+  debugLineDuration: 0.5
+  impactThreshold: 2
+  impactLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &3946382255346924273
 GameObject:
   m_ObjectHideFlags: 0

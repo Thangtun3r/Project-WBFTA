@@ -8,7 +8,7 @@ public class MouseFollower : MonoBehaviour
     public float sensitivity = 2.0f;
     
     // This tracks where our "virtual" mouse is on the screen
-    private Vector2 virtualScreenPos;
+    public Vector2 virtualScreenPos;
 
     private void Start()
     {
