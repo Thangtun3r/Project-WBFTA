@@ -696,7 +696,7 @@ MonoBehaviour:
   minThrowDistance: 1
   scaleMultiplier: 1.1
   scaleSpeed: 0.2
-  damageMultiplier: 10
+  damageMultiplier: 2.5
 --- !u!4 &99734935 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3526367780042481598, guid: f7a5fa5037516374fa7095d660fdb41b, type: 3}
