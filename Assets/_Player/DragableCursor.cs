@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class DragableCursor : MonoBehaviour
 {
@@ -12,6 +13,11 @@ public class DragableCursor : MonoBehaviour
     [SerializeField] private float maxThrowForce = 20f;
     [SerializeField] private float minThrowDistance = 10f;
 
+    [Header("Visual Effects")]
+    [SerializeField] private float scaleMultiplier = 1.1f;
+    [SerializeField] private float scaleSpeed = 0.2f;
+    [SerializeField] private float damageMultiplier = 1.0f;
+
     private IDragable selectedDragable;
     private Rigidbody2D selectedRb;
     private Vector2 dragOffset;
@@ -19,11 +25,18 @@ public class DragableCursor : MonoBehaviour
     private Vector2 cursorVelocity;
     private Camera mainCamera;
     private MouseFollower mouseFollower;
+    private PlayerStatMachine _playerStats;
+
+    // Visual Effect State
+    private Transform _visualTransform;
+    private Vector3 _originalScale;
+    private Coroutine _scaleCoroutine;
 
     private void Awake()
     {
         mainCamera = Camera.main;
-        mouseFollower = FindObjectOfType<MouseFollower>();
+        mouseFollower = FindFirstObjectByType<MouseFollower>();
+        _playerStats = FindFirstObjectByType<PlayerStatMachine>();
     }
 
     private void Update()
@@ -65,10 +78,34 @@ public class DragableCursor : MonoBehaviour
         if (selectedDragable == null) return;
 
         selectedRb = selectedDragable.GetRigidbody();
+        
+        if (selectedRb != null)
+        {
+            selectedRb.linearVelocity = Vector2.zero;
+            selectedRb.angularVelocity = 0f;
+            selectedRb.isKinematic = true;
+
+            Collider2D col = selectedRb.GetComponent<Collider2D>();
+            if (col != null) col.isTrigger = true;
+        }
+
         dragOffset = (Vector2)selectedDragable.GetTransform().position - cursorWorldPos;
         lastCursorScreenPos = cursorScreenPos;
         cursorVelocity = Vector2.zero;
         selectedDragable.OnStartDrag();
+
+        _visualTransform = selectedDragable.GetTransform();
+        _originalScale = _visualTransform.localScale;
+        StartScale(_originalScale * scaleMultiplier);
+        
+        // Pass damage info to DragImpactDamage if present
+        DragImpactDamage dragDamage = selectedRb.GetComponent<DragImpactDamage>();
+        if (dragDamage != null && _playerStats != null)
+        {
+            float baseDamage = _playerStats.GetCalculatedAttackDamage();
+            float finalDamage = baseDamage * damageMultiplier;
+            dragDamage.SetDamage(finalDamage);
+        }
     }
 
     private void UpdateDrag(Vector2 cursorWorldPos, Vector2 cursorScreenPos)
@@ -98,11 +135,21 @@ public class DragableCursor : MonoBehaviour
             selectedDragable.OnEndDrag(Vector2.zero);
 
         if (selectedRb != null)
+        {
+            selectedRb.isKinematic = false;
+            
+            Collider2D col = selectedRb.GetComponent<Collider2D>();
+            if (col != null) col.isTrigger = false;
+            
             selectedRb.linearVelocity = impulse;
+        }
+
+        StartScale(_originalScale);
 
         selectedDragable = null;
         selectedRb = null;
         cursorVelocity = Vector2.zero;
+        _visualTransform = null;
     }
 
     private static Collider2D FindTopmostCollider(Collider2D[] hits)
@@ -115,5 +162,31 @@ public class DragableCursor : MonoBehaviour
         }
 
         return topCollider;
+    }
+
+    // -------------------------------------------------------------------------
+    // Visual Effects Logic
+    // -------------------------------------------------------------------------
+
+    private void StartScale(Vector3 targetScale)
+    {
+        if (_scaleCoroutine != null)
+            StopCoroutine(_scaleCoroutine);
+
+        if (_visualTransform != null)
+            _scaleCoroutine = StartCoroutine(ScaleEffect(_visualTransform, targetScale));
+    }
+
+    private IEnumerator ScaleEffect(Transform target, Vector3 targetScale)
+    {
+        float elapsed = 0f;
+        Vector3 start = target.localScale;
+        while (elapsed < scaleSpeed)
+        {
+            target.localScale = Vector3.Lerp(start, targetScale, elapsed / scaleSpeed);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        target.localScale = targetScale;
     }
 }

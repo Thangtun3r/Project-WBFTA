@@ -4,79 +4,80 @@ using System;
 [RequireComponent(typeof(Rigidbody2D))]
 public class DragImpactDamage : MonoBehaviour
 {
-    [Header("Debug Options")]
-    [SerializeField] private bool logImpact = true;
-    [SerializeField] private bool drawImpactRay = true;
-    [SerializeField] private Color impactColor = Color.red;
-    [SerializeField] private float debugLineDuration = 0.5f;
+    private bool logImpact = true;
+    private bool drawImpactRay = true;
+    private Color impactColor = Color.red;
+    private float debugLineDuration = 0.5f;
 
-    [Header("Impact Settings")]
-    [SerializeField] private float impactThreshold = 2.0f;
-    [SerializeField] private LayerMask impactLayer;
+    private float damageFalloffVelocity = 1f;
+    private float impactGraceTime = 0.1f;
+    
+    private float _lastImpactTime = -Mathf.Infinity;
+    private float _currentDamage = 0f;
+    private bool _isCrit = false;
 
     public static event Action OnImpactDetected;
 
     private Rigidbody2D _rb;
-    private PlayerStatMachine _playerStats;
-    private DragComponent _dragComponent;
+    private EffectManager _effectManager;
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
-        _dragComponent = GetComponent<DragComponent>();
-        
-        // Find the player's Stat Machine in the scene to get their current damage
-        _playerStats = FindObjectOfType<PlayerStatMachine>();
+        _effectManager = GetComponent<EffectManager>();
+    }
+    
+    public void SetDamage(float damage)
+    {
+        _currentDamage = damage;
+    }
+    
+    public void SetCrit(bool isCrit)
+    {
+        _isCrit = isCrit;
+    }
+
+    private void Update()
+    {
+        if (_effectManager != null && _effectManager.WasThrown && _rb.linearVelocity.magnitude <= damageFalloffVelocity)
+        {
+            _effectManager.WasThrown = false;
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        // Check for grace period
+        if (Time.time < _lastImpactTime + impactGraceTime)
+            return;
+
         // Double check this object is currently flagged as "thrown" by the player
-        if (_dragComponent != null && !_dragComponent.WasThrown)
+        if (_effectManager != null && !_effectManager.WasThrown)
             return;
 
         // Check if the collision object is in the specified layer
-        if (((1 << collision.gameObject.layer) & impactLayer) != 0)
+        if (((1 << collision.gameObject.layer) & -1) != 0)
         {
-            // Calculate impact power based on velocity and mass
-            float impactPower = collision.relativeVelocity.magnitude * _rb.mass;
+            _lastImpactTime = Time.time;
+            OnImpactDetected?.Invoke();
 
-            // Only trigger if impact is above the threshold
-            if (impactPower > impactThreshold)
+            if (logImpact)
             {
-                OnImpactDetected?.Invoke();
+                Debug.Log($"Impact Detected! Object: {collision.gameObject.name}");
+            }
 
-                if (logImpact)
-                {
-                    Debug.Log($"Impact Detected! Object: {collision.gameObject.name}, Impact Power: {impactPower}");
-                }
+            // Deal damage to the object we hit
+            IDamagable damagable = collision.gameObject.GetComponent<IDamagable>();
+            if (damagable != null && _currentDamage > 0)
+            {
+                damagable.TakeDamage(_currentDamage);
+                
+                // Trigger item on-hit effects
+                GlobalEventManager.Instance?.OnHit(gameObject, damagable, _currentDamage, _isCrit);
 
-                if (drawImpactRay)
-                {
-                    Vector2 impactDirection = -collision.contacts[0].normal;
-                    Debug.DrawRay(
-                        collision.contacts[0].point, 
-                        impactDirection * impactPower * 0.1f, 
-                        impactColor, 
-                        debugLineDuration
-                    );
-                }
-
-                // Get the damage amount from the player's stat machine
-                float damageToDeal = 0f;
-                if (_playerStats != null)
-                {
-                    // This will also account for crit calculations if applicable
-                    damageToDeal = _playerStats.GetCalculatedAttackDamage(); 
-                }
-
-                // Deal damage to the object we hit
-                IDamagable damagable = collision.gameObject.GetComponent<IDamagable>();
-                if (damagable != null && damageToDeal > 0)
-                {
-                    damagable.TakeDamage(damageToDeal);
-                }
+                // Spawn floating damage text at impact point
+                FloatingDamagePool.Instance?.SpawnDamage(collision.contacts[0].point, _currentDamage, _isCrit);
+            }
             }
         }
     }
-}

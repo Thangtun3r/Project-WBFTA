@@ -5226,7 +5226,7 @@ Transform:
   m_GameObject: {fileID: 6449194776748826967}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.339, y: 0, z: 0}
+  m_LocalPosition: {x: 0.867, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5333,7 +5333,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5035293590262120749}
-  - component: {fileID: 8719657755079135210}
   m_Layer: 6
   m_Name: enemy root
   m_TagString: Untagged
@@ -5359,52 +5358,6 @@ Transform:
   - {fileID: 7121433507516204763}
   m_Father: {fileID: 4779135819728176075}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &8719657755079135210
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7782730493823725426}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 1.0155277, y: 1.0155277}
-  m_EdgeRadius: 0
 --- !u!1 &8980048317678214775
 GameObject:
   m_ObjectHideFlags: 0
@@ -5422,7 +5375,9 @@ GameObject:
   - component: {fileID: 1432443307123316997}
   - component: {fileID: 4279756431424898031}
   - component: {fileID: 2119117488707750801}
-  - component: {fileID: 558457595636325237}
+  - component: {fileID: 3816923950425326698}
+  - component: {fileID: 4902489307478223263}
+  - component: {fileID: 66463276281815196}
   m_Layer: 6
   m_Name: Ranged Enemy
   m_TagString: 'Enemy '
@@ -5519,8 +5474,8 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 20.26
-  m_LinearDamping: 40
+  m_Mass: 1
+  m_LinearDamping: 3
   m_AngularDamping: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -5599,8 +5554,32 @@ MonoBehaviour:
   firePoint: {fileID: 3662739255391230774}
   rotationTarget: {fileID: 5035293590262120749}
   shakeAngle: {x: 0, y: 0, z: 4}
---- !u!58 &558457595636325237
-CircleCollider2D:
+--- !u!114 &3816923950425326698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8980048317678214775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b13b9b47098584146ae258362379b740, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EffectManager
+--- !u!114 &4902489307478223263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8980048317678214775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5409978a86cc374eab93284c0118102, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DragImpactDamage
+--- !u!61 &66463276281815196
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -5612,10 +5591,10 @@ CircleCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 567
+    m_Bits: 0
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -5634,7 +5613,17 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 2.74
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 2.27, y: 2.35}
+  m_EdgeRadius: 0.23
 --- !u!1001 &964043015449737810
 PrefabInstance:
   m_ObjectHideFlags: 0

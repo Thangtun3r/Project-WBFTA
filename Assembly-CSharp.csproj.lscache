@@ -185,8 +185,8 @@ Assets/_Item System/Scripts/
  PlayerInventory.cs
 Assets/_Player/
  DragableCursor.cs
- DragComponent.cs
  DragImpactDamage.cs
+ EffectManager.cs
  IDragable.cs
 Assets/_Scripts/
  FloatingDamageText.cs

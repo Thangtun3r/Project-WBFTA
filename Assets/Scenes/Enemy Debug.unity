@@ -322,6 +322,11 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1 &49253229 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2940639773880226567, guid: 70be2299a3ffd4a48a0514e4351ddc9f, type: 3}
+  m_PrefabInstance: {fileID: 742834295}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &49457039
 GameObject:
   m_ObjectHideFlags: 0
@@ -694,6 +699,8 @@ MonoBehaviour:
   minThrowForce: 6.11
   maxThrowForce: 250
   minThrowDistance: 1
+  scaleMultiplier: 1.1
+  scaleSpeed: 0.2
 --- !u!4 &99734935 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3526367780042481598, guid: f7a5fa5037516374fa7095d660fdb41b, type: 3}
@@ -1270,7 +1277,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2940639773880226567, guid: 70be2299a3ffd4a48a0514e4351ddc9f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1605972190}
   m_SourcePrefab: {fileID: 100100000, guid: 70be2299a3ffd4a48a0514e4351ddc9f, type: 3}
 --- !u!4 &322928247 stripped
 Transform:
@@ -2457,13 +2467,28 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2940639773880226567, guid: 70be2299a3ffd4a48a0514e4351ddc9f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 742834305}
   m_SourcePrefab: {fileID: 100100000, guid: 70be2299a3ffd4a48a0514e4351ddc9f, type: 3}
 --- !u!4 &742834296 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1166876946201235916, guid: 70be2299a3ffd4a48a0514e4351ddc9f, type: 3}
   m_PrefabInstance: {fileID: 742834295}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &742834305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 49253229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b13b9b47098584146ae258362379b740, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EffectManager
 --- !u!4 &751477040 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4779135819728176075, guid: 61124440380a9ba49b5a79b2e232d55b, type: 3}
@@ -2705,7 +2730,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2940639773880226567, guid: 70be2299a3ffd4a48a0514e4351ddc9f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1513036393}
   m_SourcePrefab: {fileID: 100100000, guid: 70be2299a3ffd4a48a0514e4351ddc9f, type: 3}
 --- !u!4 &823677427 stripped
 Transform:
@@ -8633,10 +8661,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dummy Enemy (1)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1222249493712441910, guid: 70be2299a3ffd4a48a0514e4351ddc9f, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2940639773880226567, guid: 70be2299a3ffd4a48a0514e4351ddc9f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1995403914}
   m_SourcePrefab: {fileID: 100100000, guid: 70be2299a3ffd4a48a0514e4351ddc9f, type: 3}
 --- !u!4 &1182537393 stripped
 Transform:
@@ -10217,6 +10249,23 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!1 &1513036384 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2940639773880226567, guid: 70be2299a3ffd4a48a0514e4351ddc9f, type: 3}
+  m_PrefabInstance: {fileID: 823677426}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1513036393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1513036384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b13b9b47098584146ae258362379b740, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EffectManager
 --- !u!1 &1513363103
 GameObject:
   m_ObjectHideFlags: 0
@@ -10436,6 +10485,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 63283466}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1605972181 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2940639773880226567, guid: 70be2299a3ffd4a48a0514e4351ddc9f, type: 3}
+  m_PrefabInstance: {fileID: 322928246}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1605972190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1605972181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b13b9b47098584146ae258362379b740, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EffectManager
 --- !u!1 &1657922135
 GameObject:
   m_ObjectHideFlags: 0
@@ -11039,6 +11105,23 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1 &1995403905 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2940639773880226567, guid: 70be2299a3ffd4a48a0514e4351ddc9f, type: 3}
+  m_PrefabInstance: {fileID: 1182537392}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1995403914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1995403905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b13b9b47098584146ae258362379b740, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EffectManager
 --- !u!1 &2044306944
 GameObject:
   m_ObjectHideFlags: 0
@@ -11642,10 +11725,6 @@ PrefabInstance:
     - target: {fileID: 1362645100913559232, guid: f7a5fa5037516374fa7095d660fdb41b, type: 3}
       propertyPath: m_Name
       value: Default Enemy
-      objectReference: {fileID: 0}
-    - target: {fileID: 1362645100913559232, guid: f7a5fa5037516374fa7095d660fdb41b, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3526367780042481598, guid: f7a5fa5037516374fa7095d660fdb41b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -16621,10 +16700,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1676090770}
     m_Modifications:
-    - target: {fileID: 105229572806809771, guid: dc8fe1119b118264691c5f9a5eca0c7e, type: 3}
-      propertyPath: m_SortingLayer
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 952738740523826985, guid: dc8fe1119b118264691c5f9a5eca0c7e, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1784.55
@@ -16668,10 +16743,6 @@ PrefabInstance:
     - target: {fileID: 9203883233185218907, guid: dc8fe1119b118264691c5f9a5eca0c7e, type: 3}
       propertyPath: m_Name
       value: Dive Enemy
-      objectReference: {fileID: 0}
-    - target: {fileID: 9203883233185218907, guid: dc8fe1119b118264691c5f9a5eca0c7e, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16960,10 +17031,6 @@ PrefabInstance:
     - target: {fileID: 8980048317678214775, guid: 61124440380a9ba49b5a79b2e232d55b, type: 3}
       propertyPath: m_Name
       value: Ranged Enemy
-      objectReference: {fileID: 0}
-    - target: {fileID: 8980048317678214775, guid: 61124440380a9ba49b5a79b2e232d55b, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

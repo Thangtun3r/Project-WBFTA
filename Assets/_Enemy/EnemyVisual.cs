@@ -75,9 +75,9 @@ namespace _Scripts.Enemy
 
             if (shakeTarget != null)
             {
-                // Reset shake target rotation 
                 shakeTarget.DOKill();
-                shakeTarget.localRotation = Quaternion.identity;
+                // We no longer forcefully reset localRotation to identity here 
+                // because it breaks aimed modules (Ranged/Dive) that preserve their rotation.
             }
 
             if (flashVisuals != null)
@@ -103,9 +103,10 @@ namespace _Scripts.Enemy
             if (shakeTarget != null)
             {
                 // Shake Rotation
+                // To avoid disrupting aiming (Ranged) or movement (Dive), 
+                // we punch the rotation instead of hard resetting to identity and shaking.
                 shakeTarget.DOKill(true); 
-                shakeTarget.localRotation = Quaternion.identity; 
-                shakeTarget.DOShakeRotation(shakeDuration, new Vector3(0, 0, shakeStrength));
+                shakeTarget.DOPunchRotation(new Vector3(0, 0, shakeStrength), shakeDuration, 10, 1f);
             }
 
             if (flashVisuals != null)
