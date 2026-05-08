@@ -19,7 +19,7 @@ namespace _Scripts.Enemy
         protected int currentLevel;
         protected float currentDamage;
         protected float currentHealth;
-        protected EnemyVisuals _visuals;
+        protected EnemyVisual _visuals;
         protected EnemyFSM _fsm;
         protected Collider2D _collider;
         
@@ -32,7 +32,7 @@ namespace _Scripts.Enemy
 
         protected virtual void Awake()
         {
-            _visuals = GetComponentInChildren<EnemyVisuals>();
+            _visuals = GetComponentInChildren<EnemyVisual>();
             _fsm = GetComponentInChildren<EnemyFSM>();
             _collider = GetComponent<Collider2D>();
             
@@ -43,14 +43,13 @@ namespace _Scripts.Enemy
         void OnEnable()
         {
             CurrentEnemyRegistry.Instance?.Register(this);
-            // RESET: Ensures the enemy is alive and visible when pulled from the pool
             ResetEnemyState();
         }
 
         void OnDisable()
         {
             CurrentEnemyRegistry.Instance?.Unregister(this);
-            CancelInvoke(); // Safety: stops DeactivateObject if manually disabled
+            CancelInvoke();
         }
 
         private void ResetStats()
@@ -69,7 +68,6 @@ namespace _Scripts.Enemy
         {
             ResetStats();
             if (_collider != null) _collider.enabled = true;
-            if (_visuals != null) _visuals.ShowVisual();
             // Reset FSM to Patrol when pulled from the pool
             if (_fsm != null)
             {
@@ -92,8 +90,6 @@ namespace _Scripts.Enemy
         {
             if (currentHealth <= 0f) return;
             currentHealth -= damage;
-            _visuals?.PlayHitEffects();
-            
             if (_fsm != null && currentHealth > 0f)
             {
                 _fsm.enabled = false;
@@ -118,20 +114,20 @@ namespace _Scripts.Enemy
             if (_collider != null) _collider.enabled = false;
             if (_visuals != null)
             {
-                _visuals.PlayDeathEffects();
-                _visuals.HideVisual();
+                // _visuals.PlayDeathEffects();
+                // _visuals.HideVisual();
             }
 
             _fsm?.QueueNextState(EnemyFSM.EnemyState.Dead);
             RewardPlayer(config.tier, currentLevel);
-            Die();
+
             OnEnemyDeath?.Invoke(this);
             Invoke(nameof(DeactivateObject), deathReturnDelay);
         }
 
         protected virtual void DeactivateObject()
         {
-            // NEW: Instead of just setting active false, we return it to the pool
+        
             if (sourcePrefab != null && EnemyPoolManager.Instance != null)
                 EnemyPoolManager.Instance.Return(sourcePrefab, gameObject);
             else
@@ -140,7 +136,9 @@ namespace _Scripts.Enemy
 
         // Stubs for your logic
         public virtual Transform GetTransform() => transform;
-        public virtual void Die() { }
-        protected virtual void RewardPlayer(int tier, int level) => EnemyRewardManager.Instance?.HandleReward(tier, level);
+        protected virtual void RewardPlayer(int tier, int level)
+        {
+            EnemyRewardManager.Instance?.HandleReward(tier, level);
+        } 
     }
 }

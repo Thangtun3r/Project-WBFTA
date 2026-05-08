@@ -500,7 +500,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c4b79bc61a73f944ae7e7d8102f53fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Player.PlayerAttack
-  detectionMethod: 0
+  detectionMethod: 1
   targetLayers:
     serializedVersion: 2
     m_Bits: 64
@@ -681,7 +681,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 63283464}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bac54a5ceb9bf884b98145bf5b8f7cdd, type: 3}
   m_Name: 
@@ -11563,11 +11563,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   detectionRadius: 1
---- !u!198 &1465199393600549410 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 2764270102173797580, guid: d0f866bea8ec44f419d6478e8781a7ed, type: 3}
-  m_PrefabInstance: {fileID: 4479244629325749818}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1637343921426503687
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11858,26 +11853,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a055f0396e00a449977ce7d5f769306, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Enemy.EnemyVisuals
-  shakeTarget: {fileID: 6604007859516486130}
-  flashVisuals:
-  - {fileID: 4929568178856394074}
-  - {fileID: 4255499058095965720}
-  - {fileID: 8628830067804652716}
-  deathParticles: {fileID: 1465199393600549410}
-  OnFlashWindupStart:
-    m_PersistentCalls:
-      m_Calls: []
-  OnFlashComplete:
-    m_PersistentCalls:
-      m_Calls: []
-  shakeDuration: 0.1
-  shakeStrength: 7
-  damageColor: {r: 1, g: 1, b: 1, a: 1}
-  scaleTarget: {fileID: 4931671608594378510}
-  showScaleDuration: 0.2
-  hideScaleDuration: 0.15
-  showScaleEase: 27
-  hideScaleEase: 26
 --- !u!212 &3109289831023105430
 SpriteRenderer:
   serializedVersion: 2
@@ -12046,10 +12021,6 @@ PrefabInstance:
     - target: {fileID: 1362645100913559232, guid: f7a5fa5037516374fa7095d660fdb41b, type: 3}
       propertyPath: m_Name
       value: Default Enemy
-      objectReference: {fileID: 0}
-    - target: {fileID: 1362645100913559232, guid: f7a5fa5037516374fa7095d660fdb41b, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3526367780042481598, guid: f7a5fa5037516374fa7095d660fdb41b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -17247,24 +17218,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a055f0396e00a449977ce7d5f769306, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Enemy.EnemyVisuals
-  shakeTarget: {fileID: 3615922229033276142}
-  flashVisuals:
-  - {fileID: 3109289831023105430}
-  deathParticles: {fileID: 4853822199980361689}
-  OnFlashWindupStart:
-    m_PersistentCalls:
-      m_Calls: []
-  OnFlashComplete:
-    m_PersistentCalls:
-      m_Calls: []
-  shakeDuration: 0.1
-  shakeStrength: 7
-  damageColor: {r: 1, g: 1, b: 1, a: 1}
-  scaleTarget: {fileID: 1135180727990742443}
-  showScaleDuration: 0.2
-  hideScaleDuration: 0.15
-  showScaleEase: 27
-  hideScaleEase: 26
 --- !u!114 &5125385560344852514
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -20,13 +20,13 @@ namespace _Scripts.Enemy.Modules
         private ITargetSensor _sensor;
         private Coroutine _attackRoutine;
         private EnemyConfig _config;
-        private EnemyVisuals _enemyVisuals;
+        private EnemyVisual _enemyVisuals;
 
         private void Awake()
         {
             _config = GetComponentInParent<BaseEnemy>()?.Config;
             _sensor = GetComponentInChildren<ITargetSensor>();
-            _enemyVisuals = GetComponentInParent<EnemyVisuals>();
+            _enemyVisuals = GetComponentInParent<EnemyVisual>();
             rotationTarget = rotationTarget ?? transform;
             firePoint = firePoint ?? transform;
         }
@@ -69,8 +69,7 @@ namespace _Scripts.Enemy.Modules
                     yield return null;
                 }
 
-                // 3. Windup Phase: Start shaking now that we are aligned
-                _enemyVisuals?.OnFlashWindupStart?.Invoke();
+        
                 transform.DOLocalRotate(shakeAngle, 0.05f).SetLoops(-1, LoopType.Yoyo);
                 
                 float elapsed = 0;
@@ -117,6 +116,7 @@ namespace _Scripts.Enemy.Modules
         {
             transform.DOKill();
             transform.localRotation = Quaternion.identity;
+            transform.localScale = Vector3.one;
         }
 
         public bool CanHit() => _attackRoutine != null;
