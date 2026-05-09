@@ -38,7 +38,6 @@ namespace _Scripts.Enemy.Modules
         private float _stateTimer = 0f;
         private Vector2 _diveTarget;
         private bool _isCommitted = false;
-        private bool _recoveryTriggered = false; 
         private Camera _mainCamera;
         private SpriteRenderer _visualSpriteRenderer;
         private Color _originalColor;
@@ -65,7 +64,6 @@ namespace _Scripts.Enemy.Modules
 
         private void ChangeState(DiveState newState)
         {
-            // Stop any active visual tweens (flashing/shaking) when changing states
             if (visualRoot != null) visualRoot.DOKill();
             if (_visualSpriteRenderer != null)
             {
@@ -76,12 +74,12 @@ namespace _Scripts.Enemy.Modules
             _currentState = newState;
             _stateTimer = 0f;
             _isCommitted = false;
-            _recoveryTriggered = false; 
 
             switch (_currentState)
             {
                 case DiveState.Chasing:
                     if (visualRoot != null) visualRoot.localRotation = Quaternion.identity;
+                    // Indicator is always active when searching/chasing
                     if (directionRoot != null) directionRoot.gameObject.SetActive(true);
                     break;
 
@@ -97,21 +95,24 @@ namespace _Scripts.Enemy.Modules
                     }
                     break;
 
+                case DiveState.Diving:
+                    // Keep indicator ENABLED during the dive (as per your request)
+                    break;
+
                 case DiveState.Stuck:
                     _currentVelocity = Vector2.zero;
                     transform.position = _diveTarget;
 
-                    // 1. Disable direction indicator on impact
+                    // DISABLE indicator ONLY on impact/crash
                     if (directionRoot != null) directionRoot.gameObject.SetActive(false);
 
-                    // 2. Play particles on impact
-                    if (crashParticleEffect != null) crashParticleEffect.Play();
-                    
-                    // 3. CRASH SHAKE: Immediate shake upon hitting the ground
+                    // Physical shake lasts for exactly 50% of the stall duration
                     if (visualRoot != null)
                     {
-                        visualRoot.DOShakePosition(0.3f, crashShakeStrength, crashShakeVibrato);
+                        visualRoot.DOShakePosition(stallDuration * 0.5f, crashShakeStrength, crashShakeVibrato);
                     }
+
+                    if (crashParticleEffect != null) crashParticleEffect.Play();
                     break;
             }
         }
@@ -160,6 +161,8 @@ namespace _Scripts.Enemy.Modules
                 case DiveState.Diving:
                     float step = (config.moveSpeed * diveSpeedMultiplier) * Time.deltaTime;
                     transform.position = Vector2.MoveTowards(transform.position, _diveTarget, step);
+                    
+                    // We can still update rotation during dive if desired, or let it stay fixed
                     UpdateIndicatorRotation();
 
                     if (Vector2.Distance(transform.position, _diveTarget) < arrivalThreshold)
@@ -169,18 +172,12 @@ namespace _Scripts.Enemy.Modules
                     break;
 
                 case DiveState.Stuck:
-                    // RECOVERY PHASE: Triggered at 50% of the stall duration
-                    if (_stateTimer >= stallDuration * 0.5f && !_recoveryTriggered)
+                    // Re-enable direction root after 50% of stall time
+                    if (_stateTimer >= stallDuration * 0.5f)
                     {
-                        _recoveryTriggered = true;
-
-                        // 1. Re-enable the indicator
-                        if (directionRoot != null) directionRoot.gameObject.SetActive(true);
-
-                        // 2. RECOVERY SHAKE: Short burst to show it's waking up
-                        if (visualRoot != null)
+                        if (directionRoot != null && !directionRoot.gameObject.activeSelf)
                         {
-                            visualRoot.DOShakePosition(0.3f, crashShakeStrength * 0.7f, crashShakeVibrato);
+                            directionRoot.gameObject.SetActive(true);
                         }
                     }
 

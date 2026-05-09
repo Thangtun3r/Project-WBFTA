@@ -10462,7 +10462,7 @@ GameObject:
   - component: {fileID: 6216513820252581102}
   - component: {fileID: 2278825804218446991}
   - component: {fileID: 249604610843020164}
-  - component: {fileID: 3222679550639920046}
+  - component: {fileID: 5489374829453479071}
   m_Layer: 6
   m_Name: Dive Enemy
   m_TagString: 'Enemy '
@@ -10582,7 +10582,7 @@ MonoBehaviour:
   enemyAvoidanceRadius: 2
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 320
 --- !u!114 &6591575548536718574
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10666,8 +10666,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5409978a86cc374eab93284c0118102, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DragImpactDamage
---- !u!61 &3222679550639920046
-BoxCollider2D:
+--- !u!70 &5489374829453479071
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -10701,17 +10701,8 @@ BoxCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 2.76, y: 3.09}
-  m_EdgeRadius: 0.21
+  m_Size: {x: 2.6, y: 3.12}
+  m_Direction: 0
 --- !u!1001 &5294360757556164233
 PrefabInstance:
   m_ObjectHideFlags: 0

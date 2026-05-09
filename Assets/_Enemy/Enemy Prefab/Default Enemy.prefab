@@ -104,7 +104,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Enemy.DefaultEnemy
   maxHealth: 80
   config: {fileID: 11400000, guid: c06c940e2c3360f41ab05669cf9017e4, type: 2}
-  deathReturnDelay: 0.2
   sourcePrefab: {fileID: 0}
 --- !u!114 &8766825156057594251
 MonoBehaviour:
@@ -118,12 +117,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a055f0396e00a449977ce7d5f769306, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Enemy.EnemyVisuals
+  visualRoot: {fileID: 1484874183448757925}
   spriteRenderers:
   - {fileID: 1447554014220429187}
   - {fileID: 1268212388649458839}
   flashDuration: 0.1
-  visualRoot: {fileID: 1484874183448757925}
-  popScale: 0.1
+  punchAmount: 0.15
+  punchDuration: 0.2
+  shakeStrength: 0.1
+  shakeDuration: 0.2
+  shakeVibrato: 10
+  deathEffectName: enemyDeath
+  hitEffectName: enemyHit
 --- !u!50 &2869208683092143134
 Rigidbody2D:
   serializedVersion: 5
@@ -184,7 +189,7 @@ MonoBehaviour:
   enemyAvoidanceRadius: 2
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 320
 --- !u!114 &5030269155467686702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -205,6 +210,9 @@ MonoBehaviour:
   moveDurationMax: 1
   stopDurationMin: 0.2
   stopDurationMax: 0.2
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 320
 --- !u!114 &736617738351743313
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5566,7 +5574,7 @@ CapsuleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0.016507674, y: 0.017588535}
-  m_Size: {x: 1.090234, y: 2.1554177}
+  m_Size: {x: 1.090234, y: 1.32}
   m_Direction: 0
 --- !u!50 &7650092566285852075
 Rigidbody2D:

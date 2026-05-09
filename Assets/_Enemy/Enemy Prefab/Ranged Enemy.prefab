@@ -5763,7 +5763,7 @@ MonoBehaviour:
   enemyAvoidanceRadius: 2
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 320
 --- !u!114 &4279756431424898031
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5776,6 +5776,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d55da96354baa65489e28e924b5c1a5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Enemy.Modules.RangedEnemyMovement
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 320
 --- !u!114 &2119117488707750801
 MonoBehaviour:
   m_ObjectHideFlags: 0
