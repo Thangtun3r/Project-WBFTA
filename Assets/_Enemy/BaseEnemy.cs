@@ -7,6 +7,7 @@ namespace _Scripts.Enemy
     public abstract class BaseEnemy : MonoBehaviour, IDamagable, IHealthObservable
     {
         public static event Action<BaseEnemy> OnEnemyDeath;
+        public event Action OnEnemyHit;
 
         [Header("Base Stats")]
         [SerializeField] protected float maxHealth = 100f;
@@ -90,24 +91,22 @@ namespace _Scripts.Enemy
         {
             if (currentHealth <= 0f) return;
             currentHealth -= damage;
-            if (_fsm != null && currentHealth > 0f)
-            {
-                _fsm.enabled = false;
-                CancelInvoke(nameof(EndHitStun));
-                Invoke(nameof(EndHitStun), 0.15f); // Freeze movement briefly when hit
-            }
-
+            
+            // Broadcast hit event
+            OnEnemyHit?.Invoke();
+            
+        
             OnHealthChanged?.Invoke(currentHealth, maxHealth);
             if (currentHealth <= 0) OnDeath();
         }
 
-        protected virtual void EndHitStun()
-        {
-            if (currentHealth > 0f && _fsm != null)
-            {
-                _fsm.enabled = true;
-            }
-        }
+        // protected virtual void EndHitStun()
+        // {
+        //     if (currentHealth > 0f && _fsm != null)
+        //     {
+        //         _fsm.enabled = true;
+        //     }
+        // }
 
         protected virtual void OnDeath()
         {

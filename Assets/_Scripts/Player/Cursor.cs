@@ -7,7 +7,6 @@ public class MouseFollower : MonoBehaviour
     [Header("Sensitivity Settings")]
     public float sensitivity = 2.0f;
     
-    // This tracks where our "virtual" mouse is on the screen
     public Vector2 virtualScreenPos;
 
     private void Start()
@@ -20,9 +19,8 @@ public class MouseFollower : MonoBehaviour
 
     private void LateUpdate()
     {
-
-        float deltaX = Input.GetAxis("Mouse X") * sensitivity;
-        float deltaY = Input.GetAxis("Mouse Y") * sensitivity;
+        float deltaX = Input.GetAxisRaw("Mouse X") * sensitivity * Time.deltaTime * 100f;
+        float deltaY = Input.GetAxisRaw("Mouse Y") * sensitivity * Time.deltaTime * 100f;
 
         virtualScreenPos.x += deltaX;
         virtualScreenPos.y += deltaY;
@@ -31,7 +29,6 @@ public class MouseFollower : MonoBehaviour
         virtualScreenPos.y = Mathf.Clamp(virtualScreenPos.y, 0, Screen.height);
 
         Vector3 worldPoint = Camera.main.ScreenToWorldPoint(new Vector3(virtualScreenPos.x, virtualScreenPos.y, 10f));
-
 
         worldPoint.z = cursor.transform.position.z;
         cursor.transform.position = worldPoint;

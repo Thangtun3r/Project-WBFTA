@@ -1,6 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
+#if UNITY_EDITOR
 [CustomPropertyDrawer(typeof(EnemySpawnerDatabase.EnemyEntry))]
 public class EnemyEntryDrawer : PropertyDrawer
 {
@@ -33,3 +34,4 @@ public class EnemyEntryDrawer : PropertyDrawer
         return EditorGUI.GetPropertyHeight(property, label, true);
     }
 }
+#endif
