@@ -11,16 +11,16 @@ public class MouseFollower : MonoBehaviour
 
     private void Start()
     {
-        UnityEngine.Cursor.visible = false;
-        UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
 
         virtualScreenPos = new Vector2(Screen.width / 2f, Screen.height / 2f);
     }
 
     private void LateUpdate()
     {
-        float deltaX = Input.GetAxisRaw("Mouse X") * sensitivity * Time.deltaTime * 100f;
-        float deltaY = Input.GetAxisRaw("Mouse Y") * sensitivity * Time.deltaTime * 100f;
+        float deltaX = Input.GetAxisRaw("Mouse X") * sensitivity;
+        float deltaY = Input.GetAxisRaw("Mouse Y") * sensitivity;
 
         virtualScreenPos.x += deltaX;
         virtualScreenPos.y += deltaY;

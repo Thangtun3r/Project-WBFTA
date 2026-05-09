@@ -2,9 +2,8 @@ using UnityEngine;
 
 public class PlayerVisual : MonoBehaviour
 {
-    [Header("Visual References")]
-    [SerializeField] private ParticleSystem hitEffect; 
-
+    [Header("VFX Settings")]
+    private string hitEffectName = "playerHit";    [SerializeField] private string enemyHitEffectName = "enemyHit";
     // We no longer [SerializeField] this. We find it via code.
     private PlayerAttack _playerAttack;
 
@@ -23,23 +22,25 @@ public class PlayerVisual : MonoBehaviour
     {
         if (_playerAttack != null)
             _playerAttack.OnHitTarget += PlayHitVisuals;
+        
+        _Scripts.Enemy.BaseEnemy.OnAnyEnemyHit += OnEnemyHitResponse;
     }
 
     private void OnDisable()
     {
         if (_playerAttack != null)
             _playerAttack.OnHitTarget -= PlayHitVisuals;
+        
+        _Scripts.Enemy.BaseEnemy.OnAnyEnemyHit -= OnEnemyHitResponse;
     }
 
     private void PlayHitVisuals(Vector2 hitPoint, float damageAmount, bool isCrit)
     {
-        if (hitEffect != null)
-        {
-            // Teleport the particle system to the 2D contact point
-            hitEffect.transform.position = new Vector3(hitPoint.x, hitPoint.y, hitEffect.transform.position.z);
-            
-            hitEffect.Play();
-        }
-        
+        VFXStation.PlayEffect(hitEffectName, new Vector3(hitPoint.x, hitPoint.y, 0));
+    }
+
+    private void OnEnemyHitResponse(_Scripts.Enemy.BaseEnemy enemy)
+    {
+        VFXStation.PlayEffect(enemyHitEffectName, enemy.transform.position);
     }
 }

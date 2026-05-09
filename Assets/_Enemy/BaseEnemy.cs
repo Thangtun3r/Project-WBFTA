@@ -7,12 +7,14 @@ namespace _Scripts.Enemy
     public abstract class BaseEnemy : MonoBehaviour, IDamagable, IHealthObservable
     {
         public static event Action<BaseEnemy> OnEnemyDeath;
+        public static event Action<BaseEnemy> OnAnyEnemyHit;
         public event Action OnEnemyHit;
+        public event Action OnEnemyDeath_Local;
 
         [Header("Base Stats")]
         [SerializeField] protected float maxHealth = 100f;
         [SerializeField] protected EnemyConfig config;
-        [SerializeField] protected float deathReturnDelay = 3f;
+        protected float deathReturnDelay = 0f;
 
         // NEW: The "Magic Link" to the pool
         [HideInInspector] public GameObject sourcePrefab;
@@ -92,10 +94,10 @@ namespace _Scripts.Enemy
             if (currentHealth <= 0f) return;
             currentHealth -= damage;
             
-            // Broadcast hit event
+            // Broadcast hit events
             OnEnemyHit?.Invoke();
+            OnAnyEnemyHit?.Invoke(this);
             
-        
             OnHealthChanged?.Invoke(currentHealth, maxHealth);
             if (currentHealth <= 0) OnDeath();
         }
@@ -111,12 +113,8 @@ namespace _Scripts.Enemy
         protected virtual void OnDeath()
         {
             if (_collider != null) _collider.enabled = false;
-            if (_visuals != null)
-            {
-                // _visuals.PlayDeathEffects();
-                // _visuals.HideVisual();
-            }
-
+            
+            OnEnemyDeath_Local?.Invoke();
             _fsm?.QueueNextState(EnemyFSM.EnemyState.Dead);
             RewardPlayer(config.tier, currentLevel);
 

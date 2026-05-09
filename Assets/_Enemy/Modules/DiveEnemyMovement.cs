@@ -19,7 +19,7 @@ namespace _Scripts.Enemy.Modules
         [SerializeField] private float viewportMargin = 0.1f;
 
         [Header("Visuals")]
-        [SerializeField] private Transform indicatorRoot;
+        [SerializeField] private Transform directionRoot;
         [SerializeField] private Transform visualRoot;
         [SerializeField] private Vector3 shakeAngle = new Vector3(0, 0, 15f);
         [SerializeField] private float shakeSpeed = 0.05f;
@@ -38,10 +38,10 @@ namespace _Scripts.Enemy.Modules
         private float _stateTimer = 0f;
         private Vector2 _diveTarget;
         private bool _isCommitted = false;
+        private bool _recoveryTriggered = false; 
         private Camera _mainCamera;
         private SpriteRenderer _visualSpriteRenderer;
         private Color _originalColor;
-        private bool _isShaking = false;
 
         private void Awake()
         {
@@ -60,15 +60,12 @@ namespace _Scripts.Enemy.Modules
             ChangeState(DiveState.Chasing);
             _currentVelocity = Vector2.zero;
             _diveTarget = Vector2.zero;
-            
-            if (visualRoot != null)
-            {
-                visualRoot.localPosition = Vector3.zero;
-            }
+            if (visualRoot != null) visualRoot.localPosition = Vector3.zero;
         }
 
         private void ChangeState(DiveState newState)
         {
+            // Stop any active visual tweens (flashing/shaking) when changing states
             if (visualRoot != null) visualRoot.DOKill();
             if (_visualSpriteRenderer != null)
             {
@@ -78,78 +75,66 @@ namespace _Scripts.Enemy.Modules
 
             _currentState = newState;
             _stateTimer = 0f;
-            _isShaking = false;
             _isCommitted = false;
+            _recoveryTriggered = false; 
 
-            if (_currentState == DiveState.Chasing && visualRoot != null)
+            switch (_currentState)
             {
-                visualRoot.localRotation = Quaternion.identity;
-            }
+                case DiveState.Chasing:
+                    if (visualRoot != null) visualRoot.localRotation = Quaternion.identity;
+                    if (directionRoot != null) directionRoot.gameObject.SetActive(true);
+                    break;
 
-            if (_currentState == DiveState.Locking && visualRoot != null)
-            {
-                visualRoot.localRotation = Quaternion.Euler(-shakeAngle);
-                visualRoot.DOLocalRotate(shakeAngle, shakeSpeed).SetEase(shakeEase).SetLoops(-1, LoopType.Yoyo);
-                
-                if (_visualSpriteRenderer != null)
-                {
-                    _visualSpriteRenderer.DOColor(flashColor, flashSpeed).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
-                }
-                _isShaking = true;
-            }
-            
-            if (_currentState == DiveState.Stuck)
-            {
-                _currentVelocity = Vector2.zero;
-                transform.position = _diveTarget;
-                if (visualRoot != null)
-                {
-                    visualRoot.DOShakePosition(0.4f, crashShakeStrength, crashShakeVibrato);
-                }
-                if (crashParticleEffect != null)
-                {
-                    crashParticleEffect.Play();
-                }
+                case DiveState.Locking:
+                    if (visualRoot != null)
+                    {
+                        visualRoot.localRotation = Quaternion.Euler(-shakeAngle);
+                        visualRoot.DOLocalRotate(shakeAngle, shakeSpeed).SetEase(shakeEase).SetLoops(-1, LoopType.Yoyo);
+                    }
+                    if (_visualSpriteRenderer != null)
+                    {
+                        _visualSpriteRenderer.DOColor(flashColor, flashSpeed).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
+                    }
+                    break;
+
+                case DiveState.Stuck:
+                    _currentVelocity = Vector2.zero;
+                    transform.position = _diveTarget;
+
+                    // 1. Disable direction indicator on impact
+                    if (directionRoot != null) directionRoot.gameObject.SetActive(false);
+
+                    // 2. Play particles on impact
+                    if (crashParticleEffect != null) crashParticleEffect.Play();
+                    
+                    // 3. CRASH SHAKE: Immediate shake upon hitting the ground
+                    if (visualRoot != null)
+                    {
+                        visualRoot.DOShakePosition(0.3f, crashShakeStrength, crashShakeVibrato);
+                    }
+                    break;
             }
         }
 
         public void MoveTowards(Vector2 targetPosition)
         {
             if (config == null) return;
-
             if (_currentState == DiveState.Chasing || (_currentState == DiveState.Locking && !_isCommitted))
             {
                 _diveTarget = GetClampedViewportPosition(targetPosition);
             }
-
             ProcessDiveState();
         }
 
         public void MoveInDirection(Vector2 direction)
         {
             if (config == null) return;
-            
             if (_currentState == DiveState.Chasing || (_currentState == DiveState.Locking && !_isCommitted))
             {
                 Vector2 target = (Vector2)transform.position + (direction.normalized * 5f);
                 _diveTarget = GetClampedViewportPosition(target);
             }
-
             ProcessDiveState();
-        }
-
-        private Vector2 GetClampedViewportPosition(Vector2 worldPos)
-        {
-            if (_mainCamera == null) return worldPos;
-
-            Vector3 vpPos = _mainCamera.WorldToViewportPoint(worldPos);
-            
-            vpPos.x = Mathf.Clamp(vpPos.x, viewportMargin, 1f - viewportMargin);
-            vpPos.y = Mathf.Clamp(vpPos.y, viewportMargin, 1f - viewportMargin);
-            vpPos.z = Mathf.Abs(_mainCamera.transform.position.z); 
-
-            Vector3 clampedWorldPos = _mainCamera.ViewportToWorldPoint(vpPos);
-            return new Vector2(clampedWorldPos.x, clampedWorldPos.y);
         }
 
         private void ProcessDiveState()
@@ -159,31 +144,23 @@ namespace _Scripts.Enemy.Modules
             switch (_currentState)
             {
                 case DiveState.Chasing:
-                    Vector2 dir = (_diveTarget - (Vector2)transform.position).normalized;
-                    _currentVelocity = Vector2.MoveTowards(_currentVelocity, dir * config.moveSpeed, config.acceleration * Time.deltaTime);
+                    Vector2 chaseDir = (_diveTarget - (Vector2)transform.position).normalized;
+                    _currentVelocity = Vector2.MoveTowards(_currentVelocity, chaseDir * config.moveSpeed, config.acceleration * Time.deltaTime);
                     UpdateIndicatorRotation();
-
-                    if (IsInsideViewport())
-                    {
-                        ChangeState(DiveState.Locking);
-                    }
+                    if (IsInsideViewport()) ChangeState(DiveState.Locking);
                     break;
 
                 case DiveState.Locking:
                     _currentVelocity = Vector2.MoveTowards(_currentVelocity, Vector2.zero, config.deceleration * Time.deltaTime);
                     UpdateIndicatorRotation();
-                    
-                    if (_stateTimer >= graceCommitmentTime)
-                    {
-                        _isCommitted = true;
-                    }
-                    
+                    if (_stateTimer >= graceCommitmentTime) _isCommitted = true;
                     if (_stateTimer >= lockTime) ChangeState(DiveState.Diving);
                     break;
 
                 case DiveState.Diving:
                     float step = (config.moveSpeed * diveSpeedMultiplier) * Time.deltaTime;
                     transform.position = Vector2.MoveTowards(transform.position, _diveTarget, step);
+                    UpdateIndicatorRotation();
 
                     if (Vector2.Distance(transform.position, _diveTarget) < arrivalThreshold)
                     {
@@ -192,6 +169,21 @@ namespace _Scripts.Enemy.Modules
                     break;
 
                 case DiveState.Stuck:
+                    // RECOVERY PHASE: Triggered at 50% of the stall duration
+                    if (_stateTimer >= stallDuration * 0.5f && !_recoveryTriggered)
+                    {
+                        _recoveryTriggered = true;
+
+                        // 1. Re-enable the indicator
+                        if (directionRoot != null) directionRoot.gameObject.SetActive(true);
+
+                        // 2. RECOVERY SHAKE: Short burst to show it's waking up
+                        if (visualRoot != null)
+                        {
+                            visualRoot.DOShakePosition(0.3f, crashShakeStrength * 0.7f, crashShakeVibrato);
+                        }
+                    }
+
                     if (_stateTimer >= stallDuration) ChangeState(DiveState.Chasing);
                     break;
             }
@@ -202,25 +194,36 @@ namespace _Scripts.Enemy.Modules
             }
         }
 
+        private void UpdateIndicatorRotation()
+        {
+            if (directionRoot != null && directionRoot.gameObject.activeSelf)
+            {
+                Vector2 dir = (_diveTarget - (Vector2)transform.position).normalized;
+                if (dir != Vector2.zero)
+                {
+                    float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+                    directionRoot.rotation = Quaternion.Lerp(directionRoot.rotation, Quaternion.Euler(0, 0, angle - 90f), 15f * Time.deltaTime);
+                }
+            }
+        }
+
+        private Vector2 GetClampedViewportPosition(Vector2 worldPos)
+        {
+            if (_mainCamera == null) return worldPos;
+            Vector3 vpPos = _mainCamera.WorldToViewportPoint(worldPos);
+            vpPos.x = Mathf.Clamp(vpPos.x, viewportMargin, 1f - viewportMargin);
+            vpPos.y = Mathf.Clamp(vpPos.y, viewportMargin, 1f - viewportMargin);
+            vpPos.z = Mathf.Abs(_mainCamera.transform.position.z); 
+            Vector3 clampedWorldPos = _mainCamera.ViewportToWorldPoint(vpPos);
+            return new Vector2(clampedWorldPos.x, clampedWorldPos.y);
+        }
+
         private bool IsInsideViewport()
         {
             if (_mainCamera == null) return true;
             Vector3 vp = _mainCamera.WorldToViewportPoint(transform.position);
             return vp.x >= viewportMargin && vp.x <= 1f - viewportMargin && 
                    vp.y >= viewportMargin && vp.y <= 1f - viewportMargin;
-        }
-
-        private void UpdateIndicatorRotation()
-        {
-            if (indicatorRoot != null)
-            {
-                Vector2 dir = (_diveTarget - (Vector2)transform.position).normalized;
-                if (dir != Vector2.zero)
-                {
-                    float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-                    indicatorRoot.rotation = Quaternion.Lerp(indicatorRoot.rotation, Quaternion.Euler(0, 0, angle - 90f), 15f * Time.deltaTime);
-                }
-            }
         }
 
         private void ApplyMovement()
