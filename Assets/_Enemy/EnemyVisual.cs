@@ -13,8 +13,8 @@ public class EnemyVisual : MonoBehaviour
     [SerializeField] private float flashDuration = 0.1f;
 
     [Header("Scale Pop Settings")]
-    [SerializeField] private float punchAmount = 0.15f;
-    [SerializeField] private float punchDuration = 0.2f;
+    private float punchAmount = 0.25f;
+    private float punchDuration = 0.1f;
 
     [Header("Wiggle Settings")]
     [SerializeField] private float shakeStrength = 0.1f;

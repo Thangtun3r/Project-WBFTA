@@ -3465,8 +3465,6 @@ MonoBehaviour:
   visualRoot: {fileID: 0}
   spriteRenderers: []
   flashDuration: 0.1
-  punchAmount: 0.15
-  punchDuration: 0.2
   shakeStrength: 7
   shakeDuration: 0.1
   shakeVibrato: 10
@@ -3855,8 +3853,6 @@ MonoBehaviour:
   visualRoot: {fileID: 0}
   spriteRenderers: []
   flashDuration: 0.1
-  punchAmount: 0.15
-  punchDuration: 0.2
   shakeStrength: 7
   shakeDuration: 0.1
   shakeVibrato: 10
@@ -4175,7 +4171,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7525386521441811197, guid: 89436975cf4e140438f1ef08214339c8, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -15364,8 +15360,6 @@ MonoBehaviour:
   visualRoot: {fileID: 0}
   spriteRenderers: []
   flashDuration: 0.1
-  punchAmount: 0.15
-  punchDuration: 0.2
   shakeStrength: 7
   shakeDuration: 0.1
   shakeVibrato: 10
@@ -17870,8 +17864,6 @@ MonoBehaviour:
   visualRoot: {fileID: 0}
   spriteRenderers: []
   flashDuration: 0.1
-  punchAmount: 0.15
-  punchDuration: 0.2
   shakeStrength: 7
   shakeDuration: 0.1
   shakeVibrato: 10
@@ -30329,8 +30321,6 @@ MonoBehaviour:
   visualRoot: {fileID: 0}
   spriteRenderers: []
   flashDuration: 0.1
-  punchAmount: 0.15
-  punchDuration: 0.2
   shakeStrength: 0.1
   shakeDuration: 0.2
   shakeVibrato: 10
@@ -35936,8 +35926,6 @@ MonoBehaviour:
   visualRoot: {fileID: 0}
   spriteRenderers: []
   flashDuration: 0.1
-  punchAmount: 0.15
-  punchDuration: 0.2
   shakeStrength: 0.1
   shakeDuration: 0.2
   shakeVibrato: 10
@@ -36464,11 +36452,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2489676437316246537, guid: aacd8c0da10eb2048b9cc5b23f3fdc8c, type: 3}
       propertyPath: detectionMethod
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3618020429429243823, guid: aacd8c0da10eb2048b9cc5b23f3fdc8c, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3618020429429243823, guid: aacd8c0da10eb2048b9cc5b23f3fdc8c, type: 3}
       propertyPath: damageMultiplier

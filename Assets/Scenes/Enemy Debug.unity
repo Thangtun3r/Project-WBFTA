@@ -11684,8 +11684,6 @@ MonoBehaviour:
   visualRoot: {fileID: 0}
   spriteRenderers: []
   flashDuration: 0.1
-  punchAmount: 0.15
-  punchDuration: 0.2
   shakeStrength: 0.1
   shakeDuration: 0.2
   shakeVibrato: 10
