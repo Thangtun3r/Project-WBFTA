@@ -19,7 +19,7 @@ namespace _Scripts.Enemy
 
         public override void EnterState()
         {
-            Debug.Log("ChaseState: Entered");
+            
         }
 
         public override void UpdateState()
@@ -57,7 +57,7 @@ namespace _Scripts.Enemy
 
         public override void ExitState()
         {
-            Debug.Log("ChaseState: Exited");
+           
         }
     }
 }

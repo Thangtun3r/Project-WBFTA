@@ -14,6 +14,7 @@ namespace _Scripts.Enemy.Modules
         [SerializeField] private float lockTime = 1f;
         [SerializeField] private float graceCommitmentTime = 0.3f;
         [SerializeField] private float diveSpeedMultiplier = 4f;
+        private float overshootDistance = 3f; // New: How far past the player to lunge
         [SerializeField] private float stallDuration = 2f;
         [SerializeField] private float arrivalThreshold = 0.2f;
         [SerializeField] private float viewportMargin = 0.1f;
@@ -64,6 +65,7 @@ namespace _Scripts.Enemy.Modules
 
         private void ChangeState(DiveState newState)
         {
+            // Clean up previous state tweens
             if (visualRoot != null) visualRoot.DOKill();
             if (_visualSpriteRenderer != null)
             {
@@ -79,7 +81,6 @@ namespace _Scripts.Enemy.Modules
             {
                 case DiveState.Chasing:
                     if (visualRoot != null) visualRoot.localRotation = Quaternion.identity;
-                    // Indicator is always active when searching/chasing
                     if (directionRoot != null) directionRoot.gameObject.SetActive(true);
                     break;
 
@@ -96,17 +97,25 @@ namespace _Scripts.Enemy.Modules
                     break;
 
                 case DiveState.Diving:
-                    // Keep indicator ENABLED during the dive (as per your request)
+                    // OVERSHOOT LOGIC: 
+                    // Calculate direction toward the target and extend it
+                    Vector2 currentPos = transform.position;
+                    Vector2 dirToTarget = (_diveTarget - currentPos).normalized;
+                    
+                    // Update _diveTarget to be past the player
+                    _diveTarget = currentPos + (dirToTarget * (Vector2.Distance(currentPos, _diveTarget) + overshootDistance));
+                    
+                    // Clamp to viewport so they don't dive into the "void"
+                    _diveTarget = GetClampedViewportPosition(_diveTarget);
                     break;
 
                 case DiveState.Stuck:
                     _currentVelocity = Vector2.zero;
+                    // Ensure we snap to the final target on impact
                     transform.position = _diveTarget;
 
-                    // DISABLE indicator ONLY on impact/crash
                     if (directionRoot != null) directionRoot.gameObject.SetActive(false);
 
-                    // Physical shake lasts for exactly 50% of the stall duration
                     if (visualRoot != null)
                     {
                         visualRoot.DOShakePosition(stallDuration * 0.5f, crashShakeStrength, crashShakeVibrato);
@@ -120,6 +129,7 @@ namespace _Scripts.Enemy.Modules
         public void MoveTowards(Vector2 targetPosition)
         {
             if (config == null) return;
+            // Only update target if chasing or in the early "grace" period of locking
             if (_currentState == DiveState.Chasing || (_currentState == DiveState.Locking && !_isCommitted))
             {
                 _diveTarget = GetClampedViewportPosition(targetPosition);
@@ -162,7 +172,7 @@ namespace _Scripts.Enemy.Modules
                     float step = (config.moveSpeed * diveSpeedMultiplier) * Time.deltaTime;
                     transform.position = Vector2.MoveTowards(transform.position, _diveTarget, step);
                     
-                    // We can still update rotation during dive if desired, or let it stay fixed
+                    // Keep indicator pointing at the overshoot target
                     UpdateIndicatorRotation();
 
                     if (Vector2.Distance(transform.position, _diveTarget) < arrivalThreshold)
@@ -172,7 +182,6 @@ namespace _Scripts.Enemy.Modules
                     break;
 
                 case DiveState.Stuck:
-                    // Re-enable direction root after 50% of stall time
                     if (_stateTimer >= stallDuration * 0.5f)
                     {
                         if (directionRoot != null && !directionRoot.gameObject.activeSelf)

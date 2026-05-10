@@ -131,8 +131,12 @@ Assets/_Game System/
  ModifierManager.cs
  PlayerSO.cs
  PlayerStats.cs
- Projectile.cs
- ProjectilePool.cs
+ Projectile System/
+  IProjectile.cs
+  MissleProjectile.cs
+  Projectile.cs
+  ProjectilePool.cs
+  ProjectileRequest.cs
  Prop/
   GoldProp.cs
   PropBase.cs
@@ -170,6 +174,7 @@ Assets/_Item System/Scripts/
   CritDamageLogic.cs
   CritRateLogic.cs
   HealOrbOnKillLogic.cs
+  HomingMissileLogic.cs
   ItemLogicBase.cs
   MaxHealthIncreaseLogic.cs
   SpeedBoostLogic.cs

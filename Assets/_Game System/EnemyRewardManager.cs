@@ -40,7 +40,7 @@ public class EnemyRewardManager : MonoBehaviour
         float variance = Random.Range(0.9f, 1.1f);
         int finalReward = Mathf.RoundToInt(rawReward * variance);
 
-        Debug.Log($"Enemy Defeated | Tier: {enemyTier}, Lvl: {enemyLevel} | World Diff: {inflation:F2} | Final: ${finalReward}");
+    
         
         if (EconomyManager.Instance != null)
         {

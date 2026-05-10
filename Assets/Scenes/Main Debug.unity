@@ -165,14 +165,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Spawner
   database: {fileID: 11400000, guid: b4818cbf2eb2bb3439a58b031b05f9e4, type: 2}
-  initialCredits: 80
-  baseCreditsPerSecond: 2
-  incomeGrowthMultiplier: 1.2
+  initialCredits: 1000
+  baseCreditsPerSecond: 10
+  incomeGrowthMultiplier: 20
   spawnInterval: 3
   ambushChance: 0.146
-  baseMaxCap: 30
-  hardMaxCap: 150
-  capGrowthMultiplier: 1.1
+  baseMaxCap: 300
+  hardMaxCap: 300
+  capGrowthMultiplier: 20
   initialGracePeriod: 5
   loadingPrefab: {fileID: 6414776186518300151, guid: 58ba6645079fb4d4090780b1572d92a1, type: 3}
   loadingDuration: 1.2
@@ -679,6 +679,9 @@ MonoBehaviour:
   - ItemID: MaxHealthIncrease
     Definition: {fileID: 11400000, guid: 3cd00c21565138744b94e8ce4970169a, type: 2}
     LogicClassName: MaxHealthIncreaseLogic
+  - ItemID: HomingMissile
+    Definition: {fileID: 11400000, guid: b3f59170e62719543899784770215da7, type: 2}
+    LogicClassName: HomingMissileLogic
 --- !u!114 &134792001
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1621,6 +1624,11 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1 &403382007 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9025922787351948306, guid: 42d30f895f02591429248015dff98bd0, type: 3}
+  m_PrefabInstance: {fileID: 1243316871959999313}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &459119422
 GameObject:
   m_ObjectHideFlags: 0
@@ -3531,6 +3539,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 895265784}
   - {fileID: 1421364081}
   - {fileID: 1782084114}
   - {fileID: 134791999}
@@ -9267,7 +9276,7 @@ GameObject:
   - component: {fileID: 895265784}
   - component: {fileID: 895265783}
   m_Layer: 0
-  m_Name: Projectile Pool
+  m_Name: Projectile Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9285,7 +9294,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83f44e77bfdc0df4d82e544687be9a0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjectilePool
-  prefab: {fileID: 6540510807301753703, guid: 5add8fdeeac561245ae2ff7cf62f9a4c, type: 3}
+  projectileLibrary:
+  - id: DefaultBullet
+    prefab: {fileID: 1805574314347126598, guid: 5add8fdeeac561245ae2ff7cf62f9a4c, type: 3}
+    initialCapacity: 100
+    maxCapacity: 100
+  - id: HomingMissile
+    prefab: {fileID: 403382007}
+    initialCapacity: 400
+    maxCapacity: 3000
 --- !u!4 &895265784
 Transform:
   m_ObjectHideFlags: 0
@@ -9294,12 +9311,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 895265782}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.22425, y: -9.95048, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1798.2568, y: -1029.2751, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 760100953}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &897147532
 GameObject:
@@ -17507,7 +17524,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   timeFactor: 0.25
   stageFactor: 1.15
-  levelUpInterval: 120
+  levelUpInterval: 1
 --- !u!114 &1421364084
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29992,6 +30009,63 @@ Transform:
   - {fileID: 811685326}
   m_Father: {fileID: 1676090770}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1243316871959999313
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4530312474060094912, guid: 42d30f895f02591429248015dff98bd0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4530312474060094912, guid: 42d30f895f02591429248015dff98bd0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4530312474060094912, guid: 42d30f895f02591429248015dff98bd0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4530312474060094912, guid: 42d30f895f02591429248015dff98bd0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4530312474060094912, guid: 42d30f895f02591429248015dff98bd0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4530312474060094912, guid: 42d30f895f02591429248015dff98bd0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4530312474060094912, guid: 42d30f895f02591429248015dff98bd0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4530312474060094912, guid: 42d30f895f02591429248015dff98bd0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4530312474060094912, guid: 42d30f895f02591429248015dff98bd0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4530312474060094912, guid: 42d30f895f02591429248015dff98bd0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9025922787351948306, guid: 42d30f895f02591429248015dff98bd0, type: 3}
+      propertyPath: m_Name
+      value: Missle
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 42d30f895f02591429248015dff98bd0, type: 3}
 --- !u!114 &1333406514303465892
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36452,11 +36526,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2489676437316246537, guid: aacd8c0da10eb2048b9cc5b23f3fdc8c, type: 3}
       propertyPath: detectionMethod
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3618020429429243823, guid: aacd8c0da10eb2048b9cc5b23f3fdc8c, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3618020429429243823, guid: aacd8c0da10eb2048b9cc5b23f3fdc8c, type: 3}
       propertyPath: damageMultiplier
@@ -36996,7 +37070,6 @@ SceneRoots:
   - {fileID: 286745847}
   - {fileID: 469358077}
   - {fileID: 911949101}
-  - {fileID: 895265784}
   - {fileID: 1002442685}
   - {fileID: 850277043}
   - {fileID: 126468983907518635}
@@ -37007,3 +37080,4 @@ SceneRoots:
   - {fileID: 4355392350336185380}
   - {fileID: 991907307}
   - {fileID: 4185607812968039108}
+  - {fileID: 1243316871959999313}

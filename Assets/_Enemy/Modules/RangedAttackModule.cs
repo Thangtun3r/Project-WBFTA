@@ -86,18 +86,38 @@ namespace _Scripts.Enemy.Modules
             }
         }
 
-        private void ExecuteFire()
+    private void ExecuteFire()
+    {
+        ResetVisuals();
+        
+        // 1. Prepare basic data
+        Vector3 dir = rotationTarget.right; 
+        float damage = _config != null ? _config.damage : 10f;
+
+        // 2. Create the Request
+        // Note: We use the object initializer {} to fill fields easily
+        ProjectileRequest request = new ProjectileRequest
         {
-            ResetVisuals();
-            
-            Vector3 dir = (rotationTarget.right); // Use current forward after alignment
-            float damage = _config != null ? _config.damage : 10f;
+            ProjectileID = "DefaultBullet", // Match the ID in your Pool Library!
+            Position = firePoint.position,
+            Rotation = rotationTarget.rotation,
+            Direction = dir * projSpeed,
+            Damage = damage,
+        };
 
-            ProjectilePool.OnProjectileRequested?.Invoke(new ProjectileRequest(
-                firePoint.position, rotationTarget.rotation, damage, dir * projSpeed));
+        // 3. Call the Pool directly (using the Singleton Instance)
+        ProjectilePool.Instance.RequestProjectile(request);
 
-            transform.DOPunchScale(new Vector3(0.2f, 0.2f, 0), 0.1f);
-        }
+        // Visual feedback
+        transform.DOPunchScale(new Vector3(0.2f, 0.2f, 0), 0.1f);
+    }
+
+
+
+
+
+
+
 
         private float GetAngleToTarget()
         {
