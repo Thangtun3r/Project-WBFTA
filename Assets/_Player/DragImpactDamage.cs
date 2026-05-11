@@ -15,6 +15,7 @@ public class DragImpactDamage : MonoBehaviour
     private float _lastImpactTime = -Mathf.Infinity;
     private float _currentDamage = 0f;
     private bool _isCrit = false;
+    private GameObject _attackerObject;
 
     public static event Action OnImpactDetected;
 
@@ -35,6 +36,11 @@ public class DragImpactDamage : MonoBehaviour
     public void SetCrit(bool isCrit)
     {
         _isCrit = isCrit;
+    }
+
+    public void SetAttacker(GameObject attacker)
+    {
+        _attackerObject = attacker;
     }
 
     private void Update()
@@ -72,8 +78,8 @@ public class DragImpactDamage : MonoBehaviour
             {
                 damagable.TakeDamage(_currentDamage);
                 
-                // Trigger item on-hit effects
-                GlobalEventManager.Instance?.OnHit(gameObject, damagable, _currentDamage, _isCrit);
+                // Trigger item on-hit effects using the centralized player hit method
+                GlobalEventManager.Instance?.OnPlayerHit(damagable, _currentDamage, _isCrit);
 
                 // Spawn floating damage text at impact point
                 FloatingDamagePool.Instance?.SpawnDamage(collision.contacts[0].point, _currentDamage, _isCrit);

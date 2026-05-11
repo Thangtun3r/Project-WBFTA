@@ -3,9 +3,10 @@ using UnityEngine;
 public class HomingMissileLogic : ItemLogicBase
 {
     [Header("Debug Settings")]
-    [SerializeField] private bool forceProc = true; // Set this to TRUE in Inspector
-    [SerializeField] private float procChance = 0.1f;
-    [SerializeField] private float damageMultiplier = 0.8f;
+    private bool forceProc = false; // Set this to TRUE in Inspector
+    private float procChance = 0.2f;
+    private float damageMultiplier = 3f;
+    private float damageMultiplierPerStack = 3f;
 
     protected override void OnInitialize()
     {
@@ -25,40 +26,30 @@ public class HomingMissileLogic : ItemLogicBase
 
         Transform targetTransform = (target as MonoBehaviour)?.transform;
         
-        // DEBUG LOG 2: Confirming we passed the checks
-        Debug.Log($"<color=green>MISSILE PROC!</color> Launching {Owner.StackSize} missiles.");
-
         LaunchMissileSalvo(targetTransform, damage);
     }
 
     private void LaunchMissileSalvo(Transform target, float baseDamage)
     {
-        // Every stack now fires a separate missile
-        for (int i = 0; i < Owner.StackSize; i++)
+        // Calculate damage multiplier based on stack size
+        float scaledDamageMultiplier = damageMultiplier + (Owner.StackSize - 1) * damageMultiplierPerStack;
+        
+        Vector3 spawnOffset = new Vector3(Random.Range(-0.2f, 0.2f), 1.5f, 0);
+        
+        // Randomize launch direction so they fan out beautifully
+        Vector3 randomDir = (Vector3.up + (Vector3)Random.insideUnitCircle * 0.7f).normalized;
+
+        ProjectileRequest request = new ProjectileRequest
         {
-            Vector3 spawnOffset = CalculateSpawnOffset(i);
-            
-            // Randomize launch direction so they fan out beautifully
-            Vector3 randomDir = (Vector3.up + (Vector3)Random.insideUnitCircle * 0.7f).normalized;
+            ProjectileID = "HomingMissile",
+            Position = Owner.OwnerObject.transform.position + spawnOffset,
+            Rotation = Quaternion.identity,
+            Direction = randomDir * 6f, // Speed of the initial "pop"
+            Damage = baseDamage * scaledDamageMultiplier,
+            Target = target
+        };
 
-            ProjectileRequest request = new ProjectileRequest
-            {
-                ProjectileID = "HomingMissile",
-                Position = Owner.OwnerObject.transform.position + spawnOffset,
-                Rotation = Quaternion.identity,
-                Direction = randomDir * 6f, // Speed of the initial "pop"
-                Damage = baseDamage * damageMultiplier,
-                Target = target
-            };
-
-            ProjectilePool.Instance?.RequestProjectile(request);
-        }
-    }
-
-    private Vector3 CalculateSpawnOffset(int index)
-    {
-        // Spawns them in a vertical line above the player
-        return new Vector3(Random.Range(-0.2f, 0.2f), 1.5f + (index * 0.1f), 0);
+        ProjectilePool.Instance?.RequestProjectile(request);
     }
 
     public override void Dispose()

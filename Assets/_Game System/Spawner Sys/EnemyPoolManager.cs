@@ -8,6 +8,19 @@ public class EnemyPoolManager : MonoBehaviour
 
     private void Awake() => Instance = this;
 
+    public void Prewarm(GameObject prefab, int count)
+    {
+        if (!_pools.ContainsKey(prefab))
+            _pools[prefab] = new Queue<GameObject>();
+
+        for (int i = 0; i < count; i++)
+        {
+            GameObject obj = Instantiate(prefab, transform);
+            obj.SetActive(false);
+            _pools[prefab].Enqueue(obj);
+        }
+    }
+
     public GameObject Get(GameObject prefab, Vector3 pos, Quaternion rot)
     {
         if (!_pools.ContainsKey(prefab)) _pools[prefab] = new Queue<GameObject>();

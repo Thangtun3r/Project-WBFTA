@@ -7,6 +7,7 @@ namespace _Scripts.Enemy
     public abstract class BaseEnemy : MonoBehaviour, IDamagable, IHealthObservable
     {
         public static event Action<BaseEnemy> OnEnemyDeath;
+        public static event Action<BaseEnemy> OnEnemyKilled;
         public static event Action<BaseEnemy> OnAnyEnemyHit;
         public event Action OnEnemyHit;
         public event Action OnEnemyDeath_Local;
@@ -119,6 +120,7 @@ namespace _Scripts.Enemy
             RewardPlayer(config.tier, currentLevel);
 
             OnEnemyDeath?.Invoke(this);
+            OnEnemyKilled?.Invoke(this);
             Invoke(nameof(DeactivateObject), deathReturnDelay);
         }
 

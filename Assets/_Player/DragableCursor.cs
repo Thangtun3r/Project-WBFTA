@@ -104,7 +104,10 @@ public class DragableCursor : MonoBehaviour
         {
             float baseDamage = _playerStats.GetCalculatedAttackDamage();
             float finalDamage = baseDamage * damageMultiplier;
+            bool isCrit = _playerStats.WasLastAttackCrit();
             dragDamage.SetDamage(finalDamage);
+            dragDamage.SetCrit(isCrit);
+            dragDamage.SetAttacker(_playerStats.gameObject);
         }
     }
 

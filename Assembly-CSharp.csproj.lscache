@@ -132,6 +132,7 @@ Assets/_Game System/
  PlayerSO.cs
  PlayerStats.cs
  Projectile System/
+  BombProjectile.cs
   IProjectile.cs
   MissleProjectile.cs
   Projectile.cs
@@ -170,6 +171,7 @@ Assets/_Item System/Scripts/
   IItemModifier.cs
  InventoryVisualManager.cs
  Item Logic/
+  BombOnKillLogic.cs
   ChainDamageLogic.cs
   CritDamageLogic.cs
   CritRateLogic.cs

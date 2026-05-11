@@ -27,6 +27,9 @@ public class DirectorSpawner2D : MonoBehaviour
     public GameObject loadingPrefab;
     public float loadingDuration = 1.2f;
 
+    [Header("Pool Settings")]
+    public int prewarmCount = 5;
+
     [Header("References")]
     public GridManager gridManager;
     public Transform playerTransform;
@@ -36,10 +39,15 @@ public class DirectorSpawner2D : MonoBehaviour
     [SerializeField] private float _currentCredits;
     [SerializeField] private int _currentMaxCap;
     [SerializeField] private float _activeCreditsPerSec;
+    [SerializeField] private int _reservedSlots;
     [SerializeField] private List<GameObject> _activeEnemies = new List<GameObject>();
 
     private float _graceStartTime;
     private bool _ambushUsedThisCycle = false;
+    
+    // Throttle enemy cleanup to avoid expensive RemoveAll every frame
+    private float _cleanupTimer = 0f;
+    private float _cleanupInterval = 0.5f;  // Clean up dead enemies every 0.5 seconds
 
     private void Awake() => _sorter = new SpawnSorter();
 
@@ -59,6 +67,7 @@ public class DirectorSpawner2D : MonoBehaviour
     {
         StopAllCoroutines();
         _graceStartTime = Time.time;
+        _reservedSlots = 0;
 
         foreach (var enemy in _activeEnemies)
         {
@@ -86,8 +95,19 @@ public class DirectorSpawner2D : MonoBehaviour
     {
         _graceStartTime = Time.time;
         _currentCredits = initialCredits;
+        _reservedSlots = 0;
 
         if (enemyParent == null) enemyParent = this.transform;
+
+        // Prewarm pool for every enemy type in the database
+        if (database != null && EnemyPoolManager.Instance != null)
+        {
+            foreach (var entry in database.allEnemies)
+            {
+                if (entry.prefab != null)
+                    EnemyPoolManager.Instance.Prewarm(entry.prefab, prewarmCount);
+            }
+        }
 
         int startLevel = (GameManager.Instance != null) ? GameManager.Instance.CurrentLevel : 1;
         UpdateDifficultyStats(startLevel);
@@ -98,25 +118,40 @@ public class DirectorSpawner2D : MonoBehaviour
     private void Update()
     {
         _currentCredits += _activeCreditsPerSec * Time.deltaTime;
-        _activeEnemies.RemoveAll(e => e == null || !e.activeInHierarchy);
+        
+        // Throttle cleanup to avoid expensive RemoveAll every frame
+        _cleanupTimer += Time.deltaTime;
+        if (_cleanupTimer >= _cleanupInterval)
+        {
+            _activeEnemies.RemoveAll(e => e == null || !e.activeInHierarchy);
+            _cleanupTimer = 0f;
+        }
     }
 
     public void UpdateDifficultyStats(int level)
     {
         _activeCreditsPerSec = baseCreditsPerSecond * Mathf.Pow(incomeGrowthMultiplier, level - 1);
-        int calculatedCap = Mathf.RoundToInt(baseMaxCap * Mathf.Pow(capGrowthMultiplier, level - 1));
-        _currentMaxCap = Mathf.Min(calculatedCap, hardMaxCap);
+        
+        // FIX 1: Calculate as a float first to prevent integer overflow at high levels
+        float calculatedCapRaw = baseMaxCap * Mathf.Pow(capGrowthMultiplier, level - 1);
+        
+        // Clamp the float against your hard max cap to ensure it never exceeds your limit
+        float clampedCap = Mathf.Min(calculatedCapRaw, hardMaxCap);
+        
+        // Convert to integer AFTER clamping
+        _currentMaxCap = Mathf.RoundToInt(clampedCap);
     }
 
     private void ExecuteSpawnCycle()
     {
         if (database == null) return;
 
-        // Derive the threshold directly from the database — no magic number needed
         var cheapest = database.GetCheapest();
         if (cheapest == null || _currentCredits < cheapest.cost) return;
 
-        int availableSlots = _currentMaxCap - _activeEnemies.Count;
+        // FIX 2: Safely clamp available slots so it can never drop below zero (prevents underflow logic bugs)
+        int availableSlots = Mathf.Max(0, _currentMaxCap - _activeEnemies.Count - _reservedSlots);
+        
         if (availableSlots <= 0) return;
 
         _ambushUsedThisCycle = false;
@@ -124,11 +159,12 @@ public class DirectorSpawner2D : MonoBehaviour
         var manifest = _sorter.CreateManifest(database, _currentCredits, availableSlots);
         if (manifest.Count == 0) return;
 
-        // Deduct total cost upfront
+        // Lock slots immediately so the next cycle doesn't double-count
+        _reservedSlots += manifest.Count;
+
         foreach (var entry in manifest)
             _currentCredits -= entry.cost;
 
-        // Spawn each enemy with a small stagger so they don't all appear simultaneously
         StartCoroutine(SpawnManifestRoutine(manifest));
     }
 
@@ -137,7 +173,7 @@ public class DirectorSpawner2D : MonoBehaviour
         foreach (var entry in manifest)
         {
             StartCoroutine(SpawnRoutine(entry));
-            yield return new WaitForSeconds(0.05f); // Minimal delay so they don't all load at once
+            yield return new WaitForSeconds(0.05f);
         }
     }
 
@@ -167,6 +203,9 @@ public class DirectorSpawner2D : MonoBehaviour
         }
 
         _activeEnemies.Add(enemyObj);
+
+        // Release the reservation now that this enemy is fully tracked
+        _reservedSlots = Mathf.Max(0, _reservedSlots - 1);
     }
 
     private Vector3 CalculateSmartPosition(EnemySpawnerDatabase.SpawnPreference pref, bool forceAmbush)
@@ -241,6 +280,8 @@ public class DirectorSpawner2D : MonoBehaviour
 
     public void WipeAllEnemies()
     {
+        _reservedSlots = 0;
+
         foreach (var enemy in _activeEnemies)
         {
             if (enemy == null) continue;

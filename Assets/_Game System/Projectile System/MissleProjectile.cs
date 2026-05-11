@@ -6,11 +6,11 @@ public class MissileProjectile : MonoBehaviour, IProjectile
     [Header("Movement Settings")]
     private float speed = 22f;
     private float rotateSpeed = 1000f;
-    [SerializeField] private float searchRadius = 15f;
+    private float searchRadius = 35f;
     
     [Header("Safety Settings")]
-    [SerializeField] private float safetyRadius = 1f; 
-    [SerializeField] private float graceTime = 0.2f; // Time in seconds before missile can explode
+    private float safetyRadius = 0f; 
+    private float graceTime = 0.3f; // Time in seconds before missile can explode
 
     private Rigidbody2D _rb;
     private Transform _target;
@@ -28,9 +28,10 @@ public class MissileProjectile : MonoBehaviour, IProjectile
         _damage = request.Damage;
         _returnToPool = onRelease;
         _spawnPosition = request.Position;
-        
-        // Calculate the exact time when this missile is allowed to explode
         _armedTime = Time.time + graceTime; 
+
+        // --- ADD THIS LINE TO RANDOMIZE STARTING ANGLE ---
+        transform.rotation = Quaternion.Euler(0, 0, UnityEngine.Random.Range(0, 360f));
 
         _target = request.Target;
         if (_target == null) FindNewTarget();
@@ -38,7 +39,8 @@ public class MissileProjectile : MonoBehaviour, IProjectile
         if (_rb != null)
         {
             _rb.angularVelocity = 0f;
-            _rb.linearVelocity = transform.right * speed;
+            // Use the new random rotation to set the initial velocity direction
+            _rb.linearVelocity = transform.right * speed; 
         }
 
         CancelInvoke();
@@ -49,6 +51,16 @@ public class MissileProjectile : MonoBehaviour, IProjectile
     {
         if (!_isActive) return;
 
+        // --- NEW: SKIP TRACKING DURING GRACE TIME ---
+        if (Time.time < _armedTime)
+        {
+            // During grace time, just move forward in whatever direction it was launched
+            _rb.angularVelocity = 0f;
+            _rb.linearVelocity = transform.right * speed;
+            return; 
+        }
+
+        // --- EXISTING TRACKING LOGIC ---
         if (_target == null || !_target.gameObject.activeInHierarchy)
         {
             _target = null;
