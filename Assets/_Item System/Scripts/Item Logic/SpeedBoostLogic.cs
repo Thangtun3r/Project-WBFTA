@@ -21,7 +21,7 @@ public class SpeedBoostLogic : ItemLogicBase
         }
     }
 
-    public override void OnStackChanged(int amountChanged)
+    protected override void HandleStackChanged(int amountChanged)
     {
         var movement = Owner.OwnerObject.GetComponent<Movement>();
         if (movement != null)

@@ -21,7 +21,7 @@ public class CritDamageLogic : ItemLogicBase, ICritDamageLogic
         }
     }
 
-    public override void OnStackChanged(int amountChanged)
+    protected override void HandleStackChanged(int amountChanged)
     {
         var stats = Owner.OwnerObject.GetComponent<PlayerStatMachine>();
         if (stats != null)

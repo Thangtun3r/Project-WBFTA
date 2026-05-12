@@ -15,6 +15,10 @@ public class BombOnKillLogic : ItemLogicBase
         }
     }
 
+    protected override void HandleStackChanged(int amountChanged)
+    {
+    }
+
     private void OnEnemyKilled(_Scripts.Enemy.BaseEnemy enemy, float baseDamage, bool isCrit)
     {
         float effectiveProcChance = baseProcChance + (Owner.StackSize - 1) * 0.05f;

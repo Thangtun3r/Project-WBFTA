@@ -20,6 +20,10 @@ public class ChainDamageLogic : ItemLogicBase
         GlobalEventManager.Instance.HandleOnHit += HandleHit;
     }
 
+    protected override void HandleStackChanged(int amountChanged)
+    {
+    }
+
     private void HandleHit(GameObject attacker, IDamagable target, float damage, bool isCrit)
     {
 

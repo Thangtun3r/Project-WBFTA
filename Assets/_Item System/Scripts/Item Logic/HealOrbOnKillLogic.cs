@@ -25,4 +25,8 @@ public class HealOrbOnKillLogic : ItemLogicBase
     {
         BaseEnemy.OnEnemyDeath += HandleEnemyDeath;
     }
+
+    protected override void HandleStackChanged(int amountChanged)
+    {
+    }
 }

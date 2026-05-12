@@ -14,6 +14,10 @@ public class HomingMissileLogic : ItemLogicBase
             GlobalEventManager.Instance.HandleOnHit += OnHitEffect;
     }
 
+    protected override void HandleStackChanged(int amountChanged)
+    {
+    }
+
     private void OnHitEffect(GameObject attacker, IDamagable target, float damage, bool isCrit)
     {
         // DEBUG LOG 1: See if the event is even reaching the item
