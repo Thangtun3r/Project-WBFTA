@@ -8,4 +8,6 @@ public struct ProjectileRequest
     public Vector3 Direction; 
     public Transform Target;  
     public float Damage;
+    public float Speed;
+    public float Lifetime;
 }

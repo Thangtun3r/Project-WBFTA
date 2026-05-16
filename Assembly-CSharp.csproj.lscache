@@ -136,6 +136,8 @@ Assets/_Game System/
   BombProjectile.cs
   IProjectile.cs
   MissleProjectile.cs
+  PiercingSpike.cs
+  PiercingSpikeLauncher.cs
   Projectile.cs
   ProjectilePool.cs
   ProjectileRequest.cs
@@ -181,6 +183,7 @@ Assets/_Item System/Scripts/
   HomingMissileLogic.cs
   ItemLogicBase.cs
   MaxHealthIncreaseLogic.cs
+  PiercingSpikeLogic.cs
   SpeedBoostLogic.cs
  ItemDatabaseFactory.cs
  ItemDefinition.cs

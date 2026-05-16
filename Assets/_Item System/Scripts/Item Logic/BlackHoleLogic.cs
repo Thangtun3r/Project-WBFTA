@@ -9,8 +9,8 @@ public class BlackHoleLogic : ItemLogicBase
 
     [Header("Projectile Settings")]
     [SerializeField] private string projectileId = "BlackHole";
-    [SerializeField] private float damageMultiplier = 0.2f;
-    [SerializeField] private float damageMultiplierPerStack = 0.2f;
+    [SerializeField] private float damageMultiplier = 0.05f;
+    [SerializeField] private float damageMultiplierPerStack = 0.05f;
 
     private float _nextAllowedTriggerTime;
 
