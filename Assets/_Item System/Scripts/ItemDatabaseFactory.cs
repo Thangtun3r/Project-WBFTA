@@ -85,6 +85,11 @@ public class ItemDatabaseFactory : MonoBehaviour
         return _entryLookup.TryGetValue(itemId, out var entry) ? entry.Definition : null;
     }
 
+    public IReadOnlyList<ItemEntry> GetAllEntries()
+    {
+        return itemEntries;
+    }
+
     public string GetRandomItemId()
     {
         if (_entryLookup == null || _entryLookup.Count == 0)

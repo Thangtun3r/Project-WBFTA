@@ -81,8 +81,8 @@ public class RuntimeItemGiverWindow : EditorWindow
 
                     GUILayout.BeginVertical(GUILayout.Width(buttonSize));
                     GUIContent content = (item.icon != null)
-                        ? new GUIContent(item.icon, $"ID: {item.id}\nClick to give {_quantity}x")
-                        : new GUIContent(item.id, $"ID: {item.id}\nClick to give {_quantity}x");
+                        ? new GUIContent(item.icon)
+                        : new GUIContent(item.id);
 
                     if (GUILayout.Button(content, GUILayout.Width(buttonSize), GUILayout.Height(buttonSize)))
                     {
@@ -126,37 +126,40 @@ public class RuntimeItemGiverWindow : EditorWindow
 
     private void RefreshItemIds(ItemDatabaseFactory factory)
     {
-        SerializedObject so = new SerializedObject(factory);
-        SerializedProperty itemEntriesProp = so.FindProperty("itemEntries");
-
         _cachedItems.Clear();
 
-        if (itemEntriesProp != null && itemEntriesProp.isArray)
+        IReadOnlyList<ItemDatabaseFactory.ItemEntry> entries = factory.GetAllEntries();
+        if (entries == null)
         {
-            for (int i = 0; i < itemEntriesProp.arraySize; i++)
+            return;
+        }
+
+        for (int i = 0; i < entries.Count; i++)
+        {
+            ItemDatabaseFactory.ItemEntry entry = entries[i];
+            if (entry == null || string.IsNullOrEmpty(entry.ItemID))
             {
-                SerializedProperty element = itemEntriesProp.GetArrayElementAtIndex(i);
-                SerializedProperty itemIDProp = element.FindPropertyRelative("ItemID");
-                SerializedProperty definitionProp = element.FindPropertyRelative("Definition");
-
-                if (itemIDProp != null && !string.IsNullOrEmpty(itemIDProp.stringValue))
-                {
-                    ItemData data = new ItemData { id = itemIDProp.stringValue, name = "" };
-
-                    if (definitionProp != null && definitionProp.objectReferenceValue != null)
-                    {
-                        ItemDefinition def = definitionProp.objectReferenceValue as ItemDefinition;
-                        data.definition = def;
-                        if (def.icon != null)
-                        {
-                            data.icon = def.icon.texture;
-                        }
-                        data.name = def.itemName;
-                    }
-
-                    _cachedItems.Add(data);
-                }
+                continue;
             }
+
+            ItemData data = new ItemData
+            {
+                id = entry.ItemID,
+                name = string.Empty,
+                definition = entry.Definition
+            };
+
+            if (entry.Definition != null)
+            {
+                if (entry.Definition.icon != null)
+                {
+                    data.icon = entry.Definition.icon.texture;
+                }
+
+                data.name = entry.Definition.itemName;
+            }
+
+            _cachedItems.Add(data);
         }
     }
 }
