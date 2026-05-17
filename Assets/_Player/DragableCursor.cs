@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.EventSystems;
 
 public class DragableCursor : MonoBehaviour
 {
@@ -43,6 +44,15 @@ public class DragableCursor : MonoBehaviour
     {
         Vector2 cursorScreenPos = GetCursorScreenPos();
         Vector2 cursorWorldPos = GetCursorWorldPos(cursorScreenPos);
+        bool isHoveringUI = IsCursorOverUI(cursorScreenPos);
+
+        if (isHoveringUI)
+        {
+            if (Input.GetMouseButtonUp(0) && selectedDragable != null)
+                EndDrag(cursorWorldPos, cursorScreenPos);
+
+            return;
+        }
 
         if (Input.GetMouseButtonDown(0))
             TryBeginDrag(cursorWorldPos, cursorScreenPos);
@@ -65,6 +75,23 @@ public class DragableCursor : MonoBehaviour
     {
         Vector3 worldPos = mainCamera.ScreenToWorldPoint(new Vector3(cursorScreenPos.x, cursorScreenPos.y, 10f));
         return (Vector2)worldPos;
+    }
+
+    private bool IsCursorOverUI(Vector2 cursorScreenPos)
+    {
+        if (EventSystem.current == null)
+            return false;
+
+        PointerEventData pointerData = new PointerEventData(EventSystem.current)
+        {
+            position = mouseFollower != null
+                ? mouseFollower.GetUIRaycastScreenPos()
+                : cursorScreenPos
+        };
+
+        var results = new System.Collections.Generic.List<RaycastResult>();
+        EventSystem.current.RaycastAll(pointerData, results);
+        return results.Count > 0 && results[0].gameObject != null;
     }
 
     private void TryBeginDrag(Vector2 cursorWorldPos, Vector2 cursorScreenPos)

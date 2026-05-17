@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
 
 public class WizardDesignerPen : MonoBehaviour
 {
@@ -30,6 +31,7 @@ public class WizardDesignerPen : MonoBehaviour
     private LineRenderer previewLine; 
     private List<AnchorData> path = new List<AnchorData>();
     private bool isDragging = false;
+    private MouseFollower _mouseFollower;
 
     private class AnchorData {
         public Vector3 pos;
@@ -41,6 +43,7 @@ public class WizardDesignerPen : MonoBehaviour
 
     void Start()
     {
+        _mouseFollower = FindFirstObjectByType<MouseFollower>();
         mainLine = GetComponent<LineRenderer>();
         mainLine.startWidth = mainLine.endWidth = mainWidth;
         mainLine.startColor = mainLine.endColor = finalCurveColor;
@@ -55,6 +58,17 @@ public class WizardDesignerPen : MonoBehaviour
 
     void Update()
     {
+        if (IsCursorOverUI())
+        {
+            if (Input.GetMouseButtonUp(0))
+            {
+                isDragging = false;
+            }
+
+            previewLine.positionCount = 0;
+            return;
+        }
+
         // Get position from Player or Mouse
         Vector3 currentPos = GetCurrentInputPos();
         
@@ -199,5 +213,24 @@ public class WizardDesignerPen : MonoBehaviour
         path.Clear();
         mainLine.positionCount = 0;
         previewLine.positionCount = 0;
+    }
+
+    bool IsCursorOverUI()
+    {
+        if (EventSystem.current == null)
+            return false;
+
+        Vector2 screenPos = _mouseFollower != null
+            ? _mouseFollower.GetUIRaycastScreenPos()
+            : (Vector2)Input.mousePosition;
+
+        PointerEventData pointerData = new PointerEventData(EventSystem.current)
+        {
+            position = screenPos
+        };
+
+        var results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(pointerData, results);
+        return results.Count > 0 && results[0].gameObject != null;
     }
 }
