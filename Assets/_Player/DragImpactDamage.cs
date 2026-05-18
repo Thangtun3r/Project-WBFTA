@@ -9,13 +9,13 @@ public class DragImpactDamage : MonoBehaviour
     private Color impactColor = Color.red;
     private float debugLineDuration = 0.5f;
 
-    private float damageFalloffVelocity = 1f;
+    private float impactVelocityThreshold = 1f;
     private float impactGraceTime = 0.1f;
+    private float thrownStateFalloffVelocity = 1f;
     
     private float _lastImpactTime = -Mathf.Infinity;
-    private float _currentDamage = 0f;
+    private float _playerThrownDamage = 0f;
     private bool _isCrit = false;
-    private GameObject _attackerObject;
 
     public static event Action OnImpactDetected;
 
@@ -28,24 +28,15 @@ public class DragImpactDamage : MonoBehaviour
         _effectManager = GetComponent<EffectManager>();
     }
     
-    public void SetDamage(float damage)
+    public void SetPlayerThrowSource(float damageOutput, bool isCrit)
     {
-        _currentDamage = damage;
-    }
-    
-    public void SetCrit(bool isCrit)
-    {
+        _playerThrownDamage = Mathf.Max(0f, damageOutput);
         _isCrit = isCrit;
-    }
-
-    public void SetAttacker(GameObject attacker)
-    {
-        _attackerObject = attacker;
     }
 
     private void Update()
     {
-        if (_effectManager != null && _effectManager.WasThrown && _rb.linearVelocity.magnitude <= damageFalloffVelocity)
+        if (_effectManager != null && _effectManager.WasThrown && _rb.linearVelocity.magnitude <= thrownStateFalloffVelocity)
         {
             _effectManager.WasThrown = false;
         }
@@ -53,37 +44,71 @@ public class DragImpactDamage : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // Check for grace period
         if (Time.time < _lastImpactTime + impactGraceTime)
             return;
 
-        // Double check this object is currently flagged as "thrown" by the player
-        if (_effectManager != null && !_effectManager.WasThrown)
+        float impactSpeed = Mathf.Max(collision.relativeVelocity.magnitude, _rb.linearVelocity.magnitude);
+        if (impactSpeed < impactVelocityThreshold)
             return;
 
-        // Check if the collision object is in the specified layer
-        if (((1 << collision.gameObject.layer) & -1) != 0)
+        _lastImpactTime = Time.time;
+        OnImpactDetected?.Invoke();
+
+        if (logImpact)
         {
-            _lastImpactTime = Time.time;
-            OnImpactDetected?.Invoke();
+            Debug.Log($"Impact Detected! Object: {collision.gameObject.name}, Speed: {impactSpeed}");
+        }
 
-            if (logImpact)
+        IDamagable damagable = collision.gameObject.GetComponent<IDamagable>()
+            ?? collision.gameObject.GetComponentInParent<IDamagable>();
+
+        if (damagable == null)
+        {
+            damagable = GetComponent<IDamagable>() ?? GetComponentInParent<IDamagable>();
+        }
+
+        float damageToApply = GetCursorDamageOutput(collision, out bool isPlayerOwnedHit, out bool isCrit);
+        if (damagable != null && damageToApply > 0f)
+        {
+            damagable.TakeDamage(damageToApply);
+
+            if (isPlayerOwnedHit)
             {
-                Debug.Log($"Impact Detected! Object: {collision.gameObject.name}");
+                // DragImpactDamage is the single damage source; this only tags the hit as player-owned.
+                GlobalEventManager.Instance?.OnPlayerHit(damagable, damageToApply, isCrit);
             }
 
-            // Deal damage to the object we hit
-            IDamagable damagable = collision.gameObject.GetComponent<IDamagable>();
-            if (damagable != null && _currentDamage > 0)
-            {
-                damagable.TakeDamage(_currentDamage);
-                
-                // Trigger item on-hit effects using the centralized player hit method
-                GlobalEventManager.Instance?.OnPlayerHit(damagable, _currentDamage, _isCrit);
-
-                // Spawn floating damage text at impact point
-                FloatingDamagePool.Instance?.SpawnDamage(collision.contacts[0].point, _currentDamage, _isCrit);
-            }
-            }
+            // Spawn floating damage text at impact point
+            FloatingDamagePool.Instance?.SpawnDamage(collision.contacts[0].point, damageToApply, isCrit);
         }
     }
+
+    private float GetCursorDamageOutput(Collision2D collision, out bool isPlayerOwnedHit, out bool isCrit)
+    {
+        isPlayerOwnedHit = false;
+        isCrit = false;
+
+        if (_effectManager != null && _effectManager.WasThrown && _playerThrownDamage > 0f)
+        {
+            isPlayerOwnedHit = true;
+            isCrit = _isCrit;
+            return _playerThrownDamage;
+        }
+
+        DragImpactDamage otherImpactDamage = collision.rigidbody != null
+            ? collision.rigidbody.GetComponent<DragImpactDamage>()
+            : collision.gameObject.GetComponentInParent<DragImpactDamage>();
+
+        if (otherImpactDamage != null &&
+            otherImpactDamage._effectManager != null &&
+            otherImpactDamage._effectManager.WasThrown &&
+            otherImpactDamage._playerThrownDamage > 0f)
+        {
+            isPlayerOwnedHit = true;
+            isCrit = otherImpactDamage._isCrit;
+            return otherImpactDamage._playerThrownDamage;
+        }
+
+        return 0f;
+    }
+}

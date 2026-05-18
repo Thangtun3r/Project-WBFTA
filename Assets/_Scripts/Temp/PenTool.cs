@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class WizardDesignerPen : MonoBehaviour
 {
@@ -231,6 +232,27 @@ public class WizardDesignerPen : MonoBehaviour
 
         var results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(pointerData, results);
-        return results.Count > 0 && results[0].gameObject != null;
+        return HasInteractiveUI(results);
+    }
+
+    private static bool HasInteractiveUI(List<RaycastResult> results)
+    {
+        for (int i = 0; i < results.Count; i++)
+        {
+            GameObject candidate = results[i].gameObject;
+            if (candidate == null)
+                continue;
+
+            if (ExecuteEvents.GetEventHandler<IPointerClickHandler>(candidate) != null)
+                return true;
+
+            if (ExecuteEvents.GetEventHandler<IPointerDownHandler>(candidate) != null)
+                return true;
+
+            if (candidate.GetComponentInParent<Selectable>() != null)
+                return true;
+        }
+
+        return false;
     }
 }

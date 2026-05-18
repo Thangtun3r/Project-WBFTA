@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class DragableCursor : MonoBehaviour
 {
@@ -13,6 +15,7 @@ public class DragableCursor : MonoBehaviour
     [SerializeField] private float minThrowForce = 1f;
     [SerializeField] private float maxThrowForce = 20f;
     [SerializeField] private float minThrowDistance = 10f;
+    private float throwInvincibilityDuration = 0.25f;
 
     [Header("Visual Effects")]
     [SerializeField] private float scaleMultiplier = 1.1f;
@@ -27,6 +30,7 @@ public class DragableCursor : MonoBehaviour
     private Camera mainCamera;
     private MouseFollower mouseFollower;
     private PlayerStatMachine _playerStats;
+    private PlayerHealth _playerHealth;
 
     // Visual Effect State
     private Transform _visualTransform;
@@ -38,6 +42,7 @@ public class DragableCursor : MonoBehaviour
         mainCamera = Camera.main;
         mouseFollower = FindFirstObjectByType<MouseFollower>();
         _playerStats = FindFirstObjectByType<PlayerStatMachine>();
+        _playerHealth = FindFirstObjectByType<PlayerHealth>();
     }
 
     private void Update()
@@ -89,9 +94,30 @@ public class DragableCursor : MonoBehaviour
                 : cursorScreenPos
         };
 
-        var results = new System.Collections.Generic.List<RaycastResult>();
+        var results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(pointerData, results);
-        return results.Count > 0 && results[0].gameObject != null;
+        return HasInteractiveUI(results);
+    }
+
+    private static bool HasInteractiveUI(List<RaycastResult> results)
+    {
+        for (int i = 0; i < results.Count; i++)
+        {
+            GameObject candidate = results[i].gameObject;
+            if (candidate == null)
+                continue;
+
+            if (ExecuteEvents.GetEventHandler<IPointerClickHandler>(candidate) != null)
+                return true;
+
+            if (ExecuteEvents.GetEventHandler<IPointerDownHandler>(candidate) != null)
+                return true;
+
+            if (candidate.GetComponentInParent<Selectable>() != null)
+                return true;
+        }
+
+        return false;
     }
 
     private void TryBeginDrag(Vector2 cursorWorldPos, Vector2 cursorScreenPos)
@@ -125,16 +151,13 @@ public class DragableCursor : MonoBehaviour
         _originalScale = _visualTransform.localScale;
         StartScale(_originalScale * scaleMultiplier);
         
-        // Pass damage info to DragImpactDamage if present
+        // Mark throw ownership only; DragImpactDamage remains the single damage source.
         DragImpactDamage dragDamage = selectedRb.GetComponent<DragImpactDamage>();
         if (dragDamage != null && _playerStats != null)
         {
-            float baseDamage = _playerStats.GetCalculatedAttackDamage();
-            float finalDamage = baseDamage * damageMultiplier;
+            float damageOutput = _playerStats.GetCalculatedAttackDamage() * damageMultiplier;
             bool isCrit = _playerStats.WasLastAttackCrit();
-            dragDamage.SetDamage(finalDamage);
-            dragDamage.SetCrit(isCrit);
-            dragDamage.SetAttacker(_playerStats.gameObject);
+            dragDamage.SetPlayerThrowSource(damageOutput, isCrit);
         }
     }
 
@@ -172,6 +195,11 @@ public class DragableCursor : MonoBehaviour
             if (col != null) col.isTrigger = false;
             
             selectedRb.linearVelocity = impulse;
+        }
+
+        if (impulse.sqrMagnitude > 0f)
+        {
+            _playerHealth?.GrantInvincibility(throwInvincibilityDuration);
         }
 
         StartScale(_originalScale);

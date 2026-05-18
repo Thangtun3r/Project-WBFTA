@@ -14,6 +14,9 @@ public class PlayerHealth : MonoBehaviour, IDamagable
     [SerializeField] private float healingExponent = 1.5f; // Exponential growth factor (higher = faster acceleration)
 
     private float _lastDamageTime = -Mathf.Infinity;
+    private float _invincibleUntilTime = -Mathf.Infinity;
+
+    public bool IsInvincible => Time.time < _invincibleUntilTime;
 
 
     private void Update()
@@ -35,6 +38,11 @@ public class PlayerHealth : MonoBehaviour, IDamagable
 
     public void TakeDamage(float damage)
     {
+        if (IsInvincible)
+        {
+            return;
+        }
+
         _currentHealth -= damage;
         _lastDamageTime = Time.time; // Reset the healing delay timer
         OnHealthChanged?.Invoke(_currentHealth, _maxHealth, false);
@@ -43,6 +51,16 @@ public class PlayerHealth : MonoBehaviour, IDamagable
         {
             Die();
         }
+    }
+
+    public void GrantInvincibility(float duration)
+    {
+        if (duration <= 0f)
+        {
+            return;
+        }
+
+        _invincibleUntilTime = Mathf.Max(_invincibleUntilTime, Time.time + duration);
     }
 
     public virtual Transform GetTransform()

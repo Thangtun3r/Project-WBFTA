@@ -196,6 +196,7 @@ Assets/_Item System/Scripts/
  ItemRuntime.cs
  ItemRuntimeVisual.cs
  PlayerInventory.cs
+ RuntimeItemGiverOverlay.cs
 Assets/_Player/
  DragableCursor.cs
  DragImpactDamage.cs

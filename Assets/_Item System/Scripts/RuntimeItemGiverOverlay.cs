@@ -5,7 +5,7 @@ using UnityEngine;
 public class RuntimeItemGiverOverlay : MonoBehaviour
 {
     [Header("Toggle")]
-    [SerializeField] private KeyCode toggleKey = KeyCode.F12;
+    private KeyCode toggleKey = KeyCode.F9;
     [SerializeField] private bool startOpen;
     [SerializeField] private bool showDebugButton = true;
     [SerializeField] private Rect debugButtonRect = new Rect(12f, 12f, 96f, 32f);
