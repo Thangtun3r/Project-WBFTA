@@ -7,13 +7,17 @@ public class EnemyVisual : MonoBehaviour
     [Header("References")]
     [Tooltip("The object that will scale and shake (e.g., the 'GFX' child)")]
     [SerializeField] private Transform visualRoot;
+    [Tooltip("The shadow object that offsets when dragged")]
+    [SerializeField] private Transform visualShadow;
+    [Tooltip("How much the shadow offsets when dragged (e.g. 10% offset = 0.1f)")]
+    private Vector3 dragShadowOffset = new Vector3(0.05f, -0.05f, 0f);
     [SerializeField] public SpriteRenderer[] spriteRenderers;
 
     private const float FlashDuration = 0.1f;
     private const float PunchAmount = 0.25f;
     private const float PunchDuration = 0.03f;
     private const float ShakeStrength = 0.1f;
-    private const float ShakeDuration = 0.2f;
+    private const float ShakeDuration = 0.1f;
     private const int ShakeVibrato = 10;
     private const string DeathEffectName = "enemyDeath";
     private const string HitEffectName = "enemyHit";
@@ -24,6 +28,7 @@ public class EnemyVisual : MonoBehaviour
     private Vector3 originalScale;
     private Vector3 originalLocalPos; // New: Cache for wiggle
     private Quaternion originalLocalRotation;
+    private Vector3 originalShadowPos;
     private static readonly int FlashProperty = Shader.PropertyToID("_Flash");
 
     private void Awake()
@@ -37,6 +42,11 @@ public class EnemyVisual : MonoBehaviour
         originalScale = visualRoot.localScale;
         originalLocalPos = visualRoot.localPosition;
         originalLocalRotation = visualRoot.localRotation;
+        
+        if (visualShadow != null)
+        {
+            originalShadowPos = visualShadow.localPosition;
+        }
 
         if (spriteRenderers == null || spriteRenderers.Length == 0)
             spriteRenderers = visualRoot.GetComponentsInChildren<SpriteRenderer>();
@@ -72,7 +82,30 @@ public class EnemyVisual : MonoBehaviour
         visualRoot.localScale = originalScale;
         visualRoot.localPosition = originalLocalPos; // Reset position
         visualRoot.localRotation = originalLocalRotation;
+        
+        if (visualShadow != null)
+        {
+            visualShadow.DOKill();
+            visualShadow.localPosition = originalShadowPos;
+        }
+        
         SetFlashOnAll(0f);
+    }
+
+    public void SetDragState(bool isDragging)
+    {
+        if (visualShadow != null)
+        {
+            visualShadow.DOKill();
+            if (isDragging)
+            {
+                visualShadow.DOLocalMove(originalShadowPos + dragShadowOffset, 0.1f).SetEase(Ease.OutQuad);
+            }
+            else
+            {
+                visualShadow.DOLocalMove(originalShadowPos, 0.15f).SetEase(Ease.OutQuad);
+            }
+        }
     }
 
     public void HandleHitVisuals()
@@ -108,7 +141,7 @@ public class EnemyVisual : MonoBehaviour
 
     private void ScalePop()
     {
-        visualRoot.DOPunchScale(new Vector3(PunchAmount, PunchAmount, 0), PunchDuration, 10, 1)
+        visualRoot.DOPunchScale(new Vector3(PunchAmount, PunchAmount, 0), PunchDuration, 10, 0.5f)
                   .SetTarget(visualRoot);
     }
 

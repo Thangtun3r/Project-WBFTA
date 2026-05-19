@@ -59,6 +59,9 @@ public class BombProjectile : MonoBehaviour, IProjectile
 
         // 1. Call your VFXStation (Global Pooler)
         VFXStation.PlayEffect(explosionVFXName, transform.position);
+        
+        // Trigger generic camera/HUD shake
+        OnScreenEffect.Instance?.ShakeHUD();
 
         // 2. Efficient Physics (Zero Allocation)
         int numColliders = Physics2D.OverlapCircleNonAlloc(

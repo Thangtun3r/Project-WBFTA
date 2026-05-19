@@ -10527,6 +10527,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Enemy.EnemyVisuals
   visualRoot: {fileID: 4720413435469617337}
+  visualShadow: {fileID: 249872715142398917}
+  dragShadowOffset: {x: 0.1, y: -0.1, z: 0}
   spriteRenderers:
   - {fileID: 7414915541133414321}
   - {fileID: 3510043967153597441}

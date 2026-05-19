@@ -118,15 +118,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Enemy.EnemyVisuals
   visualRoot: {fileID: 1484874183448757925}
+  visualShadow: {fileID: 1986179058317986622}
+  dragShadowOffset: {x: 0.1, y: -0.1, z: 0}
   spriteRenderers:
   - {fileID: 1447554014220429187}
   - {fileID: 1268212388649458839}
-  flashDuration: 0.1
-  shakeStrength: 0.1
-  shakeDuration: 0.2
-  shakeVibrato: 10
-  deathEffectName: enemyDeath
-  hitEffectName: enemyHit
 --- !u!50 &2869208683092143134
 Rigidbody2D:
   serializedVersion: 5
@@ -255,6 +251,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5409978a86cc374eab93284c0118102, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DragImpactDamage
+  impactEffectName: impactParticle
 --- !u!61 &561632501189478463
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -21,7 +21,7 @@ public class DragableCursor : MonoBehaviour
 
     [Header("Visual Effects")]
      private float scaleMultiplier = 1.1f;
-     private float scaleSpeed = 0.05f;
+     private float scaleSpeed = 0.035f;
     [SerializeField] private float damageMultiplier = 1.0f;
 
     private IDragable selectedDragable;
@@ -181,6 +181,12 @@ public class DragableCursor : MonoBehaviour
         _originalScale = _visualTransform.localScale;
         StartScale(_originalScale * scaleMultiplier);
         
+        if (selectedRb != null)
+        {
+            EnemyVisual ev = selectedRb.GetComponentInChildren<EnemyVisual>();
+            ev?.SetDragState(true);
+        }
+        
         // Mark throw ownership only; DragImpactDamage remains the single damage source.
         DragImpactDamage dragDamage = selectedRb != null ? selectedRb.GetComponent<DragImpactDamage>() : null;
         if (dragDamage != null && _playerStats != null)
@@ -239,6 +245,12 @@ public class DragableCursor : MonoBehaviour
         }
 
         StartScale(_originalScale);
+
+        if (selectedRb != null)
+        {
+            EnemyVisual ev = selectedRb.GetComponentInChildren<EnemyVisual>();
+            ev?.SetDragState(false);
+        }
 
         selectedDragable = null;
         selectedRb = null;
