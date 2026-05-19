@@ -213,17 +213,25 @@ public class DragableCursor : MonoBehaviour
     private void EndDrag(Vector2 cursorWorldPos, Vector2 cursorScreenPos)
     {
         float pixelsPerUnit = Screen.height / (mainCamera.orthographicSize * 2f);
-        Vector2 worldVelocity = cursorVelocity / pixelsPerUnit;
+        Vector2 releaseVelocity = Vector2.zero;
 
-        Vector2 impulse = worldVelocity * throwSensitivity;
+        if (IsFinite(cursorVelocity) && Mathf.Abs(pixelsPerUnit) > Mathf.Epsilon && !float.IsInfinity(pixelsPerUnit))
+        {
+            Vector2 worldVelocity = cursorVelocity / pixelsPerUnit;
+            Vector2 impulse = worldVelocity * throwSensitivity;
 
-        float clampedMagnitude = Mathf.Clamp(impulse.magnitude, minThrowForce, maxThrowForce);
-        impulse = impulse.magnitude > 0f ? impulse.normalized * clampedMagnitude : Vector2.zero;
+            float impulseMagnitude = impulse.magnitude;
+            if (IsFinite(impulse) && !float.IsNaN(impulseMagnitude) && !float.IsInfinity(impulseMagnitude))
+            {
+                float clampedMagnitude = Mathf.Clamp(impulseMagnitude, minThrowForce, maxThrowForce);
+                impulse = impulseMagnitude > 0f ? impulse.normalized * clampedMagnitude : Vector2.zero;
 
-        float screenDelta = (cursorScreenPos - lastCursorScreenPos).magnitude;
-        Vector2 releaseVelocity = screenDelta >= minThrowDistance || cursorVelocity.magnitude > 0f
-            ? impulse
-            : Vector2.zero;
+                float screenDelta = (cursorScreenPos - lastCursorScreenPos).magnitude;
+                releaseVelocity = screenDelta >= minThrowDistance || cursorVelocity.magnitude > 0f
+                    ? impulse
+                    : Vector2.zero;
+            }
+        }
 
         if (selectedRb != null)
         {
@@ -259,6 +267,14 @@ public class DragableCursor : MonoBehaviour
         hasDragTargetPosition = false;
         cursorVelocity = Vector2.zero;
         _visualTransform = null;
+    }
+
+    private static bool IsFinite(Vector2 value)
+    {
+        return !float.IsNaN(value.x)
+            && !float.IsNaN(value.y)
+            && !float.IsInfinity(value.x)
+            && !float.IsInfinity(value.y);
     }
 
     private static Collider2D FindTopmostCollider(Collider2D[] hits)
