@@ -55,6 +55,9 @@ public class DragImpactDamage : MonoBehaviour
         _lastImpactTime = Time.time;
         OnImpactDetected?.Invoke();
         PlayImpactEffect(collision);
+        
+        // Shake the assigned HUD/object:
+        OnScreenEffect.Instance?.ShakeHUD();
 
         if (logImpact)
         {

@@ -64,7 +64,6 @@ public class EnemyVisual : MonoBehaviour
         // Clean up all tweens on these targets
         visualRoot.DOKill();
         DOTween.Kill(this);
-        
         ResetVisuals();
     }
 
