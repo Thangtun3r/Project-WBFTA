@@ -6,6 +6,7 @@ namespace _Scripts.Enemy.Modules
     public class EnemyMovement : MonoBehaviour, IMovement
     {
         private EnemyConfig config;
+        private EnemyStatusController _status;
         
         private Vector2 _currentVelocity;
         public Vector2 CurrentVelocity => _currentVelocity;
@@ -39,6 +40,7 @@ namespace _Scripts.Enemy.Modules
         private void Awake()
         {
             config = GetComponentInParent<BaseEnemy>()?.Config;
+            _status = EnemyStatusController.FindFor(this);
         }
 
         private void OnEnable()
@@ -58,6 +60,11 @@ namespace _Scripts.Enemy.Modules
         public void MoveTowards(Vector2 targetPosition)
         {
             if (config == null) return;
+            if (_status != null && !_status.CanMove)
+            {
+                _currentVelocity = Vector2.zero;
+                return;
+            }
             
             Vector2 direction = (targetPosition - (Vector2)transform.position).normalized;
             MoveInDirection(direction);
@@ -97,7 +104,8 @@ namespace _Scripts.Enemy.Modules
             }
 
             Vector2 forwardDir = useStopAndGo ? _lockedDirection : direction.normalized;
-            Vector2 targetVelocity = forwardDir * config.moveSpeed;
+            float speedMultiplier = _status != null ? _status.MoveSpeedMultiplier : 1f;
+            Vector2 targetVelocity = forwardDir * (config.moveSpeed * speedMultiplier);
             
             if (useSineWave)
             {
@@ -128,6 +136,11 @@ namespace _Scripts.Enemy.Modules
         public void Stop()
         {
             if (config == null) return;
+            if (_status != null && !_status.CanMove)
+            {
+                _currentVelocity = Vector2.zero;
+                return;
+            }
             
             _currentVelocity = Vector2.MoveTowards(_currentVelocity, Vector2.zero, config.deceleration * Time.deltaTime);
             ApplyMovement();

@@ -7,6 +7,7 @@ namespace _Scripts.Enemy.Modules
     public class DiveEnemyMovement : MonoBehaviour, IMovement
     {
         private EnemyConfig config;
+        private EnemyStatusController _status;
         private Vector2 _currentVelocity;
         public Vector2 CurrentVelocity => _currentVelocity;
 
@@ -46,6 +47,7 @@ namespace _Scripts.Enemy.Modules
         private void Awake()
         {
             config = GetComponentInParent<BaseEnemy>()?.Config;
+            _status = EnemyStatusController.FindFor(this);
             _mainCamera = Camera.main;
             
             if (visualRoot != null)
@@ -129,6 +131,12 @@ namespace _Scripts.Enemy.Modules
         public void MoveTowards(Vector2 targetPosition)
         {
             if (config == null) return;
+            if (_status != null && !_status.CanMove)
+            {
+                Stop();
+                return;
+            }
+
             // Only update target if chasing or in the early "grace" period of locking
             if (_currentState == DiveState.Chasing || (_currentState == DiveState.Locking && !_isCommitted))
             {
@@ -140,6 +148,12 @@ namespace _Scripts.Enemy.Modules
         public void MoveInDirection(Vector2 direction)
         {
             if (config == null) return;
+            if (_status != null && !_status.CanMove)
+            {
+                Stop();
+                return;
+            }
+
             if (_currentState == DiveState.Chasing || (_currentState == DiveState.Locking && !_isCommitted))
             {
                 Vector2 target = (Vector2)transform.position + (direction.normalized * 5f);
@@ -156,7 +170,8 @@ namespace _Scripts.Enemy.Modules
             {
                 case DiveState.Chasing:
                     Vector2 chaseDir = (_diveTarget - (Vector2)transform.position).normalized;
-                    _currentVelocity = Vector2.MoveTowards(_currentVelocity, chaseDir * config.moveSpeed, config.acceleration * Time.deltaTime);
+                    float speedMultiplier = _status != null ? _status.MoveSpeedMultiplier : 1f;
+                    _currentVelocity = Vector2.MoveTowards(_currentVelocity, chaseDir * (config.moveSpeed * speedMultiplier), config.acceleration * Time.deltaTime);
                     UpdateIndicatorRotation();
                     if (IsInsideViewport()) ChangeState(DiveState.Locking);
                     break;

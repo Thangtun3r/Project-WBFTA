@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+[DefaultExecutionOrder(100)]
 public class DragableCursor : MonoBehaviour
 {
     [Header("Draggable Settings")]
     [SerializeField] private float throwSensitivity = 1f;
     [SerializeField] private LayerMask dragMask;
     [SerializeField] private float detectionRadius = 0.5f;
+    [SerializeField] private bool rigidLockToCursor = true;
 
     [Header("Throw Force Limits")]
     [SerializeField] private float minThrowForce = 1f;
@@ -18,13 +20,19 @@ public class DragableCursor : MonoBehaviour
     private float throwInvincibilityDuration = 0.25f;
 
     [Header("Visual Effects")]
-    [SerializeField] private float scaleMultiplier = 1.1f;
-    [SerializeField] private float scaleSpeed = 0.2f;
+     private float scaleMultiplier = 1.1f;
+     private float scaleSpeed = 0.05f;
     [SerializeField] private float damageMultiplier = 1.0f;
 
     private IDragable selectedDragable;
     private Rigidbody2D selectedRb;
+    private RigidbodyType2D previousBodyType;
+    private RigidbodyInterpolation2D previousInterpolation;
+    private Collider2D[] selectedColliders;
+    private bool[] previousColliderTriggerStates;
     private Vector2 dragOffset;
+    private Vector2 dragTargetPosition;
+    private bool hasDragTargetPosition;
     private Vector2 lastCursorScreenPos;
     private Vector2 cursorVelocity;
     private Camera mainCamera;
@@ -45,7 +53,7 @@ public class DragableCursor : MonoBehaviour
         _playerHealth = FindFirstObjectByType<PlayerHealth>();
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         Vector2 cursorScreenPos = GetCursorScreenPos();
         Vector2 cursorWorldPos = GetCursorWorldPos(cursorScreenPos);
@@ -69,15 +77,26 @@ public class DragableCursor : MonoBehaviour
             EndDrag(cursorWorldPos, cursorScreenPos);
     }
 
+    private void FixedUpdate()
+    {
+        if (rigidLockToCursor || selectedRb == null || !hasDragTargetPosition)
+            return;
+
+        selectedRb.MovePosition(dragTargetPosition);
+    }
+
     private Vector2 GetCursorScreenPos()
     {
         return mouseFollower != null
-            ? mouseFollower.virtualScreenPos
+            ? mouseFollower.GetVirtualScreenPosForFrame()
             : (Vector2)Input.mousePosition;
     }
 
     private Vector2 GetCursorWorldPos(Vector2 cursorScreenPos)
     {
+        if (mouseFollower != null)
+            return mouseFollower.GetWorldCursorPositionForFrame(mainCamera);
+
         Vector3 worldPos = mainCamera.ScreenToWorldPoint(new Vector3(cursorScreenPos.x, cursorScreenPos.y, 10f));
         return (Vector2)worldPos;
     }
@@ -127,22 +146,33 @@ public class DragableCursor : MonoBehaviour
 
         Collider2D topCollider = FindTopmostCollider(hits);
 
-        selectedDragable = topCollider.GetComponent<IDragable>();
+        selectedDragable = topCollider.GetComponentInParent<IDragable>();
         if (selectedDragable == null) return;
 
         selectedRb = selectedDragable.GetRigidbody();
         
         if (selectedRb != null)
         {
+            previousBodyType = selectedRb.bodyType;
+            previousInterpolation = selectedRb.interpolation;
+            selectedRb.interpolation = RigidbodyInterpolation2D.None;
             selectedRb.linearVelocity = Vector2.zero;
             selectedRb.angularVelocity = 0f;
-            selectedRb.isKinematic = true;
+            selectedRb.bodyType = RigidbodyType2D.Kinematic;
 
-            Collider2D col = selectedRb.GetComponent<Collider2D>();
-            if (col != null) col.isTrigger = true;
+            selectedColliders = selectedRb.GetComponentsInChildren<Collider2D>();
+            previousColliderTriggerStates = new bool[selectedColliders.Length];
+            for (int i = 0; i < selectedColliders.Length; i++)
+            {
+                previousColliderTriggerStates[i] = selectedColliders[i].isTrigger;
+                selectedColliders[i].isTrigger = true;
+            }
         }
 
         dragOffset = (Vector2)selectedDragable.GetTransform().position - cursorWorldPos;
+        dragTargetPosition = cursorWorldPos + dragOffset;
+        hasDragTargetPosition = true;
+        SnapSelectedToDragTarget();
         lastCursorScreenPos = cursorScreenPos;
         cursorVelocity = Vector2.zero;
         selectedDragable.OnStartDrag();
@@ -152,7 +182,7 @@ public class DragableCursor : MonoBehaviour
         StartScale(_originalScale * scaleMultiplier);
         
         // Mark throw ownership only; DragImpactDamage remains the single damage source.
-        DragImpactDamage dragDamage = selectedRb.GetComponent<DragImpactDamage>();
+        DragImpactDamage dragDamage = selectedRb != null ? selectedRb.GetComponent<DragImpactDamage>() : null;
         if (dragDamage != null && _playerStats != null)
         {
             float damageOutput = _playerStats.GetCalculatedAttackDamage() * damageMultiplier;
@@ -163,12 +193,15 @@ public class DragableCursor : MonoBehaviour
 
     private void UpdateDrag(Vector2 cursorWorldPos, Vector2 cursorScreenPos)
     {
-        cursorVelocity = (cursorScreenPos - lastCursorScreenPos) / Time.deltaTime;
+        float deltaTime = Mathf.Max(Time.deltaTime, Mathf.Epsilon);
+        cursorVelocity = (cursorScreenPos - lastCursorScreenPos) / deltaTime;
         lastCursorScreenPos = cursorScreenPos;
 
         Vector2 targetPos = cursorWorldPos + dragOffset;
-        selectedRb.MovePosition(targetPos);
-        selectedDragable.OnDrag(targetPos);
+        dragTargetPosition = targetPos;
+        hasDragTargetPosition = true;
+        SnapSelectedToDragTarget();
+        selectedDragable.OnDrag(dragTargetPosition);
     }
 
     private void EndDrag(Vector2 cursorWorldPos, Vector2 cursorScreenPos)
@@ -182,22 +215,25 @@ public class DragableCursor : MonoBehaviour
         impulse = impulse.magnitude > 0f ? impulse.normalized * clampedMagnitude : Vector2.zero;
 
         float screenDelta = (cursorScreenPos - lastCursorScreenPos).magnitude;
-        if (screenDelta >= minThrowDistance || cursorVelocity.magnitude > 0f)
-            selectedDragable.OnEndDrag(impulse);
-        else
-            selectedDragable.OnEndDrag(Vector2.zero);
+        Vector2 releaseVelocity = screenDelta >= minThrowDistance || cursorVelocity.magnitude > 0f
+            ? impulse
+            : Vector2.zero;
 
         if (selectedRb != null)
         {
-            selectedRb.isKinematic = false;
+            hasDragTargetPosition = false;
+            selectedRb.position = cursorWorldPos + dragOffset;
+            selectedRb.bodyType = previousBodyType;
+            selectedRb.interpolation = previousInterpolation;
+
+            RestoreColliderTriggerStates();
             
-            Collider2D col = selectedRb.GetComponent<Collider2D>();
-            if (col != null) col.isTrigger = false;
-            
-            selectedRb.linearVelocity = impulse;
+            selectedRb.linearVelocity = releaseVelocity;
         }
 
-        if (impulse.sqrMagnitude > 0f)
+        selectedDragable.OnEndDrag(releaseVelocity);
+
+        if (releaseVelocity.sqrMagnitude > 0f)
         {
             _playerHealth?.GrantInvincibility(throwInvincibilityDuration);
         }
@@ -206,6 +242,9 @@ public class DragableCursor : MonoBehaviour
 
         selectedDragable = null;
         selectedRb = null;
+        selectedColliders = null;
+        previousColliderTriggerStates = null;
+        hasDragTargetPosition = false;
         cursorVelocity = Vector2.zero;
         _visualTransform = null;
     }
@@ -220,6 +259,42 @@ public class DragableCursor : MonoBehaviour
         }
 
         return topCollider;
+    }
+
+    private void SnapSelectedToDragTarget()
+    {
+        Transform selectedTransform = selectedDragable?.GetTransform();
+        if (selectedTransform != null)
+        {
+            Vector3 targetPosition = new Vector3(
+                dragTargetPosition.x,
+                dragTargetPosition.y,
+                selectedTransform.position.z);
+
+            selectedTransform.position = targetPosition;
+        }
+
+        if (selectedRb != null)
+        {
+            selectedRb.position = dragTargetPosition;
+            selectedRb.linearVelocity = Vector2.zero;
+            selectedRb.angularVelocity = 0f;
+        }
+
+        Physics2D.SyncTransforms();
+    }
+
+    private void RestoreColliderTriggerStates()
+    {
+        if (selectedColliders == null || previousColliderTriggerStates == null)
+            return;
+
+        int count = Mathf.Min(selectedColliders.Length, previousColliderTriggerStates.Length);
+        for (int i = 0; i < count; i++)
+        {
+            if (selectedColliders[i] != null)
+                selectedColliders[i].isTrigger = previousColliderTriggerStates[i];
+        }
     }
 
     // -------------------------------------------------------------------------

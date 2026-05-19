@@ -13,6 +13,7 @@ namespace _Scripts.Enemy.Modules
         
         [Header("Internal Reference")]
         private EnemyConfig _config;
+        private EnemyStatusController _status;
         private List<GameObject> _inkPool = new List<GameObject>();
         private int _currentPoolIndex = 0;
         private Vector3 _lastSpawnPos;
@@ -21,6 +22,7 @@ namespace _Scripts.Enemy.Modules
         private void Awake()
         {
             _config = GetComponentInParent<BaseEnemy>()?.Config;
+            _status = EnemyStatusController.FindFor(this);
             
             // Initialize Pool
             if (inkPrefab != null)
@@ -78,6 +80,8 @@ namespace _Scripts.Enemy.Modules
 
         private void Update()
         {
+            if (!_isAttacking) return;
+            if (_status != null && !_status.CanAttack) return;
             if (inkPrefab == null || _inkPool.Count == 0) return;
 
             // Check if the slime has moved far enough from the last spawn position

@@ -16,6 +16,7 @@ namespace _Scripts.Enemy.Modules
         [SerializeField] private float detectionRadius = 1f;
 
         private EnemyConfig _config;
+        private EnemyStatusController _status;
         private bool _isAttacking;
         private float _cooldownTimer;
         private float _spinDamage;
@@ -26,6 +27,7 @@ namespace _Scripts.Enemy.Modules
         private void Awake()
         {
             _config = GetComponentInParent<BaseEnemy>()?.Config;
+            _status = EnemyStatusController.FindFor(this);
             _spinDamage = _config != null ? _config.damage : 10f;
             
             SetupProxies();
@@ -49,7 +51,7 @@ namespace _Scripts.Enemy.Modules
 
         private void Update()
         {
-            if (_isAttacking || alwaysSpin)
+            if ((_status == null || _status.CanAttack) && (_isAttacking || alwaysSpin))
             {
                 Spin();
             }
@@ -67,7 +69,7 @@ namespace _Scripts.Enemy.Modules
             }
         }
 
-        public bool CanHit() => _isAttacking && _cooldownTimer <= 0;
+        public bool CanHit() => (_status == null || _status.CanAttack) && _isAttacking && _cooldownTimer <= 0;
 
         public void StartHitCooldown() => _cooldownTimer = damageCooldown;
 

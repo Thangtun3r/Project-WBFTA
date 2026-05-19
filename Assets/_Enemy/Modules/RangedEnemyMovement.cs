@@ -6,6 +6,7 @@ namespace _Scripts.Enemy.Modules
     public class RangedEnemyMovement : MonoBehaviour, IMovement
     {
         private EnemyConfig config;
+        private EnemyStatusController _status;
         
         private Vector2 _currentVelocity;
         public Vector2 CurrentVelocity => _currentVelocity;
@@ -19,6 +20,7 @@ namespace _Scripts.Enemy.Modules
         private void Awake()
         {
             config = GetComponentInParent<BaseEnemy>()?.Config;
+            _status = EnemyStatusController.FindFor(this);
         }
 
         private void OnEnable()
@@ -37,8 +39,14 @@ namespace _Scripts.Enemy.Modules
         public void MoveInDirection(Vector2 direction)
         {
             if (config == null) return;
+            if (_status != null && !_status.CanMove)
+            {
+                _currentVelocity = Vector2.zero;
+                return;
+            }
             
-            Vector2 targetVelocity = direction.normalized * config.moveSpeed;
+            float speedMultiplier = _status != null ? _status.MoveSpeedMultiplier : 1f;
+            Vector2 targetVelocity = direction.normalized * (config.moveSpeed * speedMultiplier);
             
             // Apply collision avoidance
             if (useCollisionAvoidance)
@@ -59,6 +67,11 @@ namespace _Scripts.Enemy.Modules
         public void Stop()
         {
             if (config == null) return;
+            if (_status != null && !_status.CanMove)
+            {
+                _currentVelocity = Vector2.zero;
+                return;
+            }
             
             _currentVelocity = Vector2.MoveTowards(_currentVelocity, Vector2.zero, config.deceleration * Time.deltaTime);
             ApplyMovement();

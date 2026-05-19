@@ -26,6 +26,7 @@ namespace _Scripts.Enemy
         protected EnemyVisual _visuals;
         protected EnemyFSM _fsm;
         protected Collider2D _collider;
+        protected EnemyStatusController _status;
         
         public EnemyConfig Config => config;
         public int CurrentLevel => currentLevel;
@@ -39,6 +40,7 @@ namespace _Scripts.Enemy
             _visuals = GetComponentInChildren<EnemyVisual>();
             _fsm = GetComponentInChildren<EnemyFSM>();
             _collider = GetComponent<Collider2D>();
+            _status = GetComponent<EnemyStatusController>() ?? gameObject.AddComponent<EnemyStatusController>();
             
             // Initial setup logic
             ResetStats();
@@ -71,12 +73,13 @@ namespace _Scripts.Enemy
         protected virtual void ResetEnemyState()
         {
             ResetStats();
+            _status?.ClearStatuses();
             if (_collider != null) _collider.enabled = true;
             // Reset FSM to Patrol when pulled from the pool
             if (_fsm != null)
             {
                 _fsm.enabled = true;
-                _fsm.QueueNextState(EnemyFSM.EnemyState.Patrol);
+                _fsm.ForceState(EnemyFSM.EnemyState.Patrol, true);
             }
         }
 
@@ -116,7 +119,8 @@ namespace _Scripts.Enemy
             if (_collider != null) _collider.enabled = false;
             
             OnEnemyDeath_Local?.Invoke();
-            _fsm?.QueueNextState(EnemyFSM.EnemyState.Dead);
+            _fsm?.ForceState(EnemyFSM.EnemyState.Dead);
+            _status?.ApplyStatus(EnemyStatusType.Dead);
             RewardPlayer(config.tier, currentLevel);
 
             OnEnemyDeath?.Invoke(this);

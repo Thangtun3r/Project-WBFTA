@@ -12,12 +12,14 @@ namespace _Scripts.Enemy.Modules
         [SerializeField] private bool useTrigger = true;
 
         private EnemyConfig _config;
+        private EnemyStatusController _status;
         private bool _isAttacking;
         private float _cooldownTimer;
 
         private void Awake()
         {
             _config = GetComponentInParent<BaseEnemy>()?.Config;
+            _status = EnemyStatusController.FindFor(this);
 
             if (hitboxRoot == null)
             {
@@ -63,7 +65,7 @@ namespace _Scripts.Enemy.Modules
 
         public bool CanHit()
         {
-            return _isAttacking && _cooldownTimer <= 0;
+            return (_status == null || _status.CanAttack) && _isAttacking && _cooldownTimer <= 0;
         }
 
         public void StartHitCooldown()

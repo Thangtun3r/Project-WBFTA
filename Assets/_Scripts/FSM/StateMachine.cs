@@ -12,11 +12,17 @@ public abstract class StateMachine<EState> : MonoBehaviour where EState : Enum
 
     protected virtual void Start()
     {
+        if (CurrentState == null)
+            return;
+
         CurrentState.EnterState();
     }
 
     protected virtual void Update()
     {
+        if (CurrentState == null)
+            return;
+
         CurrentState.UpdateState();
 
         if (hasQueuedState)
@@ -28,10 +34,13 @@ public abstract class StateMachine<EState> : MonoBehaviour where EState : Enum
 
     protected void TransitionToState(EState stateKey)
     {
-        if (CurrentState.StateKey.Equals(stateKey)) return;
+        if (!States.TryGetValue(stateKey, out BaseState<EState> nextState))
+            return;
 
-        CurrentState.ExitState();
-        CurrentState = States[stateKey];
+        if (CurrentState != null && CurrentState.StateKey.Equals(stateKey)) return;
+
+        CurrentState?.ExitState();
+        CurrentState = nextState;
         CurrentState.EnterState();
     }
 

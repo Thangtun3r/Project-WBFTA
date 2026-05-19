@@ -1,5 +1,6 @@
 using UnityEngine;
 using _Scripts.Enemy;
+using _Scripts.Enemy.Modules;
 
 /// <summary>
 /// Communicator port between the enemy and DragableCursor.
@@ -13,6 +14,10 @@ public class EffectManager : MonoBehaviour, IDragable
     private Rigidbody2D _rb; 
     private BaseEnemy _baseEnemy;
     private EnemyFSM _enemyFSM;
+    private EnemyStatusController _status;
+    private EnemyVisual _visuals;
+    private IMovement _movement;
+    private IEnemyAttack[] _attackModules;
 
     private void Awake()
     {
@@ -27,6 +32,21 @@ public class EffectManager : MonoBehaviour, IDragable
         {
             _enemyFSM = GetComponentInChildren<EnemyFSM>();
         }
+
+        if (_baseEnemy != null)
+        {
+            _status = EnemyStatusController.FindFor(_baseEnemy);
+            _visuals = _baseEnemy.GetComponentInChildren<EnemyVisual>();
+            _movement = _baseEnemy.GetComponentInChildren<IMovement>();
+            _attackModules = _baseEnemy.GetComponentsInChildren<IEnemyAttack>();
+        }
+        else
+        {
+            _status = EnemyStatusController.FindFor(this);
+            _visuals = GetComponentInParent<EnemyVisual>();
+            _movement = GetComponentInParent<IMovement>();
+            _attackModules = GetComponentsInParent<IEnemyAttack>();
+        }
     }
 
     // -------------------------------------------------------------------------
@@ -36,9 +56,13 @@ public class EffectManager : MonoBehaviour, IDragable
     public void OnStartDrag()
     {
         WasThrown = false;
-        if (_enemyFSM != null)
+        _status?.ApplyStatus(EnemyStatusType.Grabbed);
+        _visuals?.PlayShake();
+        _movement?.Stop();
+
+        for (int i = 0; i < _attackModules.Length; i++)
         {
-            _enemyFSM.enabled = false;
+            _attackModules[i]?.SetAttackActive(false);
         }
     }
 
@@ -49,10 +73,8 @@ public class EffectManager : MonoBehaviour, IDragable
     public void OnEndDrag(Vector2 velocity)
     {
         WasThrown = velocity.magnitude > 0.1f;
-        if (_enemyFSM != null)
-        {
-            _enemyFSM.enabled = true;
-        }
+        _status?.RemoveStatus(EnemyStatusType.Grabbed);
+        _enemyFSM?.ReenterCurrentState();
     }
 
     public Rigidbody2D GetRigidbody()

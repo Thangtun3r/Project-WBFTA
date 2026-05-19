@@ -5015,7 +5015,6 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7756802291660875077}
-  - {fileID: 249872715142398917}
   - {fileID: 5803510575443471694}
   m_Father: {fileID: 5821758170527278972}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5045,11 +5044,11 @@ Transform:
   m_GameObject: {fileID: 2777554242437089352}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.03, y: -0.049, z: 0}
-  m_LocalScale: {x: 1.3803601, y: 1.3803601, z: 1.3803601}
+  m_LocalPosition: {x: 0.021733457, y: -0.035497945, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 4720413435469617337}
+  m_Father: {fileID: 7756802291660875077}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6991124932149126837
 SpriteRenderer:
@@ -10409,6 +10408,7 @@ Transform:
   m_Children:
   - {fileID: 1836838255833396210}
   - {fileID: 4045509778228929351}
+  - {fileID: 249872715142398917}
   m_Father: {fileID: 4720413435469617337}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9098165329473146628
@@ -10530,14 +10530,6 @@ MonoBehaviour:
   spriteRenderers:
   - {fileID: 7414915541133414321}
   - {fileID: 3510043967153597441}
-  flashDuration: 0.1
-  punchAmount: 0.15
-  punchDuration: 0.2
-  shakeStrength: 0.1
-  shakeDuration: 0.2
-  shakeVibrato: 10
-  deathEffectName: enemyDeath
-  hitEffectName: enemyHit
 --- !u!50 &7095941779809538676
 Rigidbody2D:
   serializedVersion: 5
@@ -10666,6 +10658,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5409978a86cc374eab93284c0118102, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DragImpactDamage
+  impactEffectName: impactParticle
 --- !u!70 &5489374829453479071
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

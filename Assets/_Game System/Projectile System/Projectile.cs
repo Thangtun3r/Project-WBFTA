@@ -18,6 +18,10 @@ public class Projectile : MonoBehaviour, IProjectile
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
+        if (_rb != null)
+        {
+            _rb.interpolation = RigidbodyInterpolation2D.Interpolate;
+        }
     }
 
     public void Launch(ProjectileRequest request, Action<IProjectile> onRelease)

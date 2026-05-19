@@ -24,6 +24,7 @@ public class MouseFollower : MonoBehaviour
 
     // Track last hovered UI object to send exit events
     private GameObject _lastHoveredUI;
+    private int _lastVirtualPointerUpdateFrame = -1;
 
     private void Start()
     {
@@ -34,12 +35,30 @@ public class MouseFollower : MonoBehaviour
 
     private void LateUpdate()
     {
-        MoveCursor();
+        UpdateVirtualPointer();
+        UpdateWorldCursor();
         UpdateUIHover();
     }
 
-    private void MoveCursor()
+    public Vector2 GetVirtualScreenPosForFrame()
     {
+        UpdateVirtualPointer();
+        return virtualScreenPos;
+    }
+
+    public Vector2 GetWorldCursorPositionForFrame(Camera targetCamera = null)
+    {
+        UpdateVirtualPointer();
+        return GetWorldPosition(virtualScreenPos, targetCamera);
+    }
+
+    private void UpdateVirtualPointer()
+    {
+        if (_lastVirtualPointerUpdateFrame == Time.frameCount)
+            return;
+
+        _lastVirtualPointerUpdateFrame = Time.frameCount;
+
         float dx = Input.GetAxisRaw("Mouse X") * sensitivity;
         float dy = Input.GetAxisRaw("Mouse Y") * sensitivity;
 
@@ -47,11 +66,24 @@ public class MouseFollower : MonoBehaviour
             Mathf.Clamp(virtualScreenPos.x + dx, 0, Screen.width),
             Mathf.Clamp(virtualScreenPos.y + dy, 0, Screen.height)
         );
+    }
 
-        Vector3 worldPoint = Camera.main.ScreenToWorldPoint(
-            new Vector3(virtualScreenPos.x, virtualScreenPos.y, 10f));
+    private void UpdateWorldCursor()
+    {
+        if (cursor == null)
+            return;
+
+        Vector3 worldPoint = GetWorldPosition(virtualScreenPos, Camera.main);
         worldPoint.z = cursor.transform.position.z;
         cursor.transform.position = worldPoint;
+    }
+
+    private Vector3 GetWorldPosition(Vector2 screenPos, Camera targetCamera)
+    {
+        if (targetCamera == null)
+            targetCamera = Camera.main;
+
+        return targetCamera.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, 10f));
     }
 
     private void UpdateUIHover()

@@ -9,26 +9,21 @@ public class EnemyVisual : MonoBehaviour
     [SerializeField] private Transform visualRoot;
     [SerializeField] public SpriteRenderer[] spriteRenderers;
 
-    [Header("Flash Settings")]
-    [SerializeField] private float flashDuration = 0.1f;
-
-    [Header("Scale Pop Settings")]
-    private float punchAmount = 0.25f;
-    private float punchDuration = 0.1f;
-
-    [Header("Wiggle Settings")]
-    [SerializeField] private float shakeStrength = 0.1f;
-    [SerializeField] private float shakeDuration = 0.2f;
-    [SerializeField] private int shakeVibrato = 10;
-
-    [Header("Death VFX")]
-    [SerializeField] private string deathEffectName = "enemyDeath";
-    [SerializeField] private string hitEffectName = "enemyHit";
+    private const float FlashDuration = 0.1f;
+    private const float PunchAmount = 0.25f;
+    private const float PunchDuration = 0.03f;
+    private const float ShakeStrength = 0.1f;
+    private const float ShakeDuration = 0.2f;
+    private const int ShakeVibrato = 10;
+    private const string DeathEffectName = "enemyDeath";
+    private const string HitEffectName = "enemyHit";
+    private static readonly Vector3 ShakeRotationAngle = new Vector3(0f, 0f, 15f);
 
     private BaseEnemy parentEnemy;
     private MaterialPropertyBlock mpb;
     private Vector3 originalScale;
     private Vector3 originalLocalPos; // New: Cache for wiggle
+    private Quaternion originalLocalRotation;
     private static readonly int FlashProperty = Shader.PropertyToID("_Flash");
 
     private void Awake()
@@ -41,6 +36,7 @@ public class EnemyVisual : MonoBehaviour
         // Cache initial transforms
         originalScale = visualRoot.localScale;
         originalLocalPos = visualRoot.localPosition;
+        originalLocalRotation = visualRoot.localRotation;
 
         if (spriteRenderers == null || spriteRenderers.Length == 0)
             spriteRenderers = visualRoot.GetComponentsInChildren<SpriteRenderer>();
@@ -76,13 +72,14 @@ public class EnemyVisual : MonoBehaviour
     {
         visualRoot.localScale = originalScale;
         visualRoot.localPosition = originalLocalPos; // Reset position
+        visualRoot.localRotation = originalLocalRotation;
         SetFlashOnAll(0f);
     }
 
     public void HandleHitVisuals()
     {
         // Play hit VFX from station
-        VFXStation.PlayEffect(hitEffectName, transform.position);
+        VFXStation.PlayEffect(HitEffectName, transform.position);
         
         // 1. Kill and Reset to prevent stacking
         visualRoot.DOKill(false); 
@@ -97,21 +94,35 @@ public class EnemyVisual : MonoBehaviour
         Wiggle();
     }
 
+    public void PlayShake()
+    {
+        visualRoot.DOKill(false);
+        visualRoot.localPosition = originalLocalPos;
+        visualRoot.localRotation = originalLocalRotation;
+        RotationShake();
+    }
+
     private void HandleDeathVisuals()
     {
-        VFXStation.PlayEffect(deathEffectName, transform.position);
+        VFXStation.PlayEffect(DeathEffectName, transform.position);
     }
 
     private void ScalePop()
     {
-        visualRoot.DOPunchScale(new Vector3(punchAmount, punchAmount, 0), punchDuration, 10, 1)
+        visualRoot.DOPunchScale(new Vector3(PunchAmount, PunchAmount, 0), PunchDuration, 10, 1)
                   .SetTarget(visualRoot);
     }
 
     private void Wiggle()
     {
         // Punching on the X axis creates that "left-right" wiggle effect
-        visualRoot.DOPunchPosition(new Vector3(shakeStrength, 0, 0), shakeDuration, shakeVibrato, 1)
+        visualRoot.DOPunchPosition(new Vector3(ShakeStrength, 0, 0), ShakeDuration, ShakeVibrato, 1)
+                  .SetTarget(visualRoot);
+    }
+
+    private void RotationShake()
+    {
+        visualRoot.DOPunchRotation(ShakeRotationAngle, ShakeDuration, ShakeVibrato, 1)
                   .SetTarget(visualRoot);
     }
 
@@ -122,7 +133,7 @@ public class EnemyVisual : MonoBehaviour
         {
             flashValue = x;
             SetFlashOnAll(x);
-        }, 1f, flashDuration / 2f)
+        }, 1f, FlashDuration / 2f)
         .SetTarget(this)
         .OnComplete(() =>
         {
@@ -130,7 +141,7 @@ public class EnemyVisual : MonoBehaviour
             {
                 flashValue = x;
                 SetFlashOnAll(x);
-            }, 0f, flashDuration / 2f)
+            }, 0f, FlashDuration / 2f)
             .SetTarget(this);
         });
     }

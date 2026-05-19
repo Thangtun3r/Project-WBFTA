@@ -18,6 +18,7 @@ namespace _Scripts.Enemy.Modules
         [SerializeField] private Vector3 shakeAngle = new Vector3(0, 0, 15f);
 
         private ITargetSensor _sensor;
+        private EnemyStatusController _status;
         private Coroutine _attackRoutine;
         private EnemyConfig _config;
         private EnemyVisual _enemyVisuals;
@@ -26,6 +27,7 @@ namespace _Scripts.Enemy.Modules
         {
             _config = GetComponentInParent<BaseEnemy>()?.Config;
             _sensor = GetComponentInChildren<ITargetSensor>();
+            _status = EnemyStatusController.FindFor(this);
             _enemyVisuals = GetComponentInParent<EnemyVisual>();
             rotationTarget = rotationTarget ?? transform;
             firePoint = firePoint ?? transform;
@@ -33,6 +35,9 @@ namespace _Scripts.Enemy.Modules
 
         public void SetAttackActive(bool active)
         {
+            if (active && _status != null && !_status.CanAttack)
+                return;
+
             if (active && _attackRoutine == null) _attackRoutine = StartCoroutine(AttackLoop());
             else if (!active && _attackRoutine != null)
             {
@@ -56,12 +61,22 @@ namespace _Scripts.Enemy.Modules
         {
             while (true)
             {
+                if (_status != null && !_status.CanAttack)
+                {
+                    ResetVisuals();
+                    yield return null;
+                    continue;
+                }
+
                 // 1. Wait for target
                 yield return new WaitUntil(() => _sensor != null && _sensor.HasTarget);
 
                 // 2. Alignment Phase: Rotate until facing target (within 5 degrees)
                 while (true)
                 {
+                    if (_status != null && !_status.CanAttack)
+                        break;
+
                     float angleDiff = GetAngleToTarget();
                     if (Mathf.Abs(angleDiff) < 5f) break; 
 
@@ -75,10 +90,16 @@ namespace _Scripts.Enemy.Modules
                 float elapsed = 0;
                 while (elapsed < windupDuration)
                 {
+                    if (_status != null && !_status.CanAttack)
+                        break;
+
                     ApplyRotation(GetAngleToTarget()); // Keep tracking during windup
                     elapsed += Time.deltaTime;
                     yield return null;
                 }
+
+                if (_status != null && !_status.CanAttack)
+                    continue;
 
                 // 4. Fire & Cooldown
                 ExecuteFire();
@@ -139,7 +160,7 @@ namespace _Scripts.Enemy.Modules
             transform.localScale = Vector3.one;
         }
 
-        public bool CanHit() => _attackRoutine != null;
+        public bool CanHit() => (_status == null || _status.CanAttack) && _attackRoutine != null;
         public void StartHitCooldown() { }
     }
 }

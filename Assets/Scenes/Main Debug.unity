@@ -8310,8 +8310,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5409978a86cc374eab93284c0118102, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DragImpactDamage
-  impactVelocityThreshold: 1
-  fallbackDamage: 10
+  impactEffectName: impactParticle
 --- !u!61 &742834298
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -8431,12 +8430,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Enemy.EnemyVisuals
   visualRoot: {fileID: 0}
   spriteRenderers: []
-  flashDuration: 0.1
-  shakeStrength: 7
-  shakeDuration: 0.1
-  shakeVibrato: 10
-  deathEffectName: enemyDeath
-  hitEffectName: enemyHit
 --- !u!114 &742834303
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9302,8 +9295,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5409978a86cc374eab93284c0118102, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DragImpactDamage
-  impactVelocityThreshold: 1
-  fallbackDamage: 10
+  impactEffectName: impactParticle
 --- !u!61 &823677429
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -9423,12 +9415,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Enemy.EnemyVisuals
   visualRoot: {fileID: 0}
   spriteRenderers: []
-  flashDuration: 0.1
-  shakeStrength: 7
-  shakeDuration: 0.1
-  shakeVibrato: 10
-  deathEffectName: enemyDeath
-  hitEffectName: enemyHit
 --- !u!114 &823677434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9825,6 +9811,37 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 89436975cf4e140438f1ef08214339c8, type: 3}
+--- !u!1 &859324912
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 859324913}
+  m_Layer: 0
+  m_Name: Movement
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &859324913
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 859324912}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7.19603, y: -7.00288, z: 1.39583}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &862038096
 GameObject:
   m_ObjectHideFlags: 0
@@ -22736,8 +22753,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5409978a86cc374eab93284c0118102, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DragImpactDamage
-  impactVelocityThreshold: 1
-  fallbackDamage: 10
+  impactEffectName: impactParticle
 --- !u!61 &1182537395
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -22857,12 +22873,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Enemy.EnemyVisuals
   visualRoot: {fileID: 0}
   spriteRenderers: []
-  flashDuration: 0.1
-  shakeStrength: 7
-  shakeDuration: 0.1
-  shakeVibrato: 10
-  deathEffectName: enemyDeath
-  hitEffectName: enemyHit
 --- !u!114 &1182537400
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23909,7 +23919,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1247112980
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23930,12 +23940,12 @@ MonoBehaviour:
   m_StreamingVersion: 20241001
   m_LegacyPriority: 0
   Target:
-    TrackingTarget: {fileID: 63283466}
+    TrackingTarget: {fileID: 859324913}
     LookAtTarget: {fileID: 0}
     CustomLookAtTarget: 0
   Lens:
     FieldOfView: 60
-    OrthographicSize: 6.2
+    OrthographicSize: 14.8
     NearClipPlane: 0.3
     FarClipPlane: 1000
     Dutch: 0
@@ -23962,7 +23972,7 @@ Transform:
   m_GameObject: {fileID: 1247112978}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1794.0326, y: -1019.3247, z: -10}
+  m_LocalPosition: {x: -1786.8365, y: -1026.3276, z: -8.60417}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -25744,6 +25754,7 @@ GameObject:
   - component: {fileID: 1357160420}
   - component: {fileID: 1357160419}
   - component: {fileID: 1357160422}
+  - component: {fileID: 1357160423}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -25794,7 +25805,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 18
+  orthographic size: 16.02
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -25818,8 +25829,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1357160418}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1794.0326, y: -1019.3247, z: -10}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1786.8365, y: -1026.3276, z: -8.60417}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -25869,6 +25880,38 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &1357160423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1357160418}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72ece51f2901e7445ab60da3685d6b5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineBrain
+  ShowDebugText: 0
+  ShowCameraFrustum: 1
+  IgnoreTimeScale: 0
+  WorldUpOverride: {fileID: 0}
+  ChannelMask: -1
+  UpdateMethod: 2
+  BlendUpdateMethod: 1
+  LensModeOverride:
+    Enabled: 0
+    DefaultMode: 2
+  DefaultBlend:
+    Style: 1
+    Time: 2
+    CustomCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  CustomBlends: {fileID: 0}
 --- !u!1 &1357203104
 GameObject:
   m_ObjectHideFlags: 0
@@ -26972,8 +27015,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5409978a86cc374eab93284c0118102, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DragImpactDamage
-  impactVelocityThreshold: 1
-  fallbackDamage: 10
+  impactEffectName: impactParticle
 --- !u!61 &1444139183
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -27093,12 +27135,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Enemy.EnemyVisuals
   visualRoot: {fileID: 0}
   spriteRenderers: []
-  flashDuration: 0.1
-  shakeStrength: 7
-  shakeDuration: 0.1
-  shakeVibrato: 10
-  deathEffectName: enemyDeath
-  hitEffectName: enemyHit
 --- !u!114 &1444139188
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44746,12 +44782,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Enemy.EnemyVisuals
   visualRoot: {fileID: 0}
   spriteRenderers: []
-  flashDuration: 0.1
-  shakeStrength: 0.1
-  shakeDuration: 0.2
-  shakeVibrato: 10
-  deathEffectName: enemyDeath
-  hitEffectName: enemyHit
 --- !u!212 &3109289831023105430
 SpriteRenderer:
   serializedVersion: 2
@@ -45070,6 +45100,63 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: -0.023061752, y: -0.10212135}
   m_Radius: 4.25
+--- !u!1001 &3603620232651569967
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5078201502219123903, guid: ed074013847e6fb499946dafe9b33e88, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 7.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 5078201502219123903, guid: ed074013847e6fb499946dafe9b33e88, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -8.23
+      objectReference: {fileID: 0}
+    - target: {fileID: 5078201502219123903, guid: ed074013847e6fb499946dafe9b33e88, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.48262
+      objectReference: {fileID: 0}
+    - target: {fileID: 5078201502219123903, guid: ed074013847e6fb499946dafe9b33e88, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5078201502219123903, guid: ed074013847e6fb499946dafe9b33e88, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5078201502219123903, guid: ed074013847e6fb499946dafe9b33e88, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5078201502219123903, guid: ed074013847e6fb499946dafe9b33e88, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5078201502219123903, guid: ed074013847e6fb499946dafe9b33e88, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5078201502219123903, guid: ed074013847e6fb499946dafe9b33e88, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5078201502219123903, guid: ed074013847e6fb499946dafe9b33e88, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8994038121516549701, guid: ed074013847e6fb499946dafe9b33e88, type: 3}
+      propertyPath: m_Name
+      value: Impact Particles
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ed074013847e6fb499946dafe9b33e88, type: 3}
 --- !u!4 &3615922229033276142
 Transform:
   m_ObjectHideFlags: 0
@@ -45095,11 +45182,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3455792211606285100, guid: 137b8f482a37fe64aaec7cefbdc2d612, type: 3}
       propertyPath: vfxPrefabs.Array.size
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3455792211606285100, guid: 137b8f482a37fe64aaec7cefbdc2d612, type: 3}
       propertyPath: vfxPrefabs.Array.data[3].name
       value: explosion
+      objectReference: {fileID: 0}
+    - target: {fileID: 3455792211606285100, guid: 137b8f482a37fe64aaec7cefbdc2d612, type: 3}
+      propertyPath: vfxPrefabs.Array.data[4].name
+      value: impactParticle
       objectReference: {fileID: 0}
     - target: {fileID: 3455792211606285100, guid: 137b8f482a37fe64aaec7cefbdc2d612, type: 3}
       propertyPath: vfxPrefabs.Array.data[2].prefab
@@ -45109,6 +45200,10 @@ PrefabInstance:
       propertyPath: vfxPrefabs.Array.data[3].prefab
       value: 
       objectReference: {fileID: 590227552698044050, guid: ff07b99da0081cb47a667fba98682548, type: 3}
+    - target: {fileID: 3455792211606285100, guid: 137b8f482a37fe64aaec7cefbdc2d612, type: 3}
+      propertyPath: vfxPrefabs.Array.data[4].prefab
+      value: 
+      objectReference: {fileID: 2914963731403346356, guid: ed074013847e6fb499946dafe9b33e88, type: 3}
     - target: {fileID: 3558745520611742057, guid: 137b8f482a37fe64aaec7cefbdc2d612, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1784.4974
@@ -50204,12 +50299,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Enemy.EnemyVisuals
   visualRoot: {fileID: 0}
   spriteRenderers: []
-  flashDuration: 0.1
-  shakeStrength: 0.1
-  shakeDuration: 0.2
-  shakeVibrato: 10
-  deathEffectName: enemyDeath
-  hitEffectName: enemyHit
 --- !u!114 &5125385560344852514
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -50794,6 +50883,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6321774409173354292, guid: aacd8c0da10eb2048b9cc5b23f3fdc8c, type: 3}
+      propertyPath: dampTime
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6321774409173354292, guid: aacd8c0da10eb2048b9cc5b23f3fdc8c, type: 3}
+      propertyPath: moveSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6321774409173354292, guid: aacd8c0da10eb2048b9cc5b23f3fdc8c, type: 3}
+      propertyPath: useDamping
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6321774409173354292, guid: aacd8c0da10eb2048b9cc5b23f3fdc8c, type: 3}
       propertyPath: targetObject
       value: 
       objectReference: {fileID: 1357160421}
@@ -51294,3 +51395,5 @@ SceneRoots:
   - {fileID: 2044306945}
   - {fileID: 408110282}
   - {fileID: 1149805281}
+  - {fileID: 3603620232651569967}
+  - {fileID: 859324913}

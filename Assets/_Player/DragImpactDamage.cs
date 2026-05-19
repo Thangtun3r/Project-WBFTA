@@ -9,6 +9,7 @@ public class DragImpactDamage : MonoBehaviour
     private Color impactColor = Color.red;
     private float debugLineDuration = 0.5f;
 
+    [SerializeField] private string impactEffectName = "impactParticle";
     private float impactVelocityThreshold = 1f;
     private float impactGraceTime = 0.1f;
     private float thrownStateFalloffVelocity = 1f;
@@ -53,6 +54,7 @@ public class DragImpactDamage : MonoBehaviour
 
         _lastImpactTime = Time.time;
         OnImpactDetected?.Invoke();
+        PlayImpactEffect(collision);
 
         if (logImpact)
         {
@@ -95,9 +97,7 @@ public class DragImpactDamage : MonoBehaviour
             return _playerThrownDamage;
         }
 
-        DragImpactDamage otherImpactDamage = collision.rigidbody != null
-            ? collision.rigidbody.GetComponent<DragImpactDamage>()
-            : collision.gameObject.GetComponentInParent<DragImpactDamage>();
+        DragImpactDamage otherImpactDamage = GetOtherImpactDamage(collision);
 
         if (otherImpactDamage != null &&
             otherImpactDamage._effectManager != null &&
@@ -110,5 +110,32 @@ public class DragImpactDamage : MonoBehaviour
         }
 
         return 0f;
+    }
+
+    private void PlayImpactEffect(Collision2D collision)
+    {
+        if (string.IsNullOrWhiteSpace(impactEffectName))
+        {
+            return;
+        }
+
+        DragImpactDamage otherImpactDamage = GetOtherImpactDamage(collision);
+        if (otherImpactDamage != null && GetInstanceID() > otherImpactDamage.GetInstanceID())
+        {
+            return;
+        }
+
+        Vector3 effectPosition = collision.contactCount > 0
+            ? collision.GetContact(0).point
+            : transform.position;
+
+        VFXStation.PlayEffect(impactEffectName, effectPosition);
+    }
+
+    private DragImpactDamage GetOtherImpactDamage(Collision2D collision)
+    {
+        return collision.rigidbody != null
+            ? collision.rigidbody.GetComponent<DragImpactDamage>()
+            : collision.gameObject.GetComponentInParent<DragImpactDamage>();
     }
 }

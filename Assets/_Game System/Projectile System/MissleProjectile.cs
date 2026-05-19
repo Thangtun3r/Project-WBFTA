@@ -20,7 +20,14 @@ public class MissileProjectile : MonoBehaviour, IProjectile
     private Vector3 _spawnPosition; 
     private float _armedTime; // Timestamp of when the missile becomes "deadly"
 
-    private void Awake() => _rb = GetComponent<Rigidbody2D>();
+    private void Awake()
+    {
+        _rb = GetComponent<Rigidbody2D>();
+        if (_rb != null)
+        {
+            _rb.interpolation = RigidbodyInterpolation2D.Interpolate;
+        }
+    }
 
     public void Launch(ProjectileRequest request, Action<IProjectile> onRelease)
     {

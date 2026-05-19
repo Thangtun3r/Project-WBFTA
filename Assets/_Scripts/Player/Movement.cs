@@ -20,11 +20,14 @@ namespace _Scripts
         [SerializeField] private MovementMode movementMode = MovementMode.Both;
         [SerializeField] private float moveSpeed = 5f;
         [SerializeField] private float speedMultiplier = 1f;
+        [SerializeField] private bool useDamping = true;
         [SerializeField] private float dampTime = 0.1f;
         [SerializeField] private float edgeThreshold = 50f;
 
         private InputAction _moveAction;
-        private Vector3 _velocity = Vector3.zero;
+        private Vector3 _currentVelocity = Vector3.zero;
+        private Vector3 _velocityDamp = Vector3.zero;
+        private MouseFollower _mouseFollower;
 
         private void Awake()
         {
@@ -41,6 +44,8 @@ namespace _Scripts
             {
                 Debug.LogError("Movement Error: 'Move' action not found! Check your Action Map names.");
             }
+
+            _mouseFollower = FindFirstObjectByType<MouseFollower>();
         }
 
         private void OnEnable()
@@ -62,15 +67,18 @@ namespace _Scripts
         {
             Vector2 combinedInput = CalculateInput();
 
-            // Apply movement to the targetObject instead of transform
-            Vector3 moveDirection = new Vector3(combinedInput.x, combinedInput.y, 0f) * (moveSpeed * speedMultiplier);
-            
-            targetObject.position = Vector3.SmoothDamp(
-                targetObject.position, 
-                targetObject.position + moveDirection, 
-                ref _velocity, 
-                dampTime
-            );
+            Vector3 targetVelocity = new Vector3(combinedInput.x, combinedInput.y, 0f) * (moveSpeed * speedMultiplier);
+            if (useDamping && dampTime > 0f)
+            {
+                _currentVelocity = Vector3.SmoothDamp(_currentVelocity, targetVelocity, ref _velocityDamp, dampTime);
+            }
+            else
+            {
+                _currentVelocity = targetVelocity;
+                _velocityDamp = Vector3.zero;
+            }
+
+            targetObject.position += _currentVelocity * Time.deltaTime;
         }
         
          private Vector2 CalculateInput()
@@ -115,7 +123,9 @@ namespace _Scripts
             Vector2 mouseMove = Vector2.zero;
             if (movementMode == MovementMode.Mouse || movementMode == MovementMode.Both)
             {
-                Vector2 mousePos = Input.mousePosition;
+                Vector2 mousePos = _mouseFollower != null
+                    ? _mouseFollower.GetVirtualScreenPosForFrame()
+                    : (Vector2)Input.mousePosition;
 
                 // X Axis
                 if (mousePos.x < edgeThreshold)
