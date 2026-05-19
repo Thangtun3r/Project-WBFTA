@@ -8533,6 +8533,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Enemy.EnemyVisuals
   visualRoot: {fileID: 0}
+  visualShadow: {fileID: 0}
   spriteRenderers: []
 --- !u!114 &742834303
 MonoBehaviour:
@@ -9518,6 +9519,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Enemy.EnemyVisuals
   visualRoot: {fileID: 0}
+  visualShadow: {fileID: 0}
   spriteRenderers: []
 --- !u!114 &823677434
 MonoBehaviour:
@@ -15468,7 +15470,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!61 &900442925
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -15565,7 +15567,7 @@ SpriteRenderer:
   m_SortingOrder: -4
   m_MaskInteraction: 0
   m_Sprite: {fileID: -9163426285224168042, guid: 1d4f82d6babf02940b60c1c38d766bba, type: 3}
-  m_Color: {r: 0.09433961, g: 0.09433961, b: 0.09433961, a: 1}
+  m_Color: {r: 0.7735849, g: 0.7735849, b: 0.7735849, a: 0.07058824}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
@@ -22970,6 +22972,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Enemy.EnemyVisuals
   visualRoot: {fileID: 0}
+  visualShadow: {fileID: 0}
   spriteRenderers: []
 --- !u!114 &1182537400
 MonoBehaviour:
@@ -27258,6 +27261,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Enemy.EnemyVisuals
   visualRoot: {fileID: 0}
+  visualShadow: {fileID: 0}
   spriteRenderers: []
 --- !u!114 &1444139188
 MonoBehaviour:
@@ -44948,6 +44952,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Enemy.EnemyVisuals
   visualRoot: {fileID: 0}
+  visualShadow: {fileID: 0}
   spriteRenderers: []
 --- !u!212 &3109289831023105430
 SpriteRenderer:
@@ -50465,6 +50470,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Enemy.EnemyVisuals
   visualRoot: {fileID: 0}
+  visualShadow: {fileID: 0}
   spriteRenderers: []
 --- !u!114 &5125385560344852514
 MonoBehaviour:
@@ -51055,7 +51061,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6321774409173354292, guid: aacd8c0da10eb2048b9cc5b23f3fdc8c, type: 3}
       propertyPath: moveSpeed
-      value: 10
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 6321774409173354292, guid: aacd8c0da10eb2048b9cc5b23f3fdc8c, type: 3}
       propertyPath: useDamping

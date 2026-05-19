@@ -10,6 +10,9 @@ public class BombProjectile : MonoBehaviour, IProjectile
     [SerializeField] private string explosionVFXName = "explosion"; // Matches VFXStation name
     [SerializeField] private LayerMask damageLayer;
 
+    [Header("Visual Settings")]
+    [SerializeField] private SpriteRenderer spriteToTint;
+
     [Header("Shake Settings")]
     [SerializeField] private float shakeDuration = 0.5f;
     [SerializeField] private float shakeMagnitude = 0.15f;
@@ -18,11 +21,24 @@ public class BombProjectile : MonoBehaviour, IProjectile
     private bool _hasExploded;
     private Action<IProjectile> _onRelease;
     private Sequence _bombSequence;
+    private SpriteRenderer[] spriteRenderers;
+    private MaterialPropertyBlock mpb;
+    private static readonly int FlashProperty = Shader.PropertyToID("_Flash");
     
     // Pre-allocate array to avoid GC (Garbage Collection) spikes during explosion
     private readonly Collider2D[] _hitResults = new Collider2D[15];
 
 
+
+    private void OnEnable()
+    {
+        // Initialize sprite renderers and property block on first use
+        if (spriteRenderers == null || spriteRenderers.Length == 0)
+        {
+            spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
+            mpb = new MaterialPropertyBlock();
+        }
+    }
 
     public void Launch(ProjectileRequest request, Action<IProjectile> onRelease)
     {
@@ -30,8 +46,6 @@ public class BombProjectile : MonoBehaviour, IProjectile
         _hasExploded = false;
         transform.position = request.Position;
         explosionDamage = request.Damage;
-        
-        
 
         PlayShakeAndExplode();
     }
@@ -41,15 +55,53 @@ public class BombProjectile : MonoBehaviour, IProjectile
         _bombSequence?.Kill();
         _bombSequence = DOTween.Sequence();
 
-        // 1. Shake effect (The "Delay" happens during the shake duration)
-        _bombSequence.Append(transform.DOPunchPosition(
-            new Vector3(shakeMagnitude, shakeMagnitude, 0),
-            shakeDuration, 
-            shakeVibrato, 
-            2f));
+        // Phase 1 (0.0s to 1.4s - First 70%): Slow flashing
+        for (int i = 0; i < 2; i++) // 2 cycles of 0.7s = 1.4s
+        {
+            _bombSequence.AppendCallback(() => SetFlashOnAll(1f));
+            _bombSequence.AppendInterval(0.35f);
+            _bombSequence.AppendCallback(() => SetFlashOnAll(0f));
+            _bombSequence.AppendInterval(0.35f);
+        }
 
-        // 2. Trigger explosion immediately when shake finishes
+        // Phase 2 (1.4s to 2.0s - Last 30%): Fast flashing
+        for (int i = 0; i < 3; i++) // 3 cycles of 0.2s = 0.6s
+        {
+            _bombSequence.AppendCallback(() => SetFlashOnAll(1f));
+            _bombSequence.AppendInterval(0.1f);
+            _bombSequence.AppendCallback(() => SetFlashOnAll(0f));
+            _bombSequence.AppendInterval(0.1f);
+        }
+
+        // Phase 1 Shake: Low amplitude, slow vibrato (Starts at 0.0s, lasts 1.4s)
+        _bombSequence.Insert(0f, transform.DOPunchPosition(
+            new Vector3(shakeMagnitude * 0.3f, shakeMagnitude * 0.3f, 0),
+            1.4f, 
+            Mathf.Max(1, shakeVibrato / 2), 
+            1f));
+            
+        // Phase 2 Shake: High amplitude, fast vibrato (Starts at 1.4s, lasts 0.6s)
+        _bombSequence.Insert(1.4f, transform.DOPunchPosition(
+            new Vector3(shakeMagnitude, shakeMagnitude, 0),
+            0.6f, 
+            shakeVibrato * 2, 
+            1f));
+
+        // Trigger explosion when sequence finishes (exactly after 2.0s)
         _bombSequence.OnComplete(Explode);
+    }
+
+    private void SetFlashOnAll(float value)
+    {
+        if (spriteRenderers == null || mpb == null) return;
+        
+        foreach (SpriteRenderer sr in spriteRenderers)
+        {
+            if (sr == null) continue;
+            sr.GetPropertyBlock(mpb);
+            mpb.SetFloat(FlashProperty, value);
+            sr.SetPropertyBlock(mpb);
+        }
     }
 
     private void Explode()

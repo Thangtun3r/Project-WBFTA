@@ -4895,7 +4895,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: ae553135f59cce34eb19a23f4273c84a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5070,6 +5070,7 @@ MonoBehaviour:
   damageLayer:
     serializedVersion: 2
     m_Bits: 320
+  spriteToTint: {fileID: 3846474308944629452}
   shakeDuration: 0.5
   shakeMagnitude: 0.15
   shakeVibrato: 10
