@@ -1,41 +1,17 @@
+using UnityEngine;
 
-using _Scripts;
-
-public class SpeedBoostLogic : ItemLogicBase
+public class SpeedBoostLogic : PlayerStatItemLogicBase
 {
-    public float speedBonus =  0.14f; // 10%
-    public float increasePerStack = 0.14f; // 10%
+    [Header("Fallback Stats")]
+    [SerializeField] private float fallbackMoveSpeedMultiplierBonus = 0.14f;
+    [SerializeField] private float fallbackMoveSpeedMultiplierBonusPerStack = 0.14f;
+
+    protected override PlayerStatType StatType => PlayerStatType.MoveSpeedMultiplier;
+    protected override float FallbackBaseValue => fallbackMoveSpeedMultiplierBonus;
+    protected override float FallbackPerStackValue => fallbackMoveSpeedMultiplierBonusPerStack;
 
     public float GetBonusMultiplier()
     {
-        int stackCount = Owner.StackSize;
-        return speedBonus + ((stackCount - 1) * increasePerStack);
-    }
-
-    protected override void OnInitialize() 
-    {
-        var movement = Owner.OwnerObject.GetComponent<Movement>();
-        if (movement != null)
-        {
-            movement.AddSpeedMultiplier(speedBonus);
-        }
-    }
-
-    protected override void HandleStackChanged(int amountChanged)
-    {
-        var movement = Owner.OwnerObject.GetComponent<Movement>();
-        if (movement != null)
-        {
-            movement.AddSpeedMultiplier(amountChanged * increasePerStack);
-        }
-    }
-
-    public override void Dispose() 
-    {
-        var movement = Owner.OwnerObject.GetComponent<Movement>();
-        if (movement != null)
-        {
-            movement.AddSpeedMultiplier(-GetBonusMultiplier());
-        }
+        return FallbackValue;
     }
 }

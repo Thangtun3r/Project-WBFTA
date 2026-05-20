@@ -1,43 +1,38 @@
 using UnityEngine;
 
-public class HomingMissileLogic : ItemLogicBase
+public class HomingMissileLogic : ProcOnHitItemLogicBase
 {
     [Header("Debug Settings")]
-    private bool forceProc = false; // Set this to TRUE in Inspector
-    private float procChance = 0.2f;
-    private float damageMultiplier = 3f;
-    private float damageMultiplierPerStack = 3f;
+    [SerializeField] private bool forceProc;
 
-    protected override void OnInitialize()
+    [Header("Fallback Stats")]
+    [SerializeField] private float fallbackProcChance = 0.2f;
+    [SerializeField] private float fallbackDamageMultiplier = 3f;
+    [SerializeField] private float fallbackDamageMultiplierPerStack = 3f;
+
+    [Header("Projectile")]
+    [SerializeField] private string projectileId = "HomingMissile";
+    [SerializeField] private float launchSpeed = 6f;
+
+    protected override float ProcChance => GetProcChance(fallbackProcChance);
+
+    private float DamageMultiplier => GetDamageMultiplier(
+        fallbackDamageMultiplier,
+        fallbackDamageMultiplierPerStack);
+
+    protected override bool RollProc(ItemTriggerContext context)
     {
-        if (GlobalEventManager.Instance != null)
-            GlobalEventManager.Instance.HandleOnHit += OnHitEffect;
+        return forceProc || base.RollProc(context);
     }
 
-    protected override void HandleStackChanged(int amountChanged)
+    protected override void ExecuteTrigger(ItemTriggerContext context)
     {
-    }
-
-    private void OnHitEffect(GameObject attacker, IDamagable target, float damage, bool isCrit)
-    {
-        // DEBUG LOG 1: See if the event is even reaching the item
-        // Debug.Log($"Missile Logic: Hit detected. Attacker: {attacker.name}, Owner: {Owner.OwnerObject.name}");
-
-        if (attacker != Owner.OwnerObject) return;
-
-        // DEBUG OVERRIDE: Ignore the Random.value check if forceProc is on
-        if (!forceProc && Random.value > procChance) return;
-
-        Transform targetTransform = (target as MonoBehaviour)?.transform;
-        
-        LaunchMissileSalvo(targetTransform, damage);
+        Transform targetTransform = context.Target.GetTransform();
+        LaunchMissileSalvo(targetTransform, context.Damage);
     }
 
     private void LaunchMissileSalvo(Transform target, float baseDamage)
     {
-        // Calculate damage multiplier based on stack size
-        float scaledDamageMultiplier = damageMultiplier + (Owner.StackSize - 1) * damageMultiplierPerStack;
-        
         Vector3 spawnOffset = new Vector3(Random.Range(-0.2f, 0.2f), 1.5f, 0);
         
         // Randomize launch direction so they fan out beautifully
@@ -45,20 +40,14 @@ public class HomingMissileLogic : ItemLogicBase
 
         ProjectileRequest request = new ProjectileRequest
         {
-            ProjectileID = "HomingMissile",
+            ProjectileID = projectileId,
             Position = Owner.OwnerObject.transform.position + spawnOffset,
             Rotation = Quaternion.identity,
-            Direction = randomDir * 6f, // Speed of the initial "pop"
-            Damage = baseDamage * scaledDamageMultiplier,
+            Direction = randomDir * launchSpeed,
+            Damage = baseDamage * DamageMultiplier,
             Target = target
         };
 
         ProjectilePool.Instance?.RequestProjectile(request);
-    }
-
-    public override void Dispose()
-    {
-        if (GlobalEventManager.Instance != null)
-            GlobalEventManager.Instance.HandleOnHit -= OnHitEffect;
     }
 }

@@ -1,50 +1,51 @@
-using System.Diagnostics;
 using UnityEngine;
 
-public class ChainDamageLogic : ItemLogicBase
+public class ChainDamageLogic : ProcOnHitItemLogicBase
 {
-    public float procChance = 0.25f;
-    public int baseMaxBounces = 3;
-    public int extraBouncesPerStack = 1;
-    public float baseRadius = 20f;
-    public float radiusPerStack = 1f;
-    public float damageMultiplier = 0.7f;
+    [Header("Fallback Stats")]
+    [SerializeField] private float fallbackProcChance = 0.25f;
+    [SerializeField] private int fallbackBaseBounceCount = 3;
+    [SerializeField] private int fallbackBounceCountPerStack = 1;
+    [SerializeField] private float fallbackBaseRadius = 20f;
+    [SerializeField] private float fallbackRadiusPerStack = 1f;
+    [SerializeField] private float fallbackDamageMultiplier = 0.7f;
 
-    public override void Dispose()
+    protected override float ProcChance => GetProcChance(fallbackProcChance);
+
+    private int BounceCount => Mathf.Max(0, Mathf.RoundToInt(
+        GetItemStat(ItemStatType.BounceCount, fallbackBaseBounceCount, fallbackBounceCountPerStack)));
+
+    private float Radius => GetItemStat(
+        ItemStatType.Radius,
+        fallbackBaseRadius,
+        fallbackRadiusPerStack);
+
+    private float DamageMultiplier => GetDamageMultiplier(fallbackDamageMultiplier);
+
+    protected override void ExecuteTrigger(ItemTriggerContext context)
     {
-        GlobalEventManager.Instance.HandleOnHit -= HandleHit;
+        ApplyChainDamage(context.Target, context.Damage, context.IsCrit);
     }
 
-    protected override void OnInitialize()
+    private void ApplyChainDamage(IDamagable target, float damage, bool isCrit)
     {
-        GlobalEventManager.Instance.HandleOnHit += HandleHit;
-    }
-
-    protected override void HandleStackChanged(int amountChanged)
-    {
-    }
-
-    private void HandleHit(GameObject attacker, IDamagable target, float damage, bool isCrit)
-    {
-
-
-        if (UnityEngine.Random.value > procChance) return;
-
-        int stackCount = UnityEngine.Mathf.Max(Owner.StackSize, 1);
-        int maxBounces = baseMaxBounces + ((stackCount - 1) * extraBouncesPerStack);
-        float searchRadius = baseRadius + ((stackCount - 1) * radiusPerStack);
+        Transform targetTransform = target.GetTransform();
+        float radius = Radius;
+        float chainDamage = damage * DamageMultiplier;
 
         var nearby = CurrentEnemyRegistry.Instance.GetTargetsInRadius(
-            target.GetTransform().position,
-            searchRadius,
-            maxBounces
+            targetTransform.position,
+            radius,
+            BounceCount
         );
 
         foreach (var enemy in nearby)
         {
-            if (enemy == null || enemy.gameObject == null || enemy.gameObject == target.GetTransform().gameObject) continue;
+            if (enemy == null || enemy.gameObject == null || enemy.gameObject == targetTransform.gameObject)
+            {
+                continue;
+            }
 
-            float chainDamage = damage * damageMultiplier;
             enemy.TakeDamage(chainDamage);
             
             if (FloatingDamagePool.Instance != null)
@@ -53,9 +54,9 @@ public class ChainDamageLogic : ItemLogicBase
             }
 
             EffectContext context = new EffectContext {
-                Origin = target.GetTransform().position,
+                Origin = targetTransform.position,
                 Destination = enemy.transform.position,
-                Radius = searchRadius
+                Radius = radius
             };
 
             Owner.TriggerEffect(context);

@@ -1,41 +1,17 @@
+using UnityEngine;
 
-
-public class CritDamageLogic : ItemLogicBase, ICritDamageLogic
+public class CritDamageLogic : PlayerStatItemLogicBase, ICritDamageLogic
 {
-    public float critDamageBonus = 0.2f; 
-    public float increasePerStack = 0.23f;
+    [Header("Fallback Stats")]
+    [SerializeField] private float fallbackCritDamageBonus = 0.2f;
+    [SerializeField] private float fallbackCritDamageBonusPerStack = 0.23f;
 
+    protected override PlayerStatType StatType => PlayerStatType.CritDamage;
+    protected override float FallbackBaseValue => fallbackCritDamageBonus;
+    protected override float FallbackPerStackValue => fallbackCritDamageBonusPerStack;
 
     public float AddCritDamageBonus()
     {
-        int stackCount = Owner.StackSize;
-        return critDamageBonus + ((stackCount - 1) * increasePerStack);
-    }
-
-    protected override void OnInitialize() 
-    {
-        var stats = Owner.OwnerObject.GetComponent<PlayerStatMachine>();
-        if (stats != null)
-        {
-            stats.AddCritDamageModifier(critDamageBonus);
-        }
-    }
-
-    protected override void HandleStackChanged(int amountChanged)
-    {
-        var stats = Owner.OwnerObject.GetComponent<PlayerStatMachine>();
-        if (stats != null)
-        {
-            stats.AddCritDamageModifier(amountChanged * increasePerStack);
-        }
-    }
-
-    public override void Dispose() 
-    {
-        var stats = Owner.OwnerObject.GetComponent<PlayerStatMachine>();
-        if (stats != null)
-        {
-            stats.AddCritDamageModifier(-AddCritDamageBonus());
-        }
+        return FallbackValue;
     }
 }

@@ -23,6 +23,7 @@ namespace _Scripts
         [SerializeField] private bool useDamping = true;
         [SerializeField] private float dampTime = 0.1f;
         [SerializeField] private float edgeThreshold = 50f;
+        [SerializeField] private PlayerInventory inventory;
 
         private InputAction _moveAction;
         private Vector3 _currentVelocity = Vector3.zero;
@@ -46,6 +47,10 @@ namespace _Scripts
             }
 
             _mouseFollower = FindFirstObjectByType<MouseFollower>();
+            if (inventory == null)
+            {
+                inventory = GetComponent<PlayerInventory>() ?? GetComponentInParent<PlayerInventory>();
+            }
         }
 
         private void OnEnable()
@@ -66,8 +71,11 @@ namespace _Scripts
         private void Update()
         {
             Vector2 combinedInput = CalculateInput();
+            float effectiveSpeedMultiplier = inventory != null && inventory.ItemContext != null
+                ? inventory.ItemContext.CalculatePlayerStat(PlayerStatType.MoveSpeedMultiplier, speedMultiplier)
+                : speedMultiplier;
 
-            Vector3 targetVelocity = new Vector3(combinedInput.x, combinedInput.y, 0f) * (moveSpeed * speedMultiplier);
+            Vector3 targetVelocity = new Vector3(combinedInput.x, combinedInput.y, 0f) * (moveSpeed * effectiveSpeedMultiplier);
             if (useDamping && dampTime > 0f)
             {
                 _currentVelocity = Vector3.SmoothDamp(_currentVelocity, targetVelocity, ref _velocityDamp, dampTime);

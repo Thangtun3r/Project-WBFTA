@@ -1,47 +1,33 @@
 using UnityEngine;
-using _Scripts.Enemy;
 
-public class BombOnKillLogic : ItemLogicBase
+public class BombOnKillLogic : ProcOnKillItemLogicBase
 {
-    [Header("Bomb Settings")]
-    private float baseProcChance = 0.05f; // Base 30% chance to spawn bomb on kill
-    private float damageMultiplier = 2.5f;
+    [Header("Fallback Stats")]
+    [SerializeField] private float fallbackProcChance = 0.05f;
+    [SerializeField] private float fallbackProcChancePerStack = 0.05f;
+    [SerializeField] private float fallbackDamageMultiplier = 2.5f;
 
-    protected override void OnInitialize()
+    [Header("Projectile")]
+    [SerializeField] private string projectileId = "Bomb";
+
+    protected override float ProcChance => GetProcChance(fallbackProcChance, fallbackProcChancePerStack);
+
+    private float DamageMultiplier => GetDamageMultiplier(fallbackDamageMultiplier);
+
+    protected override void ExecuteTrigger(ItemTriggerContext context)
     {
-        if (GlobalEventManager.Instance != null)
-        {
-            GlobalEventManager.Instance.OnEnemyKilledWithStats += OnEnemyKilled;
-        }
-    }
-
-    protected override void HandleStackChanged(int amountChanged)
-    {
-    }
-
-    private void OnEnemyKilled(_Scripts.Enemy.BaseEnemy enemy, float baseDamage, bool isCrit)
-    {
-        float effectiveProcChance = baseProcChance + (Owner.StackSize - 1) * 0.05f;
-        effectiveProcChance = Mathf.Clamp01(effectiveProcChance);
-
-        if (Random.value > effectiveProcChance)
-        {
-            return;
-        }
-
-        SpawnBomb(enemy.transform.position, baseDamage, isCrit);
+        SpawnBomb(context.Origin, context.Damage, context.IsCrit);
     }
 
     private void SpawnBomb(Vector3 killPosition, float baseDamage, bool isCrit)
     {
-        float scaledDamageMultiplier = damageMultiplier;
-        float finalDamage = baseDamage * scaledDamageMultiplier;
+        float finalDamage = baseDamage * DamageMultiplier;
 
         Vector3 spawnOffset = new Vector3(Random.Range(-0.3f, 0.3f), 0.5f, Random.Range(-0.3f, 0.3f));
 
         ProjectileRequest request = new ProjectileRequest
         {
-            ProjectileID = "Bomb",
+            ProjectileID = projectileId,
             Position = killPosition + spawnOffset,
             Rotation = Quaternion.identity,
             Direction = Vector3.zero, // Bombs don't move, they explode on spawn
@@ -49,13 +35,7 @@ public class BombOnKillLogic : ItemLogicBase
             Target = null
         };
 
-    
-        ProjectilePool.Instance?.RequestProjectile(request);
-    }
 
-    public override void Dispose()
-    {
-        if (GlobalEventManager.Instance != null)
-            GlobalEventManager.Instance.OnEnemyKilledWithStats -= OnEnemyKilled;
+        ProjectilePool.Instance?.RequestProjectile(request);
     }
 }

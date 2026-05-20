@@ -1,39 +1,17 @@
-public class CritRateLogic : ItemLogicBase, ICritRateLogic
+using UnityEngine;
+
+public class CritRateLogic : PlayerStatItemLogicBase, ICritRateLogic
 {
-    public float critRateBonus = 0.2f; 
-    public float increasePerStack = 0.1f;
+    [Header("Fallback Stats")]
+    [SerializeField] private float fallbackCritChanceBonus = 0.2f;
+    [SerializeField] private float fallbackCritChanceBonusPerStack = 0.1f;
+
+    protected override PlayerStatType StatType => PlayerStatType.CritChance;
+    protected override float FallbackBaseValue => fallbackCritChanceBonus;
+    protected override float FallbackPerStackValue => fallbackCritChanceBonusPerStack;
 
     public float AddCritRateBonus()
     {
-        int stackCount = Owner.StackSize;
-        return critRateBonus + (stackCount - 1) * increasePerStack;
-    }
-
-    protected override void OnInitialize() 
-    {
-        var stats = Owner.OwnerObject.GetComponent<PlayerStatMachine>();
-        if (stats != null)
-        {
-            stats.AddCritRateModifier(critRateBonus);
-        }
-    }
-
-    protected override void HandleStackChanged(int amountChanged)
-    {
-        var stats = Owner.OwnerObject.GetComponent<PlayerStatMachine>();
-        if (stats != null)
-        {
-            // amountChanged preserves the sign (+1 or -1 typically)
-            stats.AddCritRateModifier(amountChanged * increasePerStack);
-        }
-    }
-
-    public override void Dispose() 
-    {
-        var stats = Owner.OwnerObject.GetComponent<PlayerStatMachine>();
-        if (stats != null)
-        {
-            stats.AddCritRateModifier(-AddCritRateBonus());
-        }
+        return FallbackValue;
     }
 }

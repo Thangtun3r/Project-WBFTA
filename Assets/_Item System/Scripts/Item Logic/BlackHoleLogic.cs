@@ -1,66 +1,35 @@
-using _Scripts.Enemy;
 using UnityEngine;
 
-public class BlackHoleLogic : ItemLogicBase
+public class BlackHoleLogic : ProcOnKillItemLogicBase
 {
-    [Header("Proc Settings")]
-    [SerializeField] private float procChance = 0.9f;
-    private float cooldown = 7f;
+    [Header("Fallback Stats")]
+    [SerializeField] private float fallbackProcChance = 0.9f;
+    [SerializeField] private float fallbackCooldown = 7f;
+    [SerializeField] private float fallbackDamageMultiplier = 0.05f;
+    [SerializeField] private float fallbackDamageMultiplierPerStack = 0.05f;
 
-    [Header("Projectile Settings")]
+    [Header("Projectile")]
     [SerializeField] private string projectileId = "BlackHole";
-    [SerializeField] private float damageMultiplier = 0.05f;
-    [SerializeField] private float damageMultiplierPerStack = 0.05f;
 
-    private float _nextAllowedTriggerTime;
+    protected override float ProcChance => GetProcChance(fallbackProcChance);
+    protected override float Cooldown => GetCooldown(fallbackCooldown);
 
-    protected override void OnInitialize()
+    private float DamageMultiplier => GetDamageMultiplier(
+        fallbackDamageMultiplier,
+        fallbackDamageMultiplierPerStack);
+
+    protected override void ExecuteTrigger(ItemTriggerContext context)
     {
-        if (GlobalEventManager.Instance != null)
-        {
-            GlobalEventManager.Instance.OnEnemyKilledWithStats += HandleEnemyKilled;
-        }
-    }
-
-    protected override void HandleStackChanged(int amountChanged)
-    {
-    }
-
-    private void HandleEnemyKilled(BaseEnemy enemy, float baseDamage, bool isCrit)
-    {
-        if (Time.time < _nextAllowedTriggerTime)
-        {
-            return;
-        }
-
-        float effectiveProcChance = Mathf.Clamp01(procChance);
-        if (Random.value > effectiveProcChance)
-        {
-            return;
-        }
-
-        _nextAllowedTriggerTime = Time.time + cooldown;
-
-        float effectiveDamageMultiplier = damageMultiplier + (Owner.StackSize - 1) * damageMultiplierPerStack;
-
         ProjectileRequest request = new ProjectileRequest
         {
             ProjectileID = projectileId,
-            Position = enemy.transform.position,
+            Position = context.Origin,
             Rotation = Quaternion.identity,
             Direction = Vector3.zero,
             Target = null,
-            Damage = baseDamage * effectiveDamageMultiplier
+            Damage = context.Damage * DamageMultiplier
         };
 
         ProjectilePool.Instance?.RequestProjectile(request);
-    }
-
-    public override void Dispose()
-    {
-        if (GlobalEventManager.Instance != null)
-        {
-            GlobalEventManager.Instance.OnEnemyKilledWithStats -= HandleEnemyKilled;
-        }
     }
 }

@@ -2,11 +2,13 @@ public abstract class ItemLogicBase : IItemLogic
 {
     // This provides the 'Owner' context to every child class
     protected ItemRuntime Owner; 
+    protected ItemSystemContext Context;
 
-    public void Initialize(ItemRuntime runtime)
+    public void Initialize(ItemRuntime runtime, ItemSystemContext context)
     {
         // Store the reference passed from the ItemRuntime
         Owner = runtime; 
+        Context = context;
         
         OnInitialize();
     }

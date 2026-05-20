@@ -7,6 +7,7 @@ public class PlayerHealth : MonoBehaviour, IDamagable
 
     [SerializeField] private float _currentHealth;
     [SerializeField] private float _maxHealth;
+    [SerializeField] private PlayerInventory inventory;
 
     [Header("Regeneration Settings")]
     [SerializeField] private float healingDelay = 2f; // Wait this long after damage before healing starts
@@ -15,9 +16,31 @@ public class PlayerHealth : MonoBehaviour, IDamagable
 
     private float _lastDamageTime = -Mathf.Infinity;
     private float _invincibleUntilTime = -Mathf.Infinity;
+    private float _baseMaxHealth;
+    private bool _initialized;
+    private bool _subscribedToInventory;
 
     public bool IsInvincible => Time.time < _invincibleUntilTime;
 
+    private void Awake()
+    {
+        EnsureInventory();
+    }
+
+    private void OnEnable()
+    {
+        SubscribeToInventory();
+    }
+
+    private void Start()
+    {
+        SubscribeToInventory();
+    }
+
+    private void OnDisable()
+    {
+        UnsubscribeFromInventory();
+    }
 
     private void Update()
     {
@@ -30,8 +53,10 @@ public class PlayerHealth : MonoBehaviour, IDamagable
 
     public void Initialize(float maxHealth)
     {
-        _maxHealth = maxHealth;
+        _baseMaxHealth = maxHealth;
+        _maxHealth = GetCalculatedMaxHealth();
         _currentHealth = _maxHealth;
+        _initialized = true;
         _lastDamageTime = Time.time;
         OnHealthChanged?.Invoke(_currentHealth, _maxHealth, false);
     }
@@ -83,16 +108,8 @@ public class PlayerHealth : MonoBehaviour, IDamagable
 
     public void AddMaxHealthModifier(float amount)
     {
-        _maxHealth += amount;
-        
-        // Prevent current health from exceeding the new max health if max health was reduced
-        if (_currentHealth > _maxHealth)
-        {
-            _currentHealth = _maxHealth;
-        }
-
-        // Notify UI/systems that max health has changed (true = beneficial change, no damage vignette)
-        OnHealthChanged?.Invoke(_currentHealth, _maxHealth, true);
+        _baseMaxHealth += amount;
+        RecalculateMaxHealth(false);
     }
 
     private void ApplyPassiveHealing()
@@ -110,5 +127,72 @@ public class PlayerHealth : MonoBehaviour, IDamagable
         Debug.Log("Player died!");
         // Add death animation, game over screen logic, or respawn here
         // gameObject.SetActive(false);
+    }
+
+    private void HandleInventoryUpdated(ItemRuntime item)
+    {
+        RecalculateMaxHealth(true);
+    }
+
+    private void RecalculateMaxHealth(bool healIncrease)
+    {
+        if (!_initialized)
+        {
+            return;
+        }
+
+        float oldMaxHealth = _maxHealth;
+        _maxHealth = GetCalculatedMaxHealth();
+
+        if (_currentHealth > _maxHealth)
+        {
+            _currentHealth = _maxHealth;
+        }
+
+        float gainedHealth = _maxHealth - oldMaxHealth;
+        if (healIncrease && gainedHealth > 0f)
+        {
+            _currentHealth = Mathf.Min(_currentHealth + gainedHealth, _maxHealth);
+        }
+
+        OnHealthChanged?.Invoke(_currentHealth, _maxHealth, true);
+    }
+
+    private float GetCalculatedMaxHealth()
+    {
+        return inventory != null && inventory.ItemContext != null
+            ? inventory.ItemContext.CalculatePlayerStat(PlayerStatType.MaxHealth, _baseMaxHealth)
+            : _baseMaxHealth;
+    }
+
+    private void EnsureInventory()
+    {
+        if (inventory == null)
+        {
+            inventory = GetComponent<PlayerInventory>() ?? GetComponentInParent<PlayerInventory>();
+        }
+    }
+
+    private void SubscribeToInventory()
+    {
+        EnsureInventory();
+        if (_subscribedToInventory || inventory == null)
+        {
+            return;
+        }
+
+        inventory.InventoryUpdated += HandleInventoryUpdated;
+        _subscribedToInventory = true;
+    }
+
+    private void UnsubscribeFromInventory()
+    {
+        if (!_subscribedToInventory || inventory == null)
+        {
+            return;
+        }
+
+        inventory.InventoryUpdated -= HandleInventoryUpdated;
+        _subscribedToInventory = false;
     }
 }

@@ -1,32 +1,19 @@
+using UnityEngine;
 
-using System.Diagnostics;
-using _Scripts.Enemy;
-public class HealOrbOnKillLogic : ItemLogicBase
+public class HealOrbOnKillLogic : ProcOnKillItemLogicBase
 {
-    private float spawnChance = 0.2f; // 20% chance to spawn a heal orb on kill
-        private float healAmount = 0.1f; //heal amount as a percentage of max health
+    private const string HealAmountParameterKey = "HealOrb.HealAmount";
 
-    private void HandleEnemyDeath(BaseEnemy enemy)
-    {
-        if (UnityEngine.Random.value < spawnChance)
-        {
-        
-            float calculatedHeal = healAmount * Owner.StackSize; 
-            WorldObjectSpawner.Instance.Spawn("HealOrb", enemy.transform.position, calculatedHeal);
-        }
-    }
+    [Header("Fallback Stats")]
+    [SerializeField] private float fallbackProcChance = 0.2f;
+    [SerializeField] private float fallbackHealAmount = 0.1f;
 
-    public override void Dispose()
-    {
-        BaseEnemy.OnEnemyDeath -= HandleEnemyDeath;
-    }
+    protected override float ProcChance => GetProcChance(fallbackProcChance);
 
-    protected override void OnInitialize()
-    {
-        BaseEnemy.OnEnemyDeath += HandleEnemyDeath;
-    }
+    private float HealAmount => GetParameter(HealAmountParameterKey, fallbackHealAmount, fallbackHealAmount);
 
-    protected override void HandleStackChanged(int amountChanged)
+    protected override void ExecuteTrigger(ItemTriggerContext context)
     {
+        WorldObjectSpawner.Instance.Spawn("HealOrb", context.Origin, HealAmount);
     }
 }

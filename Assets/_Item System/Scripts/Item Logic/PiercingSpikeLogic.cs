@@ -1,55 +1,27 @@
-
 using UnityEngine;
 
-public class PiercingSpikeLogic : ItemLogicBase
+public class PiercingSpikeLogic : ProcOnHitItemLogicBase
 {
-    [Header("Proc Settings")]
-    [SerializeField] private float procChance = 0.2f;
-    private float cooldown = 0f;
+    [Header("Fallback Stats")]
+    [SerializeField] private float fallbackProcChance = 0.2f;
+    [SerializeField] private float fallbackDamageMultiplier = 0.2f;
+    [SerializeField] private float fallbackDamageMultiplierPerStack = 0.1f;
 
-    [Header("Projectile Settings")]
+    [Header("Projectile")]
     [SerializeField] private string projectileId = "PiercingSpikeLauncher";
-    [SerializeField] private float damageMultiplier = 0.2f;
-    [SerializeField] private float damageMultiplierPerStack = 0.1f;
-    private float launchSpeed = 22f;
+    [SerializeField] private float launchSpeed = 22f;
 
-    private float _nextAllowedProcTime;
+    protected override float ProcChance => GetProcChance(fallbackProcChance);
 
-    protected override void OnInitialize()
+    private float DamageMultiplier => GetDamageMultiplier(
+        fallbackDamageMultiplier,
+        fallbackDamageMultiplierPerStack);
+
+    protected override void ExecuteTrigger(ItemTriggerContext context)
     {
-        if (GlobalEventManager.Instance != null)
-        {
-            GlobalEventManager.Instance.HandleOnHit += HandleHit;
-        }
-    }
-
-    protected override void HandleStackChanged(int amountChanged)
-    {
-    }
-
-    private void HandleHit(GameObject attacker, IDamagable target, float damage, bool isCrit)
-    {
-        if (attacker != Owner.OwnerObject || target == null)
-        {
-            return;
-        }
-
-        if (Time.time < _nextAllowedProcTime)
-        {
-            return;
-        }
-
-        if (Random.value > Mathf.Clamp01(procChance))
-        {
-            return;
-        }
-
-        _nextAllowedProcTime = Time.time + cooldown;
-
-        Transform targetTransform = target.GetTransform();
+        Transform targetTransform = context.Target.GetTransform();
         Vector3 spawnPosition = Owner.OwnerObject.transform.position;
         Vector3 direction = (targetTransform.position - spawnPosition).normalized;
-        float effectiveDamageMultiplier = damageMultiplier + ((Owner.StackSize - 1) * damageMultiplierPerStack);
 
         ProjectileRequest request = new ProjectileRequest
         {
@@ -58,18 +30,10 @@ public class PiercingSpikeLogic : ItemLogicBase
             Rotation = Quaternion.identity,
             Direction = direction * launchSpeed,
             Target = targetTransform,
-            Damage = damage * effectiveDamageMultiplier,
+            Damage = context.Damage * DamageMultiplier,
             Speed = launchSpeed
         };
 
         ProjectilePool.Instance?.RequestProjectile(request);
-    }
-
-    public override void Dispose()
-    {
-        if (GlobalEventManager.Instance != null)
-        {
-            GlobalEventManager.Instance.HandleOnHit -= HandleHit;
-        }
     }
 }

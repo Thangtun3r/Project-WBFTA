@@ -1,50 +1,17 @@
-public class MaxHealthIncreaseLogic : ItemLogicBase
+using UnityEngine;
+
+public class MaxHealthIncreaseLogic : PlayerStatItemLogicBase
 {
-    public float healthBonus = 25f;
-    public float increasePerStack = 25f;
+    [Header("Fallback Stats")]
+    [SerializeField] private float fallbackMaxHealthBonus = 25f;
+    [SerializeField] private float fallbackMaxHealthBonusPerStack = 25f;
+
+    protected override PlayerStatType StatType => PlayerStatType.MaxHealth;
+    protected override float FallbackBaseValue => fallbackMaxHealthBonus;
+    protected override float FallbackPerStackValue => fallbackMaxHealthBonusPerStack;
 
     public float GetTotalBonus()
     {
-        int stackCount = Owner.StackSize;
-        return healthBonus + ((stackCount - 1) * increasePerStack);
-    }
-
-    protected override void OnInitialize()
-    {
-        var health = Owner.OwnerObject.GetComponent<PlayerHealth>();
-        if (health != null)
-        {
-            // Increase the cap
-            health.AddMaxHealthModifier(healthBonus);
-            
-            // Heal them for the new max health so their HP bar doesn't look emptier
-            health.Heal(rawAmount: healthBonus); 
-        }
-    }
-
-    protected override void HandleStackChanged(int amountChanged)
-    {
-        var health = Owner.OwnerObject.GetComponent<PlayerHealth>();
-        if (health != null)
-        {
-            float amountToChange = amountChanged * increasePerStack;
-            health.AddMaxHealthModifier(amountToChange);
-            
-            // If they gained max health (not dropping an item), heal them
-            if (amountToChange > 0)
-            {
-                health.Heal(rawAmount: amountToChange);
-            }
-        }
-    }
-
-    public override void Dispose()
-    {
-        var health = Owner.OwnerObject.GetComponent<PlayerHealth>();
-        if (health != null)
-        {
-            // Remove the total bonus from their max health cap when disposed
-            health.AddMaxHealthModifier(-GetTotalBonus());
-        }
+        return FallbackValue;
     }
 }

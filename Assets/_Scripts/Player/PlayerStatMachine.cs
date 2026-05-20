@@ -82,7 +82,9 @@ public class PlayerStatMachine : MonoBehaviour
     /// </summary>
     public float GetCalculatedAttackDamage()
     {
-        float finalDamage = _baseDamage;
+        float finalDamage = inventory != null && inventory.ItemContext != null
+            ? inventory.ItemContext.CalculatePlayerStat(PlayerStatType.AttackDamage, _baseDamage)
+            : _baseDamage;
         _wasLastAttackCrit = false;
 
         // 1. Get the actual crit rate
@@ -111,12 +113,18 @@ public class PlayerStatMachine : MonoBehaviour
 
     public float GetCalculatedCritDamage()
     {
-        return baseCritDamage;
+        return inventory != null && inventory.ItemContext != null
+            ? inventory.ItemContext.CalculatePlayerStat(PlayerStatType.CritDamage, baseCritDamage)
+            : baseCritDamage;
     }
 
     public float GetCalculatedCritRate()
     {
-        return Mathf.Clamp01(baseCritRate);
+        float critRate = inventory != null && inventory.ItemContext != null
+            ? inventory.ItemContext.CalculatePlayerStat(PlayerStatType.CritChance, baseCritRate)
+            : baseCritRate;
+
+        return Mathf.Clamp01(critRate);
     }
 
     // --- Modifier Methods called by Items ---
