@@ -10,21 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ea558c2d854021c498ffa237167bd578, type: 3}
-  m_Name: IncreaseCritRate
+  m_Name: BombOnKill
   m_EditorClassIdentifier: Assembly-CSharp::ItemDefinition
-  itemName: IncreaseCritRate
+  itemId: BombOnKill
+  itemName: BombOnKill
   itemType: 0
   itemRarity: 0
-  icon: {fileID: -318162755, guid: 47f06d5dec1de604fa01354180cc9d29, type: 3}
-  isModifiable: 0
-  description: 
+  icon: {fileID: 3271510920678448843, guid: 1e3cd892d215b4e439814480388eda64, type: 3}
+  isModifiable: 1
+  description: On enemy kill, has a stacking chance to spawn a bomb that explodes for heavy damage based on the killing hit.
+  logicClassName: BombOnKillLogic
   effectPrefab: {fileID: 0}
   itemStats:
   - statType: 0
-    baseValue: 0
-    perStackValue: 0
-  - statType: 0
-    baseValue: 0
+    baseValue: 0.05
+    perStackValue: 0.05
+  - statType: 1
+    baseValue: 2.5
     perStackValue: 0
   playerStats: []
   parameters: []

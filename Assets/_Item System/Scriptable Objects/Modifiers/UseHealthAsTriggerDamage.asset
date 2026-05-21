@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05e619d654754110be1a03edcd02d259, type: 3}
+  m_Name: UseHealthAsTriggerDamage
+  m_EditorClassIdentifier: Assembly-CSharp::ModifierDefinition
+  modifierId: UseHealthAsTriggerDamage
+  modifierName: Vital Catalyst
+  description: Before the attached item triggers, replace trigger damage with current health divided by 10.
+  rarity: 2
+  procCoefficient: 1
+  logicClassName: UseHealthAsTriggerDamageLogic
+  parameters:
+  - key: HealthDamage.Divisor
+    baseValue: 10
+    perStackValue: 0
+  - key: HealthDamage.UseMaxHealth
+    baseValue: 0
+    perStackValue: 0
+  itemStatModifiers: []
+  playerStatModifiers: []
+  parameterModifiers: []

@@ -17,7 +17,7 @@ public class ItemSystemContext
 
     public void PublishEvent(ItemEvent itemEvent)
     {
-        IReadOnlyList<ItemRuntime> items = _inventory.GetActiveItems();
+        List<ItemRuntime> items = SnapshotActiveItems();
         for (int i = 0; i < items.Count; i++)
         {
             ItemRuntime item = items[i];
@@ -31,7 +31,7 @@ public class ItemSystemContext
                 listener.OnItemEvent(itemEvent);
             }
 
-            IReadOnlyList<ModifierRuntime> modifiers = item.Modifiers;
+            List<ModifierRuntime> modifiers = SnapshotModifiers(item);
             for (int m = 0; m < modifiers.Count; m++)
             {
                 modifiers[m]?.OnItemEvent(itemEvent);
@@ -57,7 +57,7 @@ public class ItemSystemContext
             Multiplier = 1f
         };
 
-        IReadOnlyList<ItemRuntime> items = _inventory.GetActiveItems();
+        List<ItemRuntime> items = SnapshotActiveItems();
         for (int i = 0; i < items.Count; i++)
         {
             ApplyItemStatProviders(items[i], ref query);
@@ -84,7 +84,7 @@ public class ItemSystemContext
             Multiplier = 1f
         };
 
-        IReadOnlyList<ItemRuntime> items = _inventory.GetActiveItems();
+        List<ItemRuntime> items = SnapshotActiveItems();
         for (int i = 0; i < items.Count; i++)
         {
             ApplyParameterProviders(items[i], ref query);
@@ -104,7 +104,7 @@ public class ItemSystemContext
             Multiplier = 1f
         };
 
-        IReadOnlyList<ItemRuntime> items = _inventory.GetActiveItems();
+        List<ItemRuntime> items = SnapshotActiveItems();
         for (int i = 0; i < items.Count; i++)
         {
             ItemRuntime item = items[i];
@@ -123,6 +123,57 @@ public class ItemSystemContext
         }
 
         return query.FinalValue;
+    }
+
+    public float CalculateItemDropWeight(string candidateItemId, ItemDefinition candidateDefinition, float baseWeight = 1f)
+    {
+        ItemDropWeightQuery query = new ItemDropWeightQuery
+        {
+            Inventory = _inventory,
+            CandidateItemId = candidateItemId,
+            CandidateDefinition = candidateDefinition,
+            BaseWeight = baseWeight,
+            FlatBonus = 0f,
+            Multiplier = 1f
+        };
+
+        List<ItemRuntime> items = SnapshotActiveItems();
+        for (int i = 0; i < items.Count; i++)
+        {
+            ApplyDropWeightProviders(items[i], ref query);
+        }
+
+        return query.FinalWeight;
+    }
+
+    public bool TryHandlePlayerDeath(PlayerHealth playerHealth)
+    {
+        PublishEvent(new ItemEvent
+        {
+            Type = ItemEventType.PlayerDied,
+            Owner = OwnerObject
+        });
+
+        List<ItemRuntime> items = SnapshotActiveItems();
+        for (int i = 0; i < items.Count; i++)
+        {
+            ItemRuntime item = items[i];
+            if (item == null)
+            {
+                continue;
+            }
+
+            List<ModifierRuntime> modifiers = SnapshotModifiers(item);
+            for (int m = 0; m < modifiers.Count; m++)
+            {
+                if (modifiers[m] != null && modifiers[m].TryHandlePlayerDeath(playerHealth))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     public bool RequestTrigger(ItemRuntime item, ItemTriggerContext triggerContext)
@@ -144,6 +195,8 @@ public class ItemSystemContext
         {
             return false;
         }
+
+        ApplyTriggerPreprocessors(item, ref triggerContext);
 
         _triggerDepth++;
         try
@@ -222,5 +275,64 @@ public class ItemSystemContext
         {
             modifiers[i]?.ModifyItemParameter(ref query);
         }
+    }
+
+    private static void ApplyDropWeightProviders(ItemRuntime item, ref ItemDropWeightQuery query)
+    {
+        if (item == null)
+        {
+            return;
+        }
+
+        if (item.Logic is IItemDropWeightProvider provider)
+        {
+            provider.ModifyItemDropWeight(ref query);
+        }
+
+        IReadOnlyList<ModifierRuntime> modifiers = item.Modifiers;
+        for (int i = 0; i < modifiers.Count; i++)
+        {
+            modifiers[i]?.ModifyItemDropWeight(ref query);
+        }
+    }
+
+    private static void ApplyTriggerPreprocessors(ItemRuntime item, ref ItemTriggerContext triggerContext)
+    {
+        if (item == null)
+        {
+            return;
+        }
+
+        if (item.Logic is IItemTriggerPreprocessor preprocessor)
+        {
+            preprocessor.BeforeItemTrigger(ref triggerContext);
+        }
+
+        IReadOnlyList<ModifierRuntime> modifiers = item.Modifiers;
+        for (int i = 0; i < modifiers.Count; i++)
+        {
+            modifiers[i]?.BeforeItemTrigger(ref triggerContext);
+        }
+    }
+
+    private List<ItemRuntime> SnapshotActiveItems()
+    {
+        if (_inventory == null)
+        {
+            return new List<ItemRuntime>();
+        }
+
+        IReadOnlyList<ItemRuntime> activeItems = _inventory.GetActiveItems();
+        return activeItems != null ? new List<ItemRuntime>(activeItems) : new List<ItemRuntime>();
+    }
+
+    private static List<ModifierRuntime> SnapshotModifiers(ItemRuntime item)
+    {
+        if (item == null || item.Modifiers == null)
+        {
+            return new List<ModifierRuntime>();
+        }
+
+        return new List<ModifierRuntime>(item.Modifiers);
     }
 }

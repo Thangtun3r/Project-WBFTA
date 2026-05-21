@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class PiercingSpikeLogic : ProcOnHitItemLogicBase
 {
+    private const string LaunchSpeedParameterKey = "PiercingSpike.LaunchSpeed";
+
     [Header("Fallback Stats")]
     [SerializeField] private float fallbackProcChance = 0.2f;
     [SerializeField] private float fallbackDamageMultiplier = 0.2f;
@@ -9,7 +11,7 @@ public class PiercingSpikeLogic : ProcOnHitItemLogicBase
 
     [Header("Projectile")]
     [SerializeField] private string projectileId = "PiercingSpikeLauncher";
-    [SerializeField] private float launchSpeed = 22f;
+    [SerializeField] private float fallbackLaunchSpeed = 22f;
 
     protected override float ProcChance => GetProcChance(fallbackProcChance);
 
@@ -17,11 +19,14 @@ public class PiercingSpikeLogic : ProcOnHitItemLogicBase
         fallbackDamageMultiplier,
         fallbackDamageMultiplierPerStack);
 
+    private float LaunchSpeed => GetParameter(LaunchSpeedParameterKey, fallbackLaunchSpeed);
+
     protected override void ExecuteTrigger(ItemTriggerContext context)
     {
         Transform targetTransform = context.Target.GetTransform();
         Vector3 spawnPosition = Owner.OwnerObject.transform.position;
         Vector3 direction = (targetTransform.position - spawnPosition).normalized;
+        float launchSpeed = LaunchSpeed;
 
         ProjectileRequest request = new ProjectileRequest
         {

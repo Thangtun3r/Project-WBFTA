@@ -12,8 +12,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea558c2d854021c498ffa237167bd578, type: 3}
   m_Name: ChainDMG
   m_EditorClassIdentifier: Assembly-CSharp::ItemDefinition
+  itemId: ChainDMG
   itemName: ChainDMG
   itemType: 0
+  itemRarity: 0
   icon: {fileID: 1855126492, guid: 47f06d5dec1de604fa01354180cc9d29, type: 3}
-  description: 
+  isModifiable: 1
+  description: On hit, has a chance to chain damage from the target to nearby enemies. Bounce count and radius scale with stacks.
+  logicClassName: ChainDamageLogic
   effectPrefab: {fileID: 4644107512293591449, guid: 653102e0f7972294bb4b6aa1d9e785c6, type: 3}
+  itemStats:
+  - statType: 0
+    baseValue: 0.25
+    perStackValue: 0
+  - statType: 3
+    baseValue: 3
+    perStackValue: 1
+  - statType: 2
+    baseValue: 20
+    perStackValue: 1
+  - statType: 1
+    baseValue: 0.7
+    perStackValue: 0
+  playerStats: []
+  parameters: []

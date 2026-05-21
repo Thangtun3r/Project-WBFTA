@@ -18,9 +18,14 @@ public class PlayerHealth : MonoBehaviour, IDamagable
     private float _invincibleUntilTime = -Mathf.Infinity;
     private float _baseMaxHealth;
     private bool _initialized;
+    private bool _isDead;
     private bool _subscribedToInventory;
 
     public bool IsInvincible => Time.time < _invincibleUntilTime;
+    public bool IsDead => _isDead;
+    public float CurrentHealth => _currentHealth;
+    public float MaxHealth => _maxHealth;
+    public float NormalizedHealth => _maxHealth > 0f ? Mathf.Clamp01(_currentHealth / _maxHealth) : 0f;
 
     private void Awake()
     {
@@ -44,6 +49,11 @@ public class PlayerHealth : MonoBehaviour, IDamagable
 
     private void Update()
     {
+        if (_isDead)
+        {
+            return;
+        }
+
         // Check if enough time has passed since last damage to start healing
         if (Time.time - _lastDamageTime >= healingDelay && _currentHealth < _maxHealth)
         {
@@ -57,24 +67,38 @@ public class PlayerHealth : MonoBehaviour, IDamagable
         _maxHealth = GetCalculatedMaxHealth();
         _currentHealth = _maxHealth;
         _initialized = true;
+        _isDead = false;
         _lastDamageTime = Time.time;
         OnHealthChanged?.Invoke(_currentHealth, _maxHealth, false);
     }
 
     public void TakeDamage(float damage)
     {
-        if (IsInvincible)
+        if (IsInvincible || _isDead)
         {
             return;
         }
 
         _currentHealth -= damage;
         _lastDamageTime = Time.time; // Reset the healing delay timer
+        if (inventory != null && inventory.ItemContext != null)
+        {
+            inventory.ItemContext.PublishEvent(new ItemEvent
+            {
+                Type = ItemEventType.PlayerDamaged,
+                Owner = inventory.gameObject,
+                Damage = damage
+            });
+        }
         OnHealthChanged?.Invoke(_currentHealth, _maxHealth, false);
 
         if (_currentHealth <= 0)
         {
-            Die();
+            _isDead = true;
+            if (inventory == null || inventory.ItemContext == null || !inventory.ItemContext.TryHandlePlayerDeath(this))
+            {
+                Die();
+            }
         }
     }
 
@@ -100,6 +124,11 @@ public class PlayerHealth : MonoBehaviour, IDamagable
     /// <param name="percentageAmount">Heal amount as a percentage of max health (0-100). Default is 0.</param>
     public void Heal(float rawAmount = 0f, float percentageAmount = 0f)
     {
+        if (_isDead)
+        {
+            return;
+        }
+
         float percentageHeal = _maxHealth * percentageAmount / 100f;
         float totalHealAmount = rawAmount + percentageHeal;
         _currentHealth = Mathf.Min(_currentHealth + totalHealAmount, _maxHealth);
@@ -124,6 +153,7 @@ public class PlayerHealth : MonoBehaviour, IDamagable
 
     private void Die()
     {
+        _isDead = true;
         Debug.Log("Player died!");
         // Add death animation, game over screen logic, or respawn here
         // gameObject.SetActive(false);
@@ -155,6 +185,16 @@ public class PlayerHealth : MonoBehaviour, IDamagable
             _currentHealth = Mathf.Min(_currentHealth + gainedHealth, _maxHealth);
         }
 
+        OnHealthChanged?.Invoke(_currentHealth, _maxHealth, true);
+    }
+
+    public void Revive(float normalizedHealth, float invincibilityDuration = 0f)
+    {
+        float targetHealth = _maxHealth * Mathf.Clamp01(normalizedHealth);
+        _currentHealth = Mathf.Clamp(targetHealth, 1f, _maxHealth);
+        _isDead = false;
+        _lastDamageTime = Time.time;
+        GrantInvincibility(invincibilityDuration);
         OnHealthChanged?.Invoke(_currentHealth, _maxHealth, true);
     }
 

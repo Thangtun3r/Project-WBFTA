@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05e619d654754110be1a03edcd02d259, type: 3}
+  m_Name: DiceRollStatsOnTrigger
+  m_EditorClassIdentifier: Assembly-CSharp::ModifierDefinition
+  modifierId: DiceRollStatsOnTrigger
+  modifierName: Gambler's Core
+  description: Before the attached item triggers, roll 1-6. Odd rolls make its stats 0.5x; even rolls make them 1.5x for that trigger.
+  rarity: 2
+  procCoefficient: 1
+  logicClassName: DiceRollStatsOnTriggerLogic
+  parameters:
+  - key: Dice.OddMultiplier
+    baseValue: 0.5
+    perStackValue: 0
+  - key: Dice.EvenMultiplier
+    baseValue: 1.5
+    perStackValue: 0
+  itemStatModifiers: []
+  playerStatModifiers: []
+  parameterModifiers: []

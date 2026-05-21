@@ -20,12 +20,14 @@ using System.Collections.Generic;
 public class ItemDefinition: ScriptableObject
 {
 
+    public string itemId;
     public string itemName; 
     public ItemType itemType;
     public ItemRarity itemRarity;
     public Sprite icon;
     public bool isModifiable;
     public string description;
+    public string logicClassName;
 
     public GameObject effectPrefab;
     public List<ItemStatEntry> itemStats = new List<ItemStatEntry>();

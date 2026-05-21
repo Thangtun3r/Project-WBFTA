@@ -168,6 +168,30 @@ public class PlayerInventory : MonoBehaviour
         return RemoveModifierFromItem(FindRuntimeItem(itemId), modifierId);
     }
 
+    public bool RemoveItemStack(ItemRuntime item, int amount = 1)
+    {
+        if (item == null || amount <= 0 || !activeItems.Contains(item))
+        {
+            return false;
+        }
+
+        item.DecreaseStack(amount);
+        if (item.StackSize <= 0)
+        {
+            item.Remove();
+            activeItems.Remove(item);
+            ItemContext.PublishEvent(new ItemEvent
+            {
+                Type = ItemEventType.ItemRemoved,
+                SourceItem = item,
+                Owner = gameObject
+            });
+        }
+
+        InventoryUpdated?.Invoke(item);
+        return true;
+    }
+
     private ItemRuntime FindItemByDefinition(ItemDefinition definition)
     {
         return activeItems.Find(item => item.Definition == definition);

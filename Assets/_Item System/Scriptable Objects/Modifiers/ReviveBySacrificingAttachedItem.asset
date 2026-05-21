@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05e619d654754110be1a03edcd02d259, type: 3}
+  m_Name: ReviveBySacrificingAttachedItem
+  m_EditorClassIdentifier: Assembly-CSharp::ModifierDefinition
+  modifierId: ReviveBySacrificingAttachedItem
+  modifierName: Second Contract
+  description: On death, sacrifice one stack of the attached item to revive. Revive health scales with attached item stacks.
+  rarity: 4
+  procCoefficient: 1
+  logicClassName: ReviveBySacrificingAttachedItemLogic
+  parameters:
+  - key: Revive.BaseHealthPercent
+    baseValue: 0.25
+    perStackValue: 0
+  - key: Revive.PerStackHealthPercent
+    baseValue: 0.1
+    perStackValue: 0
+  - key: Revive.InvincibilityDuration
+    baseValue: 1.5
+    perStackValue: 0
+  itemStatModifiers: []
+  playerStatModifiers: []
+  parameterModifiers: []

@@ -12,6 +12,7 @@ public class RuntimeItemGiverWindow : EditorWindow
     {
         public string id;
         public string name;
+        public string description;
         public Texture2D icon;
         public ItemDefinition definition;
     }
@@ -80,9 +81,13 @@ public class RuntimeItemGiverWindow : EditorWindow
                     var item = _cachedItems[index];
 
                     GUILayout.BeginVertical(GUILayout.Width(buttonSize));
+                    string itemTooltip = BuildTooltip(
+                        !string.IsNullOrEmpty(item.name) ? item.name : item.id,
+                        item.id,
+                        item.description);
                     GUIContent content = (item.icon != null)
-                        ? new GUIContent(item.icon)
-                        : new GUIContent(item.id);
+                        ? new GUIContent(item.icon, itemTooltip)
+                        : new GUIContent(item.id, itemTooltip);
 
                     if (GUILayout.Button(content, GUILayout.Width(buttonSize), GUILayout.Height(buttonSize)))
                     {
@@ -103,7 +108,7 @@ public class RuntimeItemGiverWindow : EditorWindow
                     string displayName = !string.IsNullOrEmpty(item.name) ? item.name : item.id;
                     if (displayName.Length > 12) displayName = displayName.Substring(0, 10) + "..";
 
-                    GUILayout.Label(displayName, EditorStyles.centeredGreyMiniLabel, GUILayout.Width(buttonSize));
+                    GUILayout.Label(new GUIContent(displayName, itemTooltip), EditorStyles.centeredGreyMiniLabel, GUILayout.Width(buttonSize));
                     GUILayout.EndVertical();
 
                     index++;
@@ -146,6 +151,7 @@ public class RuntimeItemGiverWindow : EditorWindow
             {
                 id = entry.ItemID,
                 name = string.Empty,
+                description = string.Empty,
                 definition = entry.Definition
             };
 
@@ -157,9 +163,22 @@ public class RuntimeItemGiverWindow : EditorWindow
                 }
 
                 data.name = entry.Definition.itemName;
+                data.description = entry.Definition.description;
             }
 
             _cachedItems.Add(data);
         }
+    }
+
+    private static string BuildTooltip(string displayName, string id, string description)
+    {
+        if (string.IsNullOrWhiteSpace(description))
+        {
+            return string.IsNullOrWhiteSpace(id) ? displayName : $"{displayName}\n{id}";
+        }
+
+        return string.IsNullOrWhiteSpace(id)
+            ? $"{displayName}\n{description}"
+            : $"{displayName}\n{id}\n{description}";
     }
 }

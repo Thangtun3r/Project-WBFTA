@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea558c2d854021c498ffa237167bd578, type: 3}
+  m_Name: HomingMissile
+  m_EditorClassIdentifier: Assembly-CSharp::ItemDefinition
+  itemId: HomingMissile
+  itemName: 'HomingMissile '
+  itemType: 0
+  itemRarity: 0
+  icon: {fileID: 9087092733456512731, guid: 1e3cd892d215b4e439814480388eda64, type: 3}
+  isModifiable: 1
+  description: On hit, has a chance to launch a homing missile at the target for high damage. Damage scales strongly with stacks.
+  logicClassName: HomingMissileLogic
+  effectPrefab: {fileID: 0}
+  itemStats:
+  - statType: 0
+    baseValue: 0.2
+    perStackValue: 0
+  - statType: 1
+    baseValue: 3
+    perStackValue: 3
+  playerStats: []
+  parameters:
+  - key: HomingMissile.LaunchSpeed
+    baseValue: 6
+    perStackValue: 0

@@ -4,6 +4,12 @@ using DG.Tweening;
 public class ItemDropSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject itemDropPrefab;
+    [SerializeField] private PlayerInventory targetInventory;
+
+    private void Awake()
+    {
+        ResolveTargetInventory();
+    }
 
     private void OnEnable()
     {
@@ -28,7 +34,14 @@ public class ItemDropSpawner : MonoBehaviour
             return;
         }
 
-        string randomItemId = ItemDatabaseFactory.Instance.GetRandomItemId();
+        PlayerInventory inventory = ResolveTargetInventory();
+        if (ItemDatabaseFactory.Instance == null)
+        {
+            Debug.LogWarning("ItemDropSpawner: ItemDatabaseFactory instance is not available.");
+            return;
+        }
+
+        string randomItemId = ItemDatabaseFactory.Instance.GetRandomItemId(inventory);
         if (randomItemId == null)
         {
             Debug.LogWarning("ItemDropSpawner: Could not get a random item from the database.");
@@ -50,5 +63,15 @@ public class ItemDropSpawner : MonoBehaviour
         {
             Debug.LogWarning("ItemDropSpawner: Spawned prefab does not have an ItemDrop component.");
         }
+    }
+
+    private PlayerInventory ResolveTargetInventory()
+    {
+        if (targetInventory == null)
+        {
+            targetInventory = FindFirstObjectByType<PlayerInventory>();
+        }
+
+        return targetInventory;
     }
 }

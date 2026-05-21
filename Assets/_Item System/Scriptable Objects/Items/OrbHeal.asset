@@ -12,9 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea558c2d854021c498ffa237167bd578, type: 3}
   m_Name: OrbHeal
   m_EditorClassIdentifier: Assembly-CSharp::ItemDefinition
+  itemId: HealOrb
   itemName: OrbHeal
   itemType: 1
   itemRarity: 0
   icon: {fileID: -385291231, guid: 47f06d5dec1de604fa01354180cc9d29, type: 3}
-  description: 
+  isModifiable: 1
+  description: On enemy kill, has a chance to spawn a healing orb. Heal amount scales with stacks.
+  logicClassName: HealOrbOnKillLogic
   effectPrefab: {fileID: 0}
+  itemStats:
+  - statType: 0
+    baseValue: 0.2
+    perStackValue: 0
+  playerStats: []
+  parameters:
+  - key: HealOrb.HealAmount
+    baseValue: 0.1
+    perStackValue: 0.1

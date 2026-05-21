@@ -31,6 +31,20 @@ public interface ITriggerableItem
     void Trigger(ItemTriggerContext context);
 }
 
+public interface IItemTriggerPreprocessor
+{
+    void BeforeItemTrigger(ref ItemTriggerContext context);
+}
+
+public interface IItemDropWeightProvider
+{
+    void ModifyItemDropWeight(ref ItemDropWeightQuery query);
+}
+
+public interface IPlayerDeathHandler
+{
+    bool TryHandlePlayerDeath(PlayerHealth playerHealth);
+}
 
 public interface ICritRateLogic
 {

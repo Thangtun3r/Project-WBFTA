@@ -1564,6 +1564,7 @@ GameObject:
   - component: {fileID: 134791999}
   - component: {fileID: 134792000}
   - component: {fileID: 134792001}
+  - component: {fileID: 134792002}
   m_Layer: 0
   m_Name: Item Database Manager
   m_TagString: Untagged
@@ -1599,36 +1600,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemDatabaseFactory
   itemEntries:
-  - ItemID: CritRate
-    Definition: {fileID: 11400000, guid: 3b0445aceafd1c544abac1286c15beff, type: 2}
-    LogicClassName: CritRateLogic
-  - ItemID: CritDmg
-    Definition: {fileID: 11400000, guid: 43a9db9e3969cbb4c9cfc7043b2ef6e5, type: 2}
-    LogicClassName: CritDamageLogic
-  - ItemID: ChainDMG
-    Definition: {fileID: 11400000, guid: 4e6e41c450789e641b8a13a9ecee9f07, type: 2}
-    LogicClassName: ChainDamageLogic
-  - ItemID: HealOrb
-    Definition: {fileID: 11400000, guid: 25c784688d99dd24ca91c32f31ceb0ee, type: 2}
-    LogicClassName: HealOrbOnKillLogic
-  - ItemID: SpeedBoost
-    Definition: {fileID: 11400000, guid: a64c70192dd90cf4ab5fd29c205eb75e, type: 2}
-    LogicClassName: SpeedBoostLogic
-  - ItemID: MaxHealthIncrease
-    Definition: {fileID: 11400000, guid: 3cd00c21565138744b94e8ce4970169a, type: 2}
-    LogicClassName: MaxHealthIncreaseLogic
-  - ItemID: HomingMissile
-    Definition: {fileID: 11400000, guid: b3f59170e62719543899784770215da7, type: 2}
-    LogicClassName: HomingMissileLogic
-  - ItemID: BombOnKill
-    Definition: {fileID: 11400000, guid: 8ba61a345ee7bf5438d4b8f0ceecb86a, type: 2}
-    LogicClassName: BombOnKillLogic
   - ItemID: BlackHole
     Definition: {fileID: 11400000, guid: 5f6555df80a53384e876df727218e614, type: 2}
     LogicClassName: BlackHoleLogic
+  - ItemID: BombOnKill
+    Definition: {fileID: 11400000, guid: 8ba61a345ee7bf5438d4b8f0ceecb86a, type: 2}
+    LogicClassName: BombOnKillLogic
+  - ItemID: ChainDMG
+    Definition: {fileID: 11400000, guid: 4e6e41c450789e641b8a13a9ecee9f07, type: 2}
+    LogicClassName: ChainDamageLogic
+  - ItemID: CritDmg
+    Definition: {fileID: 11400000, guid: 43a9db9e3969cbb4c9cfc7043b2ef6e5, type: 2}
+    LogicClassName: CritDamageLogic
+  - ItemID: CritRate
+    Definition: {fileID: 11400000, guid: 3b0445aceafd1c544abac1286c15beff, type: 2}
+    LogicClassName: CritRateLogic
+  - ItemID: HealOrb
+    Definition: {fileID: 11400000, guid: 25c784688d99dd24ca91c32f31ceb0ee, type: 2}
+    LogicClassName: HealOrbOnKillLogic
+  - ItemID: HomingMissile
+    Definition: {fileID: 11400000, guid: b3f59170e62719543899784770215da7, type: 2}
+    LogicClassName: HomingMissileLogic
+  - ItemID: MaxHealthIncrease
+    Definition: {fileID: 11400000, guid: 3cd00c21565138744b94e8ce4970169a, type: 2}
+    LogicClassName: MaxHealthIncreaseLogic
   - ItemID: PiercingSpike
     Definition: {fileID: 11400000, guid: 1f16d3c60b09ae24f920970f119c425c, type: 2}
     LogicClassName: PiercingSpikeLogic
+  - ItemID: SpeedBoost
+    Definition: {fileID: 11400000, guid: a64c70192dd90cf4ab5fd29c205eb75e, type: 2}
+    LogicClassName: SpeedBoostLogic
+  autoRegisterDefinitions: 1
+  assetSearchFolders:
+  - Assets/_Item System/Scriptable Objects
 --- !u!114 &134792001
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1643,6 +1647,52 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InventoryVisualManager
   slotPrefab: {fileID: 2660330603637582949, guid: c87e4c8c2c7dd5a459c1fbc3e2ce7504, type: 3}
   inventoryUIParent: {fileID: 140301081}
+--- !u!114 &134792002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 134791998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 456b6f351f054085983f4c449ade9a78, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::ModifierDatabaseFactory
+  modifierEntries:
+  - ModifierID: DiceRollStatsOnTrigger
+    Definition: {fileID: 11400000, guid: 290dab4a54a4406eb3cf2676b26bfb79, type: 2}
+    LogicClassName: DiceRollStatsOnTriggerLogic
+  - ModifierID: DoubleStatsBelow10PercentHealth
+    Definition: {fileID: 11400000, guid: b1474cdbd7a04bf6bb584e52e76ae5a8, type: 2}
+    LogicClassName: DoubleStatsBelowThresholdLogic
+  - ModifierID: GainGoldOnProc
+    Definition: {fileID: 11400000, guid: 7308b7582dc94ff684047e55c4efcce0, type: 2}
+    LogicClassName: GainGoldOnOwnerTriggerLogic
+  - ModifierID: HalveAttachedBoostOthers
+    Definition: {fileID: 11400000, guid: 619d7c76bca04e6d9907b1dc7a1ec3e5, type: 2}
+    LogicClassName: HalveAttachedBoostOthersLogic
+  - ModifierID: IncreaseAttachedItemDropChance
+    Definition: {fileID: 11400000, guid: 9519233e72474175a0d74dd9bce20c79, type: 2}
+    LogicClassName: IncreaseAttachedItemDropChanceLogic
+  - ModifierID: ReviveBySacrificingAttachedItem
+    Definition: {fileID: 11400000, guid: 5bb0334a556245f7877f7bf9db80f022, type: 2}
+    LogicClassName: ReviveBySacrificingAttachedItemLogic
+  - ModifierID: ScaleStatsWithCurrentHealth
+    Definition: {fileID: 11400000, guid: 1139f95d9e6f4ac29883d69d8b3f845c, type: 2}
+    LogicClassName: ScaleStatsWithCurrentHealthLogic
+  - ModifierID: TriggerOnPlayerDamaged
+    Definition: {fileID: 11400000, guid: 9047e8d4468d4357af63296ed62a8c95, type: 2}
+    LogicClassName: TriggerAttachedItemOnPlayerDamagedLogic
+  - ModifierID: TriggerOtherItemsOnProc
+    Definition: {fileID: 11400000, guid: 264027523c3b43742ba4866f7d50f6aa, type: 2}
+    LogicClassName: TriggerOtherItemsOnOwnerTriggerLogic
+  - ModifierID: UseHealthAsTriggerDamage
+    Definition: {fileID: 11400000, guid: 397fd4f083a74721ad97935e2a975df9, type: 2}
+    LogicClassName: UseHealthAsTriggerDamageLogic
+  autoRegisterDefinitions: 1
+  assetSearchFolders:
+  - Assets/_Item System/Scriptable Objects
 --- !u!1 &136464671
 GameObject:
   m_ObjectHideFlags: 0

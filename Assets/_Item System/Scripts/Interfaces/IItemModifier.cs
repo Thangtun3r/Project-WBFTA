@@ -1,4 +1,4 @@
-using UnityEngine;
+using System.Collections.Generic;
 
 public interface IItemModifier
 {
@@ -8,4 +8,9 @@ public interface IItemModifier
 
 public interface IModifierLogic : IItemModifier
 {
+}
+
+public interface IModifierParameterRequirements
+{
+    IReadOnlyList<string> RequiredParameterKeys { get; }
 }

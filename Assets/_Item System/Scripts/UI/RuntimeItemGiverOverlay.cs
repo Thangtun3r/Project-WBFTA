@@ -26,6 +26,7 @@ public class RuntimeItemGiverOverlay : MonoBehaviour
     private bool _isOpen;
     private int _quantity;
     private int _selectedTab;
+    private int _selectedItemIndex;
     private int _selectedRuntimeItemIndex;
     private int _selectedModifierIndex;
     private Vector2 _itemScrollPosition;
@@ -47,6 +48,7 @@ public class RuntimeItemGiverOverlay : MonoBehaviour
     {
         public string Id;
         public string Name;
+        public string Description;
         public Sprite Icon;
     }
 
@@ -54,6 +56,7 @@ public class RuntimeItemGiverOverlay : MonoBehaviour
     {
         public string Id;
         public string Name;
+        public string Description;
         public ModifierDefinition Definition;
     }
 
@@ -122,6 +125,7 @@ public class RuntimeItemGiverOverlay : MonoBehaviour
         }
 
         windowRect = GUI.Window(GetInstanceID(), windowRect, DrawWindow, "Runtime Item Tools");
+        DrawTooltip();
     }
 
     private void DrawWindow(int windowId)
@@ -201,7 +205,7 @@ public class RuntimeItemGiverOverlay : MonoBehaviour
 
             for (int column = 0; column < columns && index < _cachedItems.Count; column++)
             {
-                DrawItemButton(_cachedItems[index]);
+                DrawItemButton(_cachedItems[index], index);
                 index++;
             }
 
@@ -211,6 +215,7 @@ public class RuntimeItemGiverOverlay : MonoBehaviour
         }
 
         GUILayout.EndScrollView();
+        DrawSelectedItemDetails();
     }
 
     private void DrawModifiersTab()
@@ -252,8 +257,9 @@ public class RuntimeItemGiverOverlay : MonoBehaviour
             ItemRuntime item = activeItems[i];
             bool wasSelected = i == _selectedRuntimeItemIndex;
             string label = GetRuntimeItemLabel(item);
+            GUIContent content = new GUIContent(label, GetRuntimeItemTooltip(item));
 
-            if (GUILayout.Toggle(wasSelected, label, "Button"))
+            if (GUILayout.Toggle(wasSelected, content, "Button"))
             {
                 _selectedRuntimeItemIndex = i;
             }
@@ -287,8 +293,9 @@ public class RuntimeItemGiverOverlay : MonoBehaviour
             ModifierData modifier = _cachedModifiers[i];
             bool wasSelected = i == _selectedModifierIndex;
             string label = string.IsNullOrEmpty(modifier.Name) ? modifier.Id : modifier.Name;
+            GUIContent content = new GUIContent(label, BuildTooltip(label, modifier.Id, modifier.Description));
 
-            if (GUILayout.Toggle(wasSelected, label, "Button"))
+            if (GUILayout.Toggle(wasSelected, content, "Button"))
             {
                 _selectedModifierIndex = i;
             }
@@ -307,6 +314,7 @@ public class RuntimeItemGiverOverlay : MonoBehaviour
 
         GUILayout.Label($"Item: {GetRuntimeItemLabel(selectedItem)}");
         GUILayout.Label($"Modifier: {(selectedModifier.HasValue ? GetModifierLabel(selectedModifier.Value) : "none")}");
+        DrawSelectedModifierDescription(selectedModifier);
 
         bool canUseModifier = selectedItem != null && selectedModifier.HasValue && selectedModifier.Value.Definition != null;
         bool hasModifier = canUseModifier && selectedItem.HasModifier(selectedModifier.Value.Definition);
@@ -355,7 +363,8 @@ public class RuntimeItemGiverOverlay : MonoBehaviour
             }
 
             GUILayout.BeginHorizontal();
-            GUILayout.Label(GetModifierDefinitionLabel(modifier.Definition));
+            string label = GetModifierDefinitionLabel(modifier.Definition);
+            GUILayout.Label(new GUIContent(label, BuildModifierTooltip(modifier.Definition)));
             if (GUILayout.Button("Remove", GUILayout.Width(72f)))
             {
                 _targetInventory.RemoveModifierFromItem(selectedItem, modifier.Definition);
@@ -374,12 +383,42 @@ public class RuntimeItemGiverOverlay : MonoBehaviour
         GUI.color = previousColor;
     }
 
-    private void DrawItemButton(ItemData item)
+    private void DrawTooltip()
+    {
+        if (string.IsNullOrWhiteSpace(GUI.tooltip))
+        {
+            return;
+        }
+
+        GUIStyle style = new GUIStyle(GUI.skin.box)
+        {
+            alignment = TextAnchor.UpperLeft,
+            wordWrap = true,
+            padding = new RectOffset(8, 8, 6, 6)
+        };
+
+        const float width = 300f;
+        GUIContent content = new GUIContent(GUI.tooltip);
+        float height = style.CalcHeight(content, width);
+        Vector2 mousePosition = Event.current.mousePosition;
+        Rect tooltipRect = new Rect(mousePosition.x + 16f, mousePosition.y + 16f, width, height);
+
+        tooltipRect.x = Mathf.Min(tooltipRect.x, Screen.width - tooltipRect.width - 8f);
+        tooltipRect.y = Mathf.Min(tooltipRect.y, Screen.height - tooltipRect.height - 8f);
+
+        GUI.Box(tooltipRect, content, style);
+    }
+
+    private void DrawItemButton(ItemData item, int index)
     {
         GUILayout.BeginVertical(GUILayout.Width(buttonSize));
 
         Rect buttonRect = GUILayoutUtility.GetRect(buttonSize, buttonSize, GUILayout.Width(buttonSize), GUILayout.Height(buttonSize));
-        GUI.Box(buttonRect, GUIContent.none);
+        string itemTooltip = BuildTooltip(
+            string.IsNullOrEmpty(item.Name) ? item.Id : item.Name,
+            item.Id,
+            item.Description);
+        GUI.Box(buttonRect, new GUIContent(string.Empty, itemTooltip));
 
         if (item.Icon != null)
         {
@@ -390,13 +429,19 @@ public class RuntimeItemGiverOverlay : MonoBehaviour
             GUI.Label(buttonRect, item.Id);
         }
 
+        if (Event.current.type == EventType.MouseDown && buttonRect.Contains(Event.current.mousePosition))
+        {
+            _selectedItemIndex = index;
+            Event.current.Use();
+        }
+
         string displayName = string.IsNullOrEmpty(item.Name) ? item.Id : item.Name;
         if (displayName.Length > 14)
         {
             displayName = displayName.Substring(0, 12) + "..";
         }
 
-        GUILayout.Label(displayName, GUILayout.Width(buttonSize));
+        GUILayout.Label(new GUIContent(displayName, itemTooltip), GUILayout.Width(buttonSize));
 
         GUILayout.BeginHorizontal(GUILayout.Width(buttonSize));
         if (GUILayout.Button("-", GUILayout.Width((buttonSize - 4f) * 0.5f), GUILayout.Height(22f)))
@@ -411,6 +456,36 @@ public class RuntimeItemGiverOverlay : MonoBehaviour
         GUILayout.EndHorizontal();
 
         GUILayout.EndVertical();
+    }
+
+    private void DrawSelectedItemDetails()
+    {
+        if (_cachedItems.Count == 0)
+        {
+            return;
+        }
+
+        _selectedItemIndex = ClampIndex(_selectedItemIndex, _cachedItems.Count);
+        ItemData item = _cachedItems[_selectedItemIndex];
+        string name = string.IsNullOrEmpty(item.Name) ? item.Id : item.Name;
+
+        GUILayout.Space(8f);
+        GUILayout.Label(name);
+        GUILayout.Label(string.IsNullOrWhiteSpace(item.Description) ? "No description." : item.Description);
+    }
+
+    private void DrawSelectedModifierDescription(ModifierData? selectedModifier)
+    {
+        if (!selectedModifier.HasValue)
+        {
+            GUILayout.Label("Description: none");
+            return;
+        }
+
+        string description = selectedModifier.Value.Description;
+        GUILayout.Label(string.IsNullOrWhiteSpace(description)
+            ? "Description: none"
+            : $"Description: {description}");
     }
 
     private void DrawSprite(Rect rect, Sprite sprite)
@@ -496,6 +571,7 @@ public class RuntimeItemGiverOverlay : MonoBehaviour
             {
                 Id = entry.ItemID,
                 Name = entry.Definition != null ? entry.Definition.itemName : string.Empty,
+                Description = entry.Definition != null ? entry.Definition.description : string.Empty,
                 Icon = entry.Definition != null ? entry.Definition.icon : null
             });
         }
@@ -529,6 +605,7 @@ public class RuntimeItemGiverOverlay : MonoBehaviour
             {
                 Id = entry.ModifierID,
                 Name = entry.Definition != null ? entry.Definition.modifierName : string.Empty,
+                Description = entry.Definition != null ? entry.Definition.description : string.Empty,
                 Definition = entry.Definition
             });
         }
@@ -583,6 +660,20 @@ public class RuntimeItemGiverOverlay : MonoBehaviour
         return $"{name} x{item.StackSize}";
     }
 
+    private string GetRuntimeItemTooltip(ItemRuntime item)
+    {
+        if (item == null || item.Definition == null)
+        {
+            return string.Empty;
+        }
+
+        string name = !string.IsNullOrEmpty(item.Definition.itemName)
+            ? item.Definition.itemName
+            : GetItemId(item.Definition);
+
+        return BuildTooltip(name, GetItemId(item.Definition), item.Definition.description);
+    }
+
     private string GetItemId(ItemDefinition definition)
     {
         if (definition == null || ItemDatabaseFactory.Instance == null)
@@ -626,6 +717,30 @@ public class RuntimeItemGiverOverlay : MonoBehaviour
         }
 
         return definition.name;
+    }
+
+    private static string BuildModifierTooltip(ModifierDefinition definition)
+    {
+        if (definition == null)
+        {
+            return string.Empty;
+        }
+
+        string id = !string.IsNullOrEmpty(definition.modifierId) ? definition.modifierId : definition.name;
+        string name = !string.IsNullOrEmpty(definition.modifierName) ? definition.modifierName : id;
+        return BuildTooltip(name, id, definition.description);
+    }
+
+    private static string BuildTooltip(string displayName, string id, string description)
+    {
+        if (string.IsNullOrWhiteSpace(description))
+        {
+            return string.IsNullOrWhiteSpace(id) ? displayName : $"{displayName}\n{id}";
+        }
+
+        return string.IsNullOrWhiteSpace(id)
+            ? $"{displayName}\n{description}"
+            : $"{displayName}\n{id}\n{description}";
     }
 
     private void SetOpen(bool isOpen)

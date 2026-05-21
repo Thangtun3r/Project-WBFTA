@@ -10,10 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ea558c2d854021c498ffa237167bd578, type: 3}
-  m_Name: IncreaseCritDmg
+  m_Name: SpeedBoost
   m_EditorClassIdentifier: Assembly-CSharp::ItemDefinition
-  itemName: CritDMG
-  itemType: 0
-  icon: {fileID: -715053779, guid: 47f06d5dec1de604fa01354180cc9d29, type: 3}
-  description: 
+  itemId: SpeedBoost
+  itemName: SpeedBoost
+  itemType: 2
+  itemRarity: 0
+  icon: {fileID: 1331012838, guid: 47f06d5dec1de604fa01354180cc9d29, type: 3}
+  isModifiable: 1
+  description: Increases movement speed. Additional stacks add the same speed bonus again.
+  logicClassName: SpeedBoostLogic
   effectPrefab: {fileID: 0}
+  itemStats: []
+  playerStats:
+  - statType: 3
+    baseValue: 0.14
+    perStackValue: 0.14
+  parameters: []

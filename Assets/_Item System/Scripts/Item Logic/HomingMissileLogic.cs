@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class HomingMissileLogic : ProcOnHitItemLogicBase
 {
+    private const string LaunchSpeedParameterKey = "HomingMissile.LaunchSpeed";
+
     [Header("Debug Settings")]
     [SerializeField] private bool forceProc;
 
@@ -12,13 +14,15 @@ public class HomingMissileLogic : ProcOnHitItemLogicBase
 
     [Header("Projectile")]
     [SerializeField] private string projectileId = "HomingMissile";
-    [SerializeField] private float launchSpeed = 6f;
+    [SerializeField] private float fallbackLaunchSpeed = 6f;
 
     protected override float ProcChance => GetProcChance(fallbackProcChance);
 
     private float DamageMultiplier => GetDamageMultiplier(
         fallbackDamageMultiplier,
         fallbackDamageMultiplierPerStack);
+
+    private float LaunchSpeed => GetParameter(LaunchSpeedParameterKey, fallbackLaunchSpeed);
 
     protected override bool RollProc(ItemTriggerContext context)
     {
@@ -43,7 +47,7 @@ public class HomingMissileLogic : ProcOnHitItemLogicBase
             ProjectileID = projectileId,
             Position = Owner.OwnerObject.transform.position + spawnOffset,
             Rotation = Quaternion.identity,
-            Direction = randomDir * launchSpeed,
+            Direction = randomDir * LaunchSpeed,
             Damage = baseDamage * DamageMultiplier,
             Target = target
         };

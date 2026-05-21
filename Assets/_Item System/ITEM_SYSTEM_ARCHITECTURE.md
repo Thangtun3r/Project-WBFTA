@@ -1,20 +1,50 @@
-# Item System Architecture Reference
+# Item System Architecture
 
-This document is the reference for future item and modifier work. The system is intentionally incremental: old item logic still works, while new item stats, player stat queries, modifiers, and item-to-item communication can be added without hardcoded item pairs.
+This document is the working guide for adding, tuning, and debugging items and item modifiers.
 
-## Runtime Shape
+The system is built around one rule: ScriptableObjects are the editor source of truth, runtime classes hold state, and logic classes contain behavior. Avoid hardcoded item-to-item references unless the behavior is intentionally unique.
 
-The main flow is:
+## Source Of Truth
+
+Item assets live here:
 
 ```text
-ItemDatabaseFactory
-  -> ItemDefinition + optional IItemLogic
+Assets/_Item System/Scriptable Objects/Items
+```
+
+Modifier assets live here:
+
+```text
+Assets/_Item System/Scriptable Objects/Modifiers
+```
+
+Scene database lists are build-time caches. They are not the source of truth. The editor auto-registration system rebuilds them from ScriptableObjects.
+
+## Runtime Flow
+
+The normal item pickup flow is:
+
+```text
+ItemDefinition asset
+  -> ItemDatabaseFactory
   -> PlayerInventory.ProcessPickup(itemId)
   -> ItemRuntime
   -> ItemSystemContext
 ```
 
-`PlayerInventory` owns the active `ItemRuntime` list and creates one `ItemSystemContext`. The context is the shared communication layer for all owned items and modifiers.
+The normal modifier attachment flow is:
+
+```text
+ModifierDefinition asset
+  -> ModifierDatabaseFactory
+  -> PlayerInventory.AttachModifierToItem(...)
+  -> ModifierRuntime attached to ItemRuntime
+  -> ItemSystemContext
+```
+
+`PlayerInventory` owns the active `ItemRuntime` list. It creates one `ItemSystemContext`, which is the communication layer between items, modifiers, player stats, item events, proc triggers, drop weighting, and death handling.
+
+## Important Runtime Classes
 
 `ItemRuntime` owns:
 
@@ -28,136 +58,170 @@ ItemDatabaseFactory
 `ModifierRuntime` owns:
 
 - `ModifierDefinition Definition`
+- optional `IModifierLogic Logic`
 - attached `ItemRuntime`
-- optional `IModifierLogic`
-
-Modifiers do not stack. Attaching the same modifier definition again returns the existing runtime modifier. Modifier stat/parameter scaling uses the attached item's `StackSize`.
+- attached `ItemSystemContext`
+- helper method: `GetParameter`
 
 Definitions are data. Runtime classes are state. Logic classes are behavior.
 
 ## Folder Layout
 
-Use these folders when adding new item-system files:
+Use these folders for new item-system work:
 
-- `Scripts/Core`: shared event/stat/query types and cross-system managers.
-- `Scripts/Definitions`: `ScriptableObject` data definitions.
+- `Scripts/Core`: shared stat, event, query, and parameter-key types.
+- `Scripts/Definitions`: ScriptableObject data definitions.
 - `Scripts/Runtime`: runtime state and lifecycle classes.
-- `Scripts/Database`: factories/catalogs that create runtime definitions and logic.
+- `Scripts/Database`: database factories and catalog creation.
 - `Scripts/Interfaces`: behavior contracts.
 - `Scripts/Item Logic`: item behavior implementations.
 - `Scripts/Item Modifiers`: modifier behavior implementations.
-- `Scripts/ItemEffect`: spawned visual/effect prefab logic.
-- `Scripts/UI`: item inventory/debug UI.
-- `Scripts/Drops`: item pickup/drop scene behavior.
+- `Scripts/ItemEffect`: spawned prefab effect behavior.
+- `Scripts/UI`: inventory and debug UI.
+- `Scripts/Drops`: pickup/drop behavior.
+- `Scripts/Editor`: auto-registration and editor tooling.
 
-## Definition Data
+## ItemDefinition Fields
 
-`ItemDefinition` now supports three data lists:
+Every item asset should have:
 
-- `itemStats`: common item-local stats.
-- `playerStats`: stats that affect the player/inventory owner.
-- `parameters`: string-keyed special values for unique item behavior.
+- `itemId`: stable ID used by code, saves, databases, and debug tools.
+- `itemName`: display name.
+- `description`: player/debug description.
+- `logicClassName`: concrete `IItemLogic` class name, if behavior is needed.
+- `itemStats`: item-local stats such as proc chance, damage multiplier, radius, cooldown.
+- `playerStats`: stats contributed to the owner, such as crit chance or max health.
+- `parameters`: string-keyed item-specific tunables.
 
-Common item stats use `ItemStatType`:
+Stat-only items can leave `logicClassName` empty if all behavior is represented by `playerStats`.
+
+## ModifierDefinition Fields
+
+Every modifier asset should have:
+
+- `modifierId`: stable ID used by code, databases, and debug tools.
+- `modifierName`: display name.
+- `description`: player/debug description.
+- `logicClassName`: concrete `IModifierLogic` class name, if behavior is needed.
+- `procCoefficient`: general coefficient used by some modifier logic.
+- `parameters`: string-keyed modifier-specific tunables.
+- `itemStatModifiers`: data-driven changes to the attached item's item stats.
+- `playerStatModifiers`: data-driven changes to owner/player stat queries.
+- `parameterModifiers`: data-driven changes to the attached item's parameters.
+
+Modifiers do not currently stack per item. Attaching the same modifier definition again returns the existing runtime modifier.
+
+## Database Auto-Registration
+
+`ItemDatabaseFactory` and `ModifierDatabaseFactory` can auto-register assets in the editor.
+
+Current behavior:
+
+- Finds item/modifier ScriptableObjects under `Assets/_Item System/Scriptable Objects`.
+- Sorts entries by ID for predictable scene diffs.
+- Skips duplicate IDs and logs warnings.
+- Logs warnings for missing IDs, missing definitions, missing descriptions, missing logic class names, and logic class names that do not resolve.
+- Rebuilds serialized scene caches only when entries actually changed.
+
+The postprocessor watches asset changes under:
 
 ```text
-ProcChance
-DamageMultiplier
-Radius
-BounceCount
-Cooldown
-Duration
-TriggerCount
+Assets/_Item System/Scriptable Objects/Items
+Assets/_Item System/Scriptable Objects/Modifiers
 ```
 
-Player stats use `PlayerStatType`:
+Manual database editing should be rare. Prefer creating or editing the ScriptableObject asset, then let auto-registration update the scene cache.
 
-```text
-AttackDamage
-CritChance
-CritDamage
-MoveSpeedMultiplier
-MaxHealth
-```
+## Database Cache Rules
 
-Special item-only values should use namespaced string keys:
+Scene database blocks must stay separated:
 
-```text
-BlackHole.PullForce
-BlackHole.PullDuration
-Bomb.FuseTime
-Missile.TurnSpeed
-ChainDamage.VisualJitter
-```
+- `ItemDatabaseFactory.itemEntries` contains only `ItemID` rows.
+- `ModifierDatabaseFactory.modifierEntries` contains only `ModifierID` rows.
 
-Use common enum stats when many items/modifiers can understand the value. Use parameters when the value is specific to one item family.
+If scene YAML ever has `ModifierID` inside an item database block, or `ItemID` inside a modifier database block, the scene cache is corrupted and should be normalized.
 
-## Stat Query Rules
+## Stat And Parameter Queries
 
-Item logic should not read mutable fields directly when the value needs to be modifier-compatible.
+Item logic should not read raw definition fields directly when a value needs to support modifiers.
 
 Use:
 
 ```csharp
 float procChance = Owner.GetItemStat(ItemStatType.ProcChance, fallbackProcChance);
 float radius = Owner.GetItemStat(ItemStatType.Radius, fallbackRadius);
-float pullForce = Owner.GetParameter("BlackHole.PullForce", fallbackPullForce);
+float launchSpeed = Owner.GetParameter("HomingMissile.LaunchSpeed", fallbackLaunchSpeed);
 ```
 
 Resolution order:
 
-1. Use the value from `ItemDefinition.itemStats` or `ItemDefinition.parameters` if present.
-2. Otherwise use the fallback passed by the logic class.
-3. Apply matching modifier entries and providers.
-4. Return `(base + flatBonus) * multiplier`.
+1. Use the value from `ItemDefinition.itemStats`, `playerStats`, or `parameters` if present.
+2. Otherwise use the fallback passed by logic.
+3. Apply matching data-driven modifier entries.
+4. Apply custom provider logic.
+5. Return `(base + flatBonus) * multiplier`.
 
-This keeps existing assets working. Old logic fields remain useful as fallbacks until each item asset is fully data-authored.
+Use enum stats when many systems can understand the value. Use namespaced string parameters for item-specific or modifier-specific tunables.
 
-Player stats are resolved through `PlayerStatMachine`:
+Good parameter key examples:
 
-```csharp
-inventory.ItemContext.CalculatePlayerStat(PlayerStatType.CritChance, baseCritRate);
+```text
+HomingMissile.LaunchSpeed
+PiercingSpike.ProjectileSpeed
+Revive.BaseHealthPercent
+HealthDamage.Divisor
 ```
 
-Data-only stat items can work by filling `ItemDefinition.playerStats`, even if they have no logic class.
+## Player Stats
 
-Legacy passive stat logic such as crit, speed, and max health now participates through `IPlayerStatProvider`. Player systems consume those values through `ItemSystemContext` instead of item logic mutating player components directly.
+Player-facing stats flow through `ItemSystemContext.CalculatePlayerStat`.
 
-## Event And Trigger Channels
+Example:
 
-`ItemSystemContext` publishes inventory-wide `ItemEvent` messages. Current bridge events include:
+```csharp
+float maxHealth = inventory.ItemContext.CalculatePlayerStat(PlayerStatType.MaxHealth, baseMaxHealth);
+```
+
+Passive stat items should prefer `ItemDefinition.playerStats`. If a legacy logic class is still needed, inherit `PlayerStatItemLogicBase`.
+
+## Events
+
+`ItemSystemContext` publishes inventory-wide `ItemEvent` messages.
+
+Current event types:
 
 - `HitEnemy`
 - `EnemyKilled`
+- `PlayerDamaged`
+- `PlayerDied`
+- `ItemTriggered`
 - `ItemEquipped`
 - `ItemRemoved`
-- `ItemTriggered`
 
-Use `IItemEventListener` for behavior that reacts to events:
+Use `IItemEventListener` when item or modifier logic reacts to events.
+
+Example:
 
 ```csharp
-public class MyLogic : ItemLogicBase, IItemEventListener
+public class MyModifierLogic : ItemModifier, IItemEventListener
 {
     public void OnItemEvent(ItemEvent itemEvent)
     {
-        if (itemEvent.Type != ItemEventType.HitEnemy)
+        if (itemEvent.Type != ItemEventType.ItemTriggered)
         {
             return;
         }
 
-        Owner.RequestTrigger(new ItemTriggerContext
-        {
-            SourceItem = Owner,
-            Owner = Owner.OwnerObject,
-            Target = itemEvent.Target,
-            Damage = itemEvent.Damage,
-            IsCrit = itemEvent.IsCrit
-        });
+        // React to trigger.
     }
 }
 ```
 
-Use `ITriggerableItem` when an item can be triggered by itself or another item:
+`ItemSystemContext` snapshots active items and modifiers before event/death iteration. This allows logic such as revive-on-death to remove item stacks safely during handling.
+
+## Trigger Lifecycle
+
+Triggerable items implement `ITriggerableItem`:
 
 ```csharp
 public bool CanTrigger(ItemTriggerContext context)
@@ -171,118 +235,168 @@ public void Trigger(ItemTriggerContext context)
 }
 ```
 
-The context has a trigger depth guard. Default max depth is `8`. This prevents infinite loops when items trigger other items.
+Current trigger order:
 
-Most proc items should not implement this plumbing directly. Use:
+1. `ItemRuntime.RequestTrigger(...)`
+2. `ItemSystemContext.RequestTrigger(...)`
+3. Trigger depth guard checks for infinite chains.
+4. `ITriggerableItem.CanTrigger(...)` runs first.
+5. Trigger preprocessors run only after `CanTrigger` succeeds.
+6. `ITriggerableItem.Trigger(...)` executes.
+7. `ItemTriggered` event is published.
 
-- `ProcOnHitItemLogicBase` for items that roll from hit events.
-- `ProcOnKillItemLogicBase` for items that roll from kill events.
-- `ProcItemLogicBase` when an item needs a custom event source.
+This means trigger preprocessors can alter execution values such as damage, but they do not alter proc chance unless explicitly built into item logic later.
 
-Concrete proc items should usually override `ProcChance`, optionally override `Cooldown`, and implement `ExecuteTrigger`.
+The default max trigger depth is `8`.
 
-## Modifier Rules
+## Proc Item Base Classes
 
-Use `ModifierDefinition` for modifier data:
+Most proc items should inherit one of these:
 
-- `itemStatModifiers`: modifies the attached item's item stats.
-- `playerStatModifiers`: modifies player stat queries.
-- `parameterModifiers`: modifies attached item parameters.
-- optional `LogicClassName` in `ModifierDatabaseFactory` creates custom behavior.
+- `ProcOnHitItemLogicBase`: rolls from hit events.
+- `ProcOnKillItemLogicBase`: rolls from kill events.
+- `ProcItemLogicBase`: use when the event source is custom.
 
-Modifiers are one attachment per modifier definition per item. Their numeric entries scale from the attached item's stack count, not from a modifier-local stack.
+Concrete proc items usually:
 
-Use `DefinitionStatModifierLogic` for data-only modifiers. The base `ModifierRuntime` already applies definition stat and parameter modifier entries.
+- Override `ProcChance` with `GetProcChance(fallbackProcChance)`.
+- Optionally override `Cooldown`.
+- Implement `ExecuteTrigger`.
+- Read tunables through `GetItemStat`, `GetDamageMultiplier`, and `GetParameter`.
 
-Use custom `IModifierLogic` when a modifier needs behavior. Example: `TriggerOtherItemsOnOwnerTriggerLogic` listens for owner item trigger events and requests triggers on other triggerable items.
+## Modifier Logic Interfaces
 
-Runtime attachment API:
+Custom modifier logic should inherit `ItemModifier` and implement only the interfaces it needs:
+
+- `IItemEventListener`: react to events.
+- `IItemStatProvider`: modify item stat queries.
+- `IPlayerStatProvider`: modify player stat queries.
+- `IItemParameterProvider`: modify parameter queries.
+- `IItemTriggerPreprocessor`: edit trigger context after proc/cooldown validation and before trigger execution.
+- `IItemDropWeightProvider`: modify item drop weights.
+- `IPlayerDeathHandler`: handle player death before final death resolution.
+- `IModifierParameterRequirements`: declare required `ModifierDefinition.parameters` keys for validation.
+
+Use `Owner.AttachedItem` for the item being modified. Use `Owner.AttachedItemStackSize` when behavior scales from the attached item's stack size.
+
+## Required Modifier Parameters
+
+Modifier logic that depends on specific parameter keys should implement `IModifierParameterRequirements`.
+
+Example:
 
 ```csharp
-inventory.AttachModifierToItem(itemRuntime, modifierId);
-inventory.AttachModifierToItem(itemId, modifierId);
-inventory.RemoveModifierFromItem(itemRuntime, modifierId);
-inventory.RemoveModifierFromItem(itemId, modifierId);
+public class MyModifierLogic : ItemModifier, IModifierParameterRequirements
+{
+    private static readonly string[] RequiredKeys =
+    {
+        ModifierParameterKeys.HealthDamageDivisor
+    };
+
+    public IReadOnlyList<string> RequiredParameterKeys => RequiredKeys;
+}
 ```
 
-Modifier pickups, sockets, and UI are not implemented yet. Future systems should call these APIs instead of mutating `ItemRuntime.Modifiers` directly.
+The modifier database validates these keys and logs warnings when assets are missing required parameters.
 
-The runtime debug overlay has a `Modifiers` tab. Use it in play mode to select an active item, select a modifier from `ModifierDatabaseFactory`, then attach or remove the modifier.
+Current shared modifier keys live in `ModifierParameterKeys` inside `ItemStats.cs`.
 
-## Fast Recipes
+## Current Modifier Set
 
-Data-only stat item:
+The current production modifier assets are:
 
-1. Create an `ItemDefinition`.
-2. Fill `playerStats`, for example `CritChance` or `AttackDamage`.
-3. Add it to `ItemDatabaseFactory` with an empty `LogicClassName`.
-4. Pick it up normally. `PlayerStatMachine` reads the value through `ItemSystemContext`.
+- `IncreaseAttachedItemDropChance`: increases future drop weight for the attached item.
+- `TriggerOtherItemsOnProc`: when the attached item triggers, requests triggers on other active items.
+- `TriggerOnPlayerDamaged`: when the player takes damage, has a proc-coefficient chance to trigger the attached item.
+- `HalveAttachedBoostOthers`: halves attached item stats/parameters and boosts all other active items.
+- `DoubleStatsBelow10PercentHealth`: doubles attached item stats/parameters while player health is below threshold.
+- `DiceRollStatsOnTrigger`: rolls 1-6 before trigger execution; odd/even rolls change attached item stats/parameters for that trigger.
+- `GainGoldOnProc`: grants money based on current money when the attached item triggers.
+- `ScaleStatsWithCurrentHealth`: scales attached item stats/parameters from low to high multiplier based on current health.
+- `ReviveBySacrificingAttachedItem`: on death, removes one attached item stack and revives the player.
+- `UseHealthAsTriggerDamage`: before trigger execution, replaces trigger damage with current or max health divided by a tunable divisor.
 
-Proc item:
+## Drop Weighting
 
-1. Create a class inheriting `ProcOnHitItemLogicBase` or `ProcOnKillItemLogicBase`.
-2. Add readable fallback fields, for example `fallbackProcChance`, `fallbackDamageMultiplier`, or `fallbackRadius`.
-3. Override `ProcChance` with `GetProcChance(fallbackProcChance)`.
-4. Override `Cooldown` only when the item has a non-zero fallback cooldown.
-5. Implement `ExecuteTrigger` for the unique effect.
-6. Read tunables through `GetItemStat`, `GetDamageMultiplier`, and `GetParameter`.
+Item drops use:
 
-Passive fallback stat item:
+```csharp
+ItemDatabaseFactory.Instance.GetRandomItemId(playerInventory);
+```
 
-1. Prefer data-only `ItemDefinition.playerStats` with no logic.
-2. If legacy code still needs a logic class, inherit `PlayerStatItemLogicBase`.
-3. Override `StatType`, `FallbackBaseValue`, and `FallbackPerStackValue`.
-4. The base class skips fallback logic when `ItemDefinition.playerStats` already contains the same stat, preventing double application.
-5. Add the logic class name to the item database entry.
+When an inventory is provided, each candidate item weight is passed through `ItemSystemContext.CalculateItemDropWeight`. Modifiers implementing `IItemDropWeightProvider` can adjust the result.
 
-Data-only modifier:
+`ItemDropSpawner` caches a serialized `PlayerInventory` reference and only resolves it if missing. Prefer assigning the target inventory in the scene.
 
-1. Create a `ModifierDefinition`.
-2. Fill `itemStatModifiers`, `playerStatModifiers`, or `parameterModifiers`.
-3. Add it to `ModifierDatabaseFactory`.
-4. Use `DefinitionStatModifierLogic` as the logic class if the modifier should be explicit in the database.
-5. Attach it at runtime through the overlay or `PlayerInventory.AttachModifierToItem`.
+## Death And Revive
 
-Behavior modifier:
+`PlayerHealth` has a death guard. Once health reaches zero, death handling runs once until the player is revived.
 
-1. Create a class inheriting `ItemModifier`.
-2. Implement only the needed optional interfaces.
-3. Use `Owner.AttachedItem` for the item being modified.
-4. Use `Owner.AttachedItemStackSize` when behavior should scale with the attached item.
-5. Add it to `ModifierDatabaseFactory`.
+Death flow:
 
-Examples:
+1. Player takes lethal damage.
+2. `_isDead` is set.
+3. `ItemSystemContext.TryHandlePlayerDeath(...)` publishes `PlayerDied`.
+4. Active items/modifiers are snapshotted.
+5. Death handlers run.
+6. If a handler revives, `PlayerHealth.Revive(...)` clears `_isDead`.
+7. If no handler revives, `Die()` runs.
 
-- `ExampleProcItemLogic` shows the event listener + triggerable item pattern.
-- `ExampleModifierLogic` shows modifier event/stat provider patterns.
-- Example classes are templates only; do not add them to databases as production gameplay logic.
+This prevents repeated death/revive execution while health remains below zero.
+
+## Debug Overlay
+
+The runtime debug overlay supports:
+
+- Viewing available items.
+- Viewing available modifiers.
+- Hover/click descriptions.
+- Giving items.
+- Attaching/removing modifiers from active items.
+
+Use it for smoke testing in play mode.
 
 ## Adding A New Item
 
-1. Create or update an `ItemDefinition`.
-2. Add common `itemStats`, `playerStats`, and `parameters` where possible.
-3. If the item needs behavior, create an `IItemLogic` class, usually by inheriting `ItemLogicBase`.
-4. Add the item to `ItemDatabaseFactory`.
-5. In logic, read modifier-compatible values with `Owner.GetItemStat` and `Owner.GetParameter`.
-6. If the item reacts to hits/kills/etc., implement `IItemEventListener`.
-7. If other items/modifiers can trigger it, implement `ITriggerableItem`.
+1. Create an `ItemDefinition` in `Assets/_Item System/Scriptable Objects/Items`.
+2. Set `itemId`, `itemName`, `description`, and rarity/icon fields.
+3. Fill `itemStats`, `playerStats`, and `parameters` where possible.
+4. If behavior is needed, create a class in `Scripts/Item Logic`.
+5. In logic, read tunables through `Owner.GetItemStat(...)` and `Owner.GetParameter(...)`.
+6. Set `logicClassName` on the item asset to the exact class name.
+7. Let auto-registration update the scene database cache.
+8. Verify it appears in the runtime debug overlay.
 
-Stat-only items do not need logic. `PlayerInventory.ProcessPickup` accepts items with no logic as long as the definition exists.
+Stat-only items can skip the logic class.
 
 ## Adding A New Modifier
 
-1. Create a `ModifierDefinition`.
-2. Fill `itemStatModifiers`, `playerStatModifiers`, or `parameterModifiers`.
-3. If it is data-only, use `DefinitionStatModifierLogic` or leave logic empty if no custom lifecycle is needed.
-4. If it needs behavior, create a class inheriting `ItemModifier` and implement optional interfaces such as `IItemEventListener`, `IItemStatProvider`, `IPlayerStatProvider`, or `IItemParameterProvider`.
-5. Add it to `ModifierDatabaseFactory`.
-6. Attach it through `PlayerInventory.AttachModifierToItem`.
+1. Create a `ModifierDefinition` in `Assets/_Item System/Scriptable Objects/Modifiers`.
+2. Set `modifierId`, `modifierName`, `description`, `rarity`, and `procCoefficient`.
+3. Fill data-driven modifier lists if the modifier only changes stats or parameters.
+4. If behavior is needed, create a class in `Scripts/Item Modifiers` inheriting `ItemModifier`.
+5. Implement only the optional interfaces needed by the behavior.
+6. If the logic requires parameter keys, implement `IModifierParameterRequirements`.
+7. Set `logicClassName` on the modifier asset to the exact class name.
+8. Let auto-registration update the scene database cache.
+9. Verify it appears in the runtime debug overlay and can attach to an active item.
 
-Do not hardcode direct references to concrete item classes unless the item is intentionally unique. Prefer item events, stat queries, and parameter keys.
+## Production Checklist
+
+Before considering an item/modifier change complete:
+
+- `dotnet build Project-WBFTA.sln --no-restore` passes.
+- `git diff --check` passes.
+- The asset has a stable ID.
+- The asset has a clear description.
+- `logicClassName` resolves, or is intentionally empty for data-only behavior.
+- Required parameter keys are present on the modifier asset.
+- Debug overlay shows the item/modifier.
+- Relevant play-mode smoke tests pass.
 
 ## Compatibility Notes
 
-- Existing item logic fields should remain until their item assets are fully migrated to definition stats.
 - `ItemRuntime.TriggerEffect(EffectContext)` and `ItemDefinition.effectPrefab` are still supported.
-- Current item logic should use `IItemEventListener`, `ITriggerableItem`, and stat/query providers instead of subscribing directly to global gameplay events.
-- Generated `.csproj` files may not include new scripts until Unity regenerates them. Unity is the source of truth for compilation.
+- Generated `.csproj` files may lag behind newly added scripts until Unity regenerates them. Unity remains the source of truth for editor compilation.
+- Existing no-logic stat items are valid if their ScriptableObject data fully defines their behavior.
+- Avoid direct references to concrete item classes from modifiers. Prefer events, stat queries, trigger requests, and parameters.

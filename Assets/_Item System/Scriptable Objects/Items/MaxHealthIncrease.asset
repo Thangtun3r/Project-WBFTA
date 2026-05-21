@@ -10,12 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ea558c2d854021c498ffa237167bd578, type: 3}
-  m_Name: BombOnKill
+  m_Name: MaxHealthIncrease
   m_EditorClassIdentifier: Assembly-CSharp::ItemDefinition
-  itemName: BombOnKill
-  itemType: 0
+  itemId: MaxHealthIncrease
+  itemName: MaxHealthIncrease
+  itemType: 2
   itemRarity: 0
-  icon: {fileID: 3271510920678448843, guid: 1e3cd892d215b4e439814480388eda64, type: 3}
-  isModifiable: 0
-  description: 
+  icon: {fileID: -787129682, guid: 47f06d5dec1de604fa01354180cc9d29, type: 3}
+  isModifiable: 1
+  description: Increases maximum health. Additional stacks add the same health bonus again.
+  logicClassName: MaxHealthIncreaseLogic
   effectPrefab: {fileID: 0}
+  itemStats: []
+  playerStats:
+  - statType: 4
+    baseValue: 25
+    perStackValue: 25
+  parameters: []

@@ -27,6 +27,7 @@ public enum ItemEventType
     HitEnemy,
     EnemyKilled,
     PlayerDamaged,
+    PlayerDied,
     ItemTriggered,
     ItemEquipped,
     ItemRemoved
@@ -128,6 +129,18 @@ public struct ItemParameterQuery
     public float FinalValue => (BaseValue + FlatBonus) * Multiplier;
 }
 
+public struct ItemDropWeightQuery
+{
+    public PlayerInventory Inventory;
+    public string CandidateItemId;
+    public ItemDefinition CandidateDefinition;
+    public float BaseWeight;
+    public float FlatBonus;
+    public float Multiplier;
+
+    public float FinalWeight => Mathf.Max(0f, (BaseWeight + FlatBonus) * Multiplier);
+}
+
 public struct ItemTriggerContext
 {
     public ItemRuntime SourceItem;
@@ -149,6 +162,29 @@ public struct ItemEvent
     public _Scripts.Enemy.BaseEnemy Enemy;
     public float Damage;
     public bool IsCrit;
+}
+
+public static class ModifierParameterKeys
+{
+    public const string LowHealthThreshold = "LowHealth.Threshold";
+    public const string LowHealthMultiplier = "LowHealth.Multiplier";
+
+    public const string HealthScaleMinimumMultiplier = "HealthScale.MinimumMultiplier";
+    public const string HealthScaleMaximumMultiplier = "HealthScale.MaximumMultiplier";
+
+    public const string TradeoffAttachedMultiplier = "Tradeoff.AttachedMultiplier";
+    public const string TradeoffOtherBaseMultiplier = "Tradeoff.OtherBaseMultiplier";
+    public const string TradeoffOtherPerStackMultiplier = "Tradeoff.OtherPerStackMultiplier";
+
+    public const string DiceOddMultiplier = "Dice.OddMultiplier";
+    public const string DiceEvenMultiplier = "Dice.EvenMultiplier";
+
+    public const string ReviveBaseHealthPercent = "Revive.BaseHealthPercent";
+    public const string RevivePerStackHealthPercent = "Revive.PerStackHealthPercent";
+    public const string ReviveInvincibilityDuration = "Revive.InvincibilityDuration";
+
+    public const string HealthDamageDivisor = "HealthDamage.Divisor";
+    public const string HealthDamageUseMaxHealth = "HealthDamage.UseMaxHealth";
 }
 
 public static class ItemStatUtility

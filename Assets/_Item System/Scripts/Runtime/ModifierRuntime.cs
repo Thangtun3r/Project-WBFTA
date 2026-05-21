@@ -62,6 +62,39 @@ public class ModifierRuntime : IItemStatProvider, IPlayerStatProvider, IItemPara
         }
     }
 
+    public void BeforeItemTrigger(ref ItemTriggerContext context)
+    {
+        if (_logic is IItemTriggerPreprocessor preprocessor)
+        {
+            preprocessor.BeforeItemTrigger(ref context);
+        }
+    }
+
+    public void ModifyItemDropWeight(ref ItemDropWeightQuery query)
+    {
+        if (_logic is IItemDropWeightProvider provider)
+        {
+            provider.ModifyItemDropWeight(ref query);
+        }
+    }
+
+    public bool TryHandlePlayerDeath(PlayerHealth playerHealth)
+    {
+        return _logic is IPlayerDeathHandler handler && handler.TryHandlePlayerDeath(playerHealth);
+    }
+
+    public float GetParameter(string key, float fallbackValue = 0f)
+    {
+        if (_definition == null)
+        {
+            return fallbackValue;
+        }
+
+        return ItemStatUtility.TryGetParameter(_definition.parameters, key, AttachedItemStackSize, out float value)
+            ? value
+            : fallbackValue;
+    }
+
     private void ApplyDefinitionItemStatModifiers(ref ItemStatQuery query)
     {
         if (query.Item != AttachedItem || _definition == null || _definition.itemStatModifiers == null)
