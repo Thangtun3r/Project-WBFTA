@@ -13,5 +13,18 @@ MonoBehaviour:
   m_Name: IncreaseCritRate
   m_EditorClassIdentifier: Assembly-CSharp::ItemDefinition
   itemName: IncreaseCritRate
+  itemType: 0
+  itemRarity: 0
   icon: {fileID: -318162755, guid: 47f06d5dec1de604fa01354180cc9d29, type: 3}
+  isModifiable: 0
   description: 
+  effectPrefab: {fileID: 0}
+  itemStats:
+  - statType: 0
+    baseValue: 0
+    perStackValue: 0
+  - statType: 0
+    baseValue: 0
+    perStackValue: 0
+  playerStats: []
+  parameters: []
