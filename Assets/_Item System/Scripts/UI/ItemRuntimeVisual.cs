@@ -8,8 +8,15 @@ public class ItemRuntimeVisual : MonoBehaviour
     [SerializeField] private TMP_Text nameText;
     [SerializeField] private TMP_Text descriptionText;
     [SerializeField] private TMP_Text stackText;
+    [SerializeField] private GameObject modifierRoot;
+    [SerializeField] private TMP_Text modifierCountText;
 
     private ItemRuntime runtime;
+
+    private void Awake()
+    {
+        RefreshModifierRoot(false);
+    }
 
     public void SetData(ItemRuntime itemRuntime)
     {
@@ -21,6 +28,7 @@ public class ItemRuntimeVisual : MonoBehaviour
     {
         if (runtime == null)
         {
+            RefreshModifierRoot(false);
             return;
         }
 
@@ -44,6 +52,22 @@ public class ItemRuntimeVisual : MonoBehaviour
         if (stackText != null)
         {
             stackText.text = runtime.StackSize.ToString();
+        }
+
+        int modifierCount = runtime.Modifiers != null ? runtime.Modifiers.Count : 0;
+        RefreshModifierRoot(modifierCount > 0);
+
+        if (modifierCountText != null)
+        {
+            modifierCountText.text = modifierCount.ToString();
+        }
+    }
+
+    private void RefreshModifierRoot(bool hasModifiers)
+    {
+        if (modifierRoot != null)
+        {
+            modifierRoot.SetActive(hasModifiers);
         }
     }
 }

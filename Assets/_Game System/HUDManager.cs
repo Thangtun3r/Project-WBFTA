@@ -1,13 +1,10 @@
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
 public class HUDManager : MonoBehaviour
 {
-    [SerializeField] private Image healthFillImage;
-    [SerializeField] private TextMeshProUGUI healthText;
     [SerializeField] private TextMeshProUGUI timeText;
     [SerializeField] private TextMeshProUGUI moneyText;
     [SerializeField] private TextMeshProUGUI levelText;
@@ -20,15 +17,13 @@ public class HUDManager : MonoBehaviour
     [SerializeField] private float lowHealthThreshold = 0.3f; 
     [SerializeField] private float vignetteTransitionSpeed = 2f;
 
-    private float _maxHealth;
-    private float _currentHealth;
     private Vignette _vignette;
     private float _targetVignetteIntensity;
     private float _damageFlashTimer;
 
     private void OnEnable()
     {
-        PlayerHealth.OnHealthChanged += UpdateHealthDisplay;
+        PlayerHealth.OnHealthStateChanged += UpdateHealthStateDisplay;
         GameManager.OnTimeUpdated += UpdateTimeDisplay;
         GameManager.OnLevelChanged += UpdateLevelDisplay;
         EconomyManager.OnMoneyChanged += UpdateMoneyDisplay;
@@ -36,7 +31,7 @@ public class HUDManager : MonoBehaviour
 
     private void OnDisable()
     {
-        PlayerHealth.OnHealthChanged -= UpdateHealthDisplay;
+        PlayerHealth.OnHealthStateChanged -= UpdateHealthStateDisplay;
         GameManager.OnTimeUpdated -= UpdateTimeDisplay;
         GameManager.OnLevelChanged -= UpdateLevelDisplay;
         EconomyManager.OnMoneyChanged -= UpdateMoneyDisplay;
@@ -69,38 +64,32 @@ public class HUDManager : MonoBehaviour
         _vignette.intensity.value = Mathf.Lerp(currentIntensity, _targetVignetteIntensity, vignetteTransitionSpeed * Time.deltaTime);
     }
 
-    private void UpdateHealthDisplay(float currentHealth, float maxHealth, bool isHealing)
+    private void UpdateHealthStateDisplay(PlayerHealthState state, bool isHealing)
     {
-        _currentHealth = currentHealth;
-        _maxHealth = maxHealth;
+        UpdateVignette(state.CurrentHealth, state.MaxHealth, isHealing);
+    }
 
-        if (healthFillImage != null)
+    private void UpdateVignette(float currentHealth, float maxHealth, bool isHealing)
+    {
+        if (_vignette == null)
         {
-            healthFillImage.fillAmount = currentHealth / maxHealth;
+            return;
         }
 
-        if (healthText != null)
+        if (!isHealing)
         {
-            healthText.text = $"{currentHealth:F0}/{maxHealth:F0}";
+            _vignette.intensity.value = damageFlashIntensity;
+            _damageFlashTimer = damageFlashDuration;
         }
 
-        if (_vignette != null)
+        float healthPercent = maxHealth > 0f ? currentHealth / maxHealth : 0f;
+        if (healthPercent <= lowHealthThreshold)
         {
-            if (!isHealing)
-            {
-                _vignette.intensity.value = damageFlashIntensity;
-                _damageFlashTimer = damageFlashDuration;
-            }
-
-            float healthPercent = currentHealth / maxHealth;
-            if (healthPercent <= lowHealthThreshold)
-            {
-                _targetVignetteIntensity = Mathf.Clamp01(lowHealthVignetteIntensity * ((lowHealthThreshold - healthPercent) / lowHealthThreshold));
-            }
-            else
-            {
-                _targetVignetteIntensity = 0f;
-            }
+            _targetVignetteIntensity = Mathf.Clamp01(lowHealthVignetteIntensity * ((lowHealthThreshold - healthPercent) / lowHealthThreshold));
+        }
+        else
+        {
+            _targetVignetteIntensity = 0f;
         }
     }
 

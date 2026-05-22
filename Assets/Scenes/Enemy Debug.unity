@@ -572,6 +572,9 @@ MonoBehaviour:
   - ItemID: PiercingSpike
     Definition: {fileID: 11400000, guid: 1f16d3c60b09ae24f920970f119c425c, type: 2}
     LogicClassName: PiercingSpikeLogic
+  - ItemID: ShieldBattery
+    Definition: {fileID: 11400000, guid: 6c2f6e2f7eb44c1fb5952e6fcb1e2763, type: 2}
+    LogicClassName: MaxHealthShieldGrantLogic
   - ItemID: SpeedBoost
     Definition: {fileID: 11400000, guid: a64c70192dd90cf4ab5fd29c205eb75e, type: 2}
     LogicClassName: SpeedBoostLogic
@@ -4324,7 +4327,6 @@ GameObject:
   - component: {fileID: 1275952473}
   - component: {fileID: 1275952475}
   - component: {fileID: 1275952474}
-  - component: {fileID: 1275952476}
   m_Layer: 5
   m_Name: Healthbar_Fill follwo
   m_TagString: Untagged
@@ -4389,21 +4391,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1275952472}
   m_CullTransparentMesh: 1
---- !u!114 &1275952476
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1275952472}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5c64ddb098f6864ca45597f754a4b28, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HealthbarDamp
-  targetHealthImage: {fileID: 702258250}
-  dampedHealthImage: {fileID: 1275952474}
-  lerpSpeed: 2
 --- !u!1 &1303363979
 GameObject:
   m_ObjectHideFlags: 0

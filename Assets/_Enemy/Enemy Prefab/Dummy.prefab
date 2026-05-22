@@ -10016,7 +10016,6 @@ GameObject:
   - component: {fileID: 7376207111614721234}
   - component: {fileID: 2259944247705706196}
   - component: {fileID: 6490380089643722273}
-  - component: {fileID: 3181016434865098742}
   m_Layer: 5
   m_Name: Health Bar Follow
   m_TagString: Untagged
@@ -10081,21 +10080,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3181016434865098742
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4153563946068565680}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5c64ddb098f6864ca45597f754a4b28, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HealthbarDamp
-  targetHealthImage: {fileID: 2549684821304786192}
-  dampedHealthImage: {fileID: 6490380089643722273}
-  lerpSpeed: 4
 --- !u!1 &4474992585650796638
 GameObject:
   m_ObjectHideFlags: 0

@@ -2182,7 +2182,6 @@ GameObject:
   - component: {fileID: 546656027}
   - component: {fileID: 546656030}
   - component: {fileID: 546656029}
-  - component: {fileID: 546656028}
   m_Layer: 5
   m_Name: Health Bar Follow
   m_TagString: Untagged
@@ -2209,21 +2208,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 16.38}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &546656028
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 2727982063142776331, guid: 70be2299a3ffd4a48a0514e4351ddc9f, type: 3}
-  m_PrefabInstance: {fileID: 742834295}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 546656026}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5c64ddb098f6864ca45597f754a4b28, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HealthbarDamp
-  targetHealthImage: {fileID: 2088717022}
-  dampedHealthImage: {fileID: 546656029}
-  lerpSpeed: 4
 --- !u!114 &546656029
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16431,7 +16415,6 @@ GameObject:
   - component: {fileID: 1275952473}
   - component: {fileID: 1275952475}
   - component: {fileID: 1275952474}
-  - component: {fileID: 1275952476}
   m_Layer: 5
   m_Name: Healthbar_Fill follwo
   m_TagString: Untagged
@@ -16496,21 +16479,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1275952472}
   m_CullTransparentMesh: 1
---- !u!114 &1275952476
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1275952472}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5c64ddb098f6864ca45597f754a4b28, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HealthbarDamp
-  targetHealthImage: {fileID: 702258250}
-  dampedHealthImage: {fileID: 1275952474}
-  lerpSpeed: 2
 --- !u!1 &1303363979
 GameObject:
   m_ObjectHideFlags: 0
@@ -17120,7 +17088,6 @@ GameObject:
   - component: {fileID: 1357203105}
   - component: {fileID: 1357203108}
   - component: {fileID: 1357203107}
-  - component: {fileID: 1357203106}
   m_Layer: 5
   m_Name: Health Bar Follow
   m_TagString: Untagged
@@ -17147,21 +17114,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 16.38}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1357203106
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 2727982063142776331, guid: 70be2299a3ffd4a48a0514e4351ddc9f, type: 3}
-  m_PrefabInstance: {fileID: 823677426}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1357203104}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5c64ddb098f6864ca45597f754a4b28, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HealthbarDamp
-  targetHealthImage: {fileID: 1403533979}
-  dampedHealthImage: {fileID: 1357203107}
-  lerpSpeed: 4
 --- !u!114 &1357203107
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17925,7 +17877,6 @@ GameObject:
   - component: {fileID: 1447385551}
   - component: {fileID: 1447385554}
   - component: {fileID: 1447385553}
-  - component: {fileID: 1447385552}
   m_Layer: 5
   m_Name: Health Bar Follow
   m_TagString: Untagged
@@ -17952,21 +17903,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 16.38}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1447385552
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 2727982063142776331, guid: 70be2299a3ffd4a48a0514e4351ddc9f, type: 3}
-  m_PrefabInstance: {fileID: 967343765}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1447385550}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5c64ddb098f6864ca45597f754a4b28, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HealthbarDamp
-  targetHealthImage: {fileID: 237938790}
-  dampedHealthImage: {fileID: 1447385553}
-  lerpSpeed: 4
 --- !u!114 &1447385553
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24209,7 +24145,6 @@ GameObject:
   - component: {fileID: 1926058719}
   - component: {fileID: 1926058722}
   - component: {fileID: 1926058721}
-  - component: {fileID: 1926058720}
   m_Layer: 5
   m_Name: Health Bar Follow
   m_TagString: Untagged
@@ -24236,21 +24171,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 16.38}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1926058720
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 2727982063142776331, guid: 70be2299a3ffd4a48a0514e4351ddc9f, type: 3}
-  m_PrefabInstance: {fileID: 1182537392}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1926058718}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5c64ddb098f6864ca45597f754a4b28, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HealthbarDamp
-  targetHealthImage: {fileID: 1088661701}
-  dampedHealthImage: {fileID: 1926058721}
-  lerpSpeed: 4
 --- !u!114 &1926058721
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36626,7 +36546,6 @@ GameObject:
   - component: {fileID: 4037128455789194393}
   - component: {fileID: 495369940285388624}
   - component: {fileID: 1637343921426503687}
-  - component: {fileID: 8186128429306630345}
   m_Layer: 5
   m_Name: Health Bar Follow
   m_TagString: Untagged
@@ -36707,21 +36626,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1.1232982, y: 1.3316295}
   m_EdgeRadius: 0
---- !u!114 &8186128429306630345
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7099107411622151219}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5c64ddb098f6864ca45597f754a4b28, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HealthbarDamp
-  targetHealthImage: {fileID: 458950839125720393}
-  dampedHealthImage: {fileID: 1637343921426503687}
-  lerpSpeed: 4
 --- !u!1 &8204284289914786688
 GameObject:
   m_ObjectHideFlags: 0
