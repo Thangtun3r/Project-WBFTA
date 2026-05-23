@@ -79,7 +79,8 @@ public class PlayerInventory : MonoBehaviour
         {
             Type = ItemEventType.ItemEquipped,
             SourceItem = newItem,
-            Owner = gameObject
+            Owner = gameObject,
+            ProcCoefficient = 1f
         });
         InventoryUpdated?.Invoke(newItem);
     }
@@ -105,7 +106,8 @@ public class PlayerInventory : MonoBehaviour
                 {
                     Type = ItemEventType.ItemRemoved,
                     SourceItem = existingItem,
-                    Owner = gameObject
+                    Owner = gameObject,
+                    ProcCoefficient = 1f
                 });
             }
 
@@ -184,7 +186,8 @@ public class PlayerInventory : MonoBehaviour
             {
                 Type = ItemEventType.ItemRemoved,
                 SourceItem = item,
-                Owner = gameObject
+                Owner = gameObject,
+                ProcCoefficient = 1f
             });
         }
 
@@ -221,7 +224,7 @@ public class PlayerInventory : MonoBehaviour
         _subscribedToGlobalEvents = false;
     }
 
-    private void HandleGlobalHit(GameObject attacker, IDamagable target, float damage, bool isCrit)
+    private void HandleGlobalHit(GameObject attacker, IDamagable target, float damage, bool isCrit, float procCoefficient)
     {
         ItemContext.PublishEvent(new ItemEvent
         {
@@ -230,6 +233,7 @@ public class PlayerInventory : MonoBehaviour
             Attacker = attacker,
             Target = target,
             Damage = damage,
+            ProcCoefficient = Mathf.Max(0f, procCoefficient),
             IsCrit = isCrit
         });
     }
@@ -242,6 +246,7 @@ public class PlayerInventory : MonoBehaviour
             Owner = gameObject,
             Enemy = enemy,
             Damage = damage,
+            ProcCoefficient = 1f,
             IsCrit = isCrit
         });
     }

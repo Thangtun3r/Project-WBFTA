@@ -1,31 +1,63 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class CurveDamageProcessor : MonoBehaviour
+public class CurveDamageProcessor : MonoBehaviour, IPlayerWeapon
 {
     [Header("References")]
     public WizardDesignerPen penTool;
     public LineRenderer lineRenderer;
-    public FloatingDamagePool damagePool; // THE DRAG-AND-DROP SLOT
+    [SerializeField] private PlayerAttack playerAttack;
 
     [Header("2D Combat Settings")]
-    public float damagePerTick = 2f;
     public float hitRadius = 0.4f;
     public LayerMask enemyLayer;
     public float damageInterval = 0.1f; 
 
+    [Header("Weapon Tuning")]
+    [SerializeField] private float damageMultiplier = 1f;
+    [SerializeField] private float procCoefficient = 1f;
+
+    [Header("Icon")]
+    [SerializeField] private Sprite iconSprite;
+
     private Dictionary<IDamagable, float> lastHitTimes = new Dictionary<IDamagable, float>();
+    private bool _active = true;
+
+    public float DamageMultiplier => damageMultiplier;
+    public float ProcCoefficient => procCoefficient;
+    public Sprite CurrentSprite => iconSprite;
+
+    private void Awake()
+    {
+        if (playerAttack == null)
+            playerAttack = FindFirstObjectByType<PlayerAttack>();
+    }
 
     void Update()
     {
-        if (lineRenderer != null && lineRenderer.positionCount > 1)
+        if (_active && lineRenderer != null && lineRenderer.positionCount > 1)
         {
             ProcessAlwaysDamage();
         }
     }
 
+    public void SetWeaponActive(bool active)
+    {
+        _active = active;
+        enabled = active;
+
+        if (penTool != null)
+        {
+            penTool.CancelDrawing();
+            penTool.enabled = active;
+        }
+    }
+
     void ProcessAlwaysDamage()
     {
+        if (playerAttack == null)
+            return;
+
         int pointCount = lineRenderer.positionCount;
         Vector3[] curvePoints = new Vector3[pointCount];
         lineRenderer.GetPositions(curvePoints);
@@ -37,19 +69,13 @@ public class CurveDamageProcessor : MonoBehaviour
 
             foreach (var col in hitEnemies)
             {
-                if (col.TryGetComponent(out IDamagable target))
+                IDamagable target = col.GetComponent<IDamagable>() ?? col.GetComponentInParent<IDamagable>();
+                if (target != null)
                 {
                     if (!lastHitTimes.ContainsKey(target) || Time.time >= lastHitTimes[target] + damageInterval)
                     {
-                        GlobalEventManager.Instance.OnPlayerHit(target, damagePerTick, false); 
-                        target.TakeDamage(damagePerTick);
+                        playerAttack.DealDamage(target, checkPos, damageMultiplier, procCoefficient, gameObject);
                         lastHitTimes[target] = Time.time;
-
-                        // --- DIRECT CALL ---
-                        if (damagePool != null)
-                        {
-                            damagePool.SpawnDamage(checkPos, damagePerTick, false);
-                        }
                     }
                 }
             }

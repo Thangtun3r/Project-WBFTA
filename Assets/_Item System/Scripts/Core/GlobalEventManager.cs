@@ -8,7 +8,7 @@ using _Scripts.Enemy;
 public class GlobalEventManager : MonoBehaviour
 {
     public static GlobalEventManager Instance { get; private set; }
-    public event Action<GameObject, IDamagable, float, bool> HandleOnHit;
+    public event Action<GameObject, IDamagable, float, bool, float> HandleOnHit;
     public event Action<BaseEnemy, float, bool> OnEnemyKilledWithStats;
 
     public PlayerStatMachine PlayerStats { get; set; }
@@ -32,14 +32,14 @@ public class GlobalEventManager : MonoBehaviour
         _Scripts.Enemy.BaseEnemy.OnEnemyKilled -= OnEnemyKilledHandler;
     }
 
-    public void OnHit(GameObject attacker, IDamagable target, float damage, bool isCrit)
+    public void OnHit(GameObject attacker, IDamagable target, float damage, bool isCrit, float procCoefficient = 1f)
     {
-        HandleOnHit?.Invoke(attacker, target, damage, isCrit);
+        HandleOnHit?.Invoke(attacker, target, damage, isCrit, Mathf.Max(0f, procCoefficient));
     }
 
     // Centralized method for any player-owned tool/weapon to trigger items
     // This automatically associates the damage with the Player to trigger their items securely
-    public void OnPlayerHit(IDamagable target, float damage, bool isCrit)
+    public void OnPlayerHit(IDamagable target, float damage, bool isCrit, float procCoefficient = 1f)
     {
         // Find whoever actually holds the PlayerInventory, since ItemRuntime registers its OwnerObject as the PlayerInventory's gameObject
         GameObject ownerObj = null;
@@ -62,7 +62,7 @@ public class GlobalEventManager : MonoBehaviour
             }
         }
 
-        HandleOnHit?.Invoke(ownerObj, target, damage, isCrit);
+        HandleOnHit?.Invoke(ownerObj, target, damage, isCrit, Mathf.Max(0f, procCoefficient));
     }
 
     // Handles enemy kill and retrieves current player damage/crit stats

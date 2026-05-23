@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [DefaultExecutionOrder(100)]
-public class DragableCursor : MonoBehaviour
+public class DragableCursor : MonoBehaviour, IPlayerWeapon
 {
     [Header("Draggable Settings")]
     [SerializeField] private float throwSensitivity = 1f;
@@ -22,7 +22,17 @@ public class DragableCursor : MonoBehaviour
     [Header("Visual Effects")]
      private float scaleMultiplier = 1.1f;
      private float scaleSpeed = 0.035f;
+
+    [Header("Weapon Tuning")]
     [SerializeField] private float damageMultiplier = 1.0f;
+    [SerializeField] private float procCoefficient = 1.0f;
+
+    [Header("Icons")]
+    [SerializeField] private Sprite idleSprite;
+    [SerializeField] private Sprite holdingSprite;
+
+    [Header("References")]
+    [SerializeField] private PlayerAttack playerAttack;
 
     private IDragable selectedDragable;
     private Rigidbody2D selectedRb;
@@ -37,24 +47,33 @@ public class DragableCursor : MonoBehaviour
     private Vector2 cursorVelocity;
     private Camera mainCamera;
     private MouseFollower mouseFollower;
-    private PlayerStatMachine _playerStats;
     private PlayerHealth _playerHealth;
+    private bool _active = true;
 
     // Visual Effect State
     private Transform _visualTransform;
     private Vector3 _originalScale;
     private Coroutine _scaleCoroutine;
 
+    public float DamageMultiplier => damageMultiplier;
+    public float ProcCoefficient => procCoefficient;
+    public Sprite CurrentSprite => selectedDragable != null && holdingSprite != null ? holdingSprite : idleSprite;
+
     private void Awake()
     {
         mainCamera = Camera.main;
         mouseFollower = FindFirstObjectByType<MouseFollower>();
-        _playerStats = FindFirstObjectByType<PlayerStatMachine>();
         _playerHealth = FindFirstObjectByType<PlayerHealth>();
+
+        if (playerAttack == null)
+            playerAttack = FindFirstObjectByType<PlayerAttack>();
     }
 
     private void LateUpdate()
     {
+        if (!_active)
+            return;
+
         Vector2 cursorScreenPos = GetCursorScreenPos();
         Vector2 cursorWorldPos = GetCursorWorldPos(cursorScreenPos);
         bool isHoveringUI = IsCursorOverUI(cursorScreenPos);
@@ -79,6 +98,9 @@ public class DragableCursor : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!_active)
+            return;
+
         if (rigidLockToCursor || selectedRb == null || !hasDragTargetPosition)
             return;
 
@@ -187,13 +209,11 @@ public class DragableCursor : MonoBehaviour
             ev?.SetDragState(true);
         }
         
-        // Mark throw ownership only; DragImpactDamage remains the single damage source.
+        // Mark throw ownership only; PlayerAttack remains the single damage source.
         DragImpactDamage dragDamage = selectedRb != null ? selectedRb.GetComponent<DragImpactDamage>() : null;
-        if (dragDamage != null && _playerStats != null)
+        if (dragDamage != null && playerAttack != null)
         {
-            float damageOutput = _playerStats.GetCalculatedAttackDamage() * damageMultiplier;
-            bool isCrit = _playerStats.WasLastAttackCrit();
-            dragDamage.SetPlayerThrowSource(damageOutput, isCrit);
+            dragDamage.SetPlayerThrowSource(playerAttack, damageMultiplier, procCoefficient, gameObject);
         }
     }
 
@@ -265,6 +285,47 @@ public class DragableCursor : MonoBehaviour
         selectedColliders = null;
         previousColliderTriggerStates = null;
         hasDragTargetPosition = false;
+        cursorVelocity = Vector2.zero;
+        _visualTransform = null;
+    }
+
+    public void SetWeaponActive(bool active)
+    {
+        if (_active == active)
+            return;
+
+        _active = active;
+
+        if (!_active)
+            CancelDrag();
+    }
+
+    private void CancelDrag()
+    {
+        if (selectedDragable == null)
+            return;
+
+        hasDragTargetPosition = false;
+
+        if (selectedRb != null)
+        {
+            selectedRb.bodyType = previousBodyType;
+            selectedRb.interpolation = previousInterpolation;
+            RestoreColliderTriggerStates();
+            selectedRb.linearVelocity = Vector2.zero;
+            selectedRb.angularVelocity = 0f;
+
+            EnemyVisual ev = selectedRb.GetComponentInChildren<EnemyVisual>();
+            ev?.SetDragState(false);
+        }
+
+        selectedDragable.OnEndDrag(Vector2.zero);
+        StartScale(_originalScale);
+
+        selectedDragable = null;
+        selectedRb = null;
+        selectedColliders = null;
+        previousColliderTriggerStates = null;
         cursorVelocity = Vector2.zero;
         _visualTransform = null;
     }

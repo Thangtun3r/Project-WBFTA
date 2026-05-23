@@ -125,7 +125,8 @@ public class PlayerHealth : MonoBehaviour, IDamagable
             {
                 Type = ItemEventType.PlayerDamaged,
                 Owner = inventory.gameObject,
-                Damage = damage
+                Damage = damage,
+                ProcCoefficient = 1f
             });
         }
         PublishHealthChanged(false);

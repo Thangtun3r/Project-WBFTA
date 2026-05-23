@@ -26,7 +26,8 @@ public class TriggerAttachedItemOnPlayerDamagedLogic : ItemModifier, IItemEventL
             SourceItem = Owner.AttachedItem,
             Owner = ownerObject,
             Origin = ownerObject.transform.position,
-            Damage = itemEvent.Damage
+            Damage = itemEvent.Damage,
+            ProcCoefficient = 1f
         });
     }
 }

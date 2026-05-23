@@ -149,6 +149,7 @@ public struct ItemTriggerContext
     public Vector3 Origin;
     public Vector3 Destination;
     public float Damage;
+    public float ProcCoefficient;
     public bool IsCrit;
 }
 
@@ -161,6 +162,7 @@ public struct ItemEvent
     public IDamagable Target;
     public _Scripts.Enemy.BaseEnemy Enemy;
     public float Damage;
+    public float ProcCoefficient;
     public bool IsCrit;
 }
 

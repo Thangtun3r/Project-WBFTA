@@ -151,7 +151,8 @@ public class ItemSystemContext
         PublishEvent(new ItemEvent
         {
             Type = ItemEventType.PlayerDied,
-            Owner = OwnerObject
+            Owner = OwnerObject,
+            ProcCoefficient = 1f
         });
 
         List<ItemRuntime> items = SnapshotActiveItems();
@@ -209,6 +210,7 @@ public class ItemSystemContext
                 Owner = item.OwnerObject,
                 Target = triggerContext.Target,
                 Damage = triggerContext.Damage,
+                ProcCoefficient = Mathf.Max(0f, triggerContext.ProcCoefficient),
                 IsCrit = triggerContext.IsCrit
             });
         }

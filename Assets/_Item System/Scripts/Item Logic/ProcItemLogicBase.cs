@@ -50,7 +50,9 @@ public abstract class ProcItemLogicBase : ItemLogicBase, IItemEventListener, ITr
 
     protected virtual bool RollProc(ItemTriggerContext context)
     {
-        return Random.value <= ProcChance;
+        float coefficient = Mathf.Max(0f, context.ProcCoefficient);
+        float finalChance = Mathf.Clamp01(ProcChance * coefficient);
+        return Random.value <= finalChance;
     }
 
     protected virtual bool IsTriggerContextValid(ItemTriggerContext context)
@@ -105,6 +107,7 @@ public abstract class ProcOnHitItemLogicBase : ProcItemLogicBase
             Owner = Owner.OwnerObject,
             Target = itemEvent.Target,
             Damage = itemEvent.Damage,
+            ProcCoefficient = Mathf.Max(0f, itemEvent.ProcCoefficient),
             IsCrit = itemEvent.IsCrit
         };
         return true;
@@ -132,6 +135,7 @@ public abstract class ProcOnKillItemLogicBase : ProcItemLogicBase
             Owner = Owner.OwnerObject,
             Origin = itemEvent.Enemy.transform.position,
             Damage = itemEvent.Damage,
+            ProcCoefficient = Mathf.Max(0f, itemEvent.ProcCoefficient),
             IsCrit = itemEvent.IsCrit
         };
         return true;

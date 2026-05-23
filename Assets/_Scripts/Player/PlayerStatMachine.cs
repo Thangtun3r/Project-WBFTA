@@ -20,6 +20,8 @@ public class PlayerStatMachine : MonoBehaviour
 
     private void Awake()
     {
+        ResolveInventory();
+
         if (config == null)
         {
             Debug.LogWarning("PlayerStatMachine: No PlayerConfig assigned!");
@@ -51,6 +53,8 @@ public class PlayerStatMachine : MonoBehaviour
     // --- EVENT LISTENER SETUP ---
     private void OnEnable()
     {
+        ResolveInventory();
+
         // Listen to the inventory. Whenever it changes, update our Inspector!
         if (inventory != null)
         {
@@ -73,7 +77,9 @@ public class PlayerStatMachine : MonoBehaviour
     private void RefreshInspectorStats(ItemRuntime item)
     {
         currentCritRateDisplay = GetCalculatedCritRate();
-        currentDamageDisplay = _baseDamage;
+        currentDamageDisplay = inventory != null && inventory.ItemContext != null
+            ? inventory.ItemContext.CalculatePlayerStat(PlayerStatType.AttackDamage, _baseDamage)
+            : _baseDamage;
     }
     // ----------------------------
 
@@ -150,5 +156,11 @@ public class PlayerStatMachine : MonoBehaviour
     public void SetCritDamage(float newCritDamage)
     {
         baseCritDamage = Mathf.Max(1f, newCritDamage);
+    }
+
+    private void ResolveInventory()
+    {
+        if (inventory == null)
+            inventory = GetComponent<PlayerInventory>() ?? GetComponentInParent<PlayerInventory>();
     }
 }

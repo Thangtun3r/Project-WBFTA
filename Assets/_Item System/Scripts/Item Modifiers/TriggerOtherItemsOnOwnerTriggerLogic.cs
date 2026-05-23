@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 public class TriggerOtherItemsOnOwnerTriggerLogic : ItemModifier, IItemEventListener
 {
@@ -29,6 +30,7 @@ public class TriggerOtherItemsOnOwnerTriggerLogic : ItemModifier, IItemEventList
                 Owner = itemEvent.Owner,
                 Target = itemEvent.Target,
                 Damage = itemEvent.Damage,
+                ProcCoefficient = Mathf.Max(0f, itemEvent.ProcCoefficient),
                 IsCrit = itemEvent.IsCrit
             });
         }

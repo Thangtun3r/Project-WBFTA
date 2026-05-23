@@ -113,6 +113,14 @@ public class WizardDesignerPen : MonoBehaviour
         if (Input.GetMouseButtonDown(1)) ResetTool();
     }
 
+    public void CancelDrawing()
+    {
+        isDragging = false;
+
+        if (previewLine != null)
+            previewLine.positionCount = 0;
+    }
+
     // Logic to decide between Player Position or Mouse
     Vector3 GetCurrentInputPos()
     {
