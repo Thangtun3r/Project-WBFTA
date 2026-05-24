@@ -5,6 +5,8 @@ using Unity.Cinemachine;
 public class OnScreenEffect : MonoBehaviour
 {
     public static OnScreenEffect Instance { get; private set; }
+
+    private static readonly int ImpactFrameIntensityId = Shader.PropertyToID("_ImpactFrameIntensity");
     
     [Header("UI Shake Settings")]
     [Tooltip("Assign the HUD/UI RectTransform you want to shake alongside the camera.")]
@@ -24,6 +26,13 @@ public class OnScreenEffect : MonoBehaviour
     [SerializeField] private float defaultShakeStrength = 0.5f;
     [SerializeField] private float defaultShakeDuration = 0.2f;
 
+    [Header("Impact Frame")]
+    [SerializeField] private float defaultImpactFrameIntensity = 1f;
+    [SerializeField] private float defaultImpactFrameDuration = 0.08f;
+    [SerializeField] private Ease impactFrameEase = Ease.OutFlash;
+
+    private Tween _impactFrameTween;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -32,6 +41,14 @@ public class OnScreenEffect : MonoBehaviour
             return;
         }
         Instance = this;
+        Shader.SetGlobalFloat(ImpactFrameIntensityId, 0f);
+    }
+
+    private void OnDisable()
+    {
+        _impactFrameTween?.Kill();
+        _impactFrameTween = null;
+        Shader.SetGlobalFloat(ImpactFrameIntensityId, 0f);
     }
 
     /// <summary>
@@ -44,7 +61,7 @@ public class OnScreenEffect : MonoBehaviour
             // Complete any active tween to return to original position before shaking again
             target.DOComplete();
             // Using DOTween's DOShakePosition
-            target.DOShakePosition(duration, strength);
+            target.DOShakePosition(duration, strength).SetUpdate(true);
         }
     }
 
@@ -76,8 +93,56 @@ public class OnScreenEffect : MonoBehaviour
         if (uiTargetToShake != null)
         {
             uiTargetToShake.DOComplete();
-            uiTargetToShake.DOShakeAnchorPos(duration, strength);
+            uiTargetToShake.DOShakeAnchorPos(duration, strength).SetUpdate(true);
         }
+    }
+
+    public void PlayImpactFrame()
+    {
+        PlayImpactFrame(defaultImpactFrameIntensity, defaultImpactFrameDuration);
+    }
+
+    public void SetImpactFrame(float intensity)
+    {
+        _impactFrameTween?.Kill();
+        _impactFrameTween = null;
+        Shader.SetGlobalFloat(ImpactFrameIntensityId, Mathf.Clamp01(intensity));
+    }
+
+    public void ClearImpactFrame()
+    {
+        _impactFrameTween?.Kill();
+        _impactFrameTween = null;
+        Shader.SetGlobalFloat(ImpactFrameIntensityId, 0f);
+    }
+
+    public void PlayImpactFrame(float intensity, float duration)
+    {
+        _impactFrameTween?.Kill();
+
+        float current = 0f;
+        float peak = Mathf.Clamp01(intensity);
+        float tweenDuration = Mathf.Max(0.01f, duration);
+        Shader.SetGlobalFloat(ImpactFrameIntensityId, peak);
+
+        _impactFrameTween = DOTween.To(() => current, value =>
+            {
+                current = value;
+                Shader.SetGlobalFloat(ImpactFrameIntensityId, value);
+            }, 0f, tweenDuration)
+            .From(peak)
+            .SetEase(impactFrameEase)
+            .SetUpdate(true)
+            .OnKill(() =>
+            {
+                _impactFrameTween = null;
+                Shader.SetGlobalFloat(ImpactFrameIntensityId, 0f);
+            })
+            .OnComplete(() =>
+            {
+                _impactFrameTween = null;
+                Shader.SetGlobalFloat(ImpactFrameIntensityId, 0f);
+            });
     }
 
     /// <summary>
@@ -93,7 +158,7 @@ public class OnScreenEffect : MonoBehaviour
         else if (Camera.main != null)
         {
             Camera.main.transform.DOComplete();
-            Camera.main.transform.DOShakePosition(duration, strength);
+            Camera.main.transform.DOShakePosition(duration, strength).SetUpdate(true);
         }
     }
 }

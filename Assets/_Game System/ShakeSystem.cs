@@ -23,6 +23,7 @@ public class ShakeSystem : MonoBehaviour
         public float Frequency;
         public float SeedX;
         public float SeedY;
+        public float SampleTime;
     }
 
     [Header("Defaults")]
@@ -149,13 +150,14 @@ public class ShakeSystem : MonoBehaviour
                 continue;
             }
 
-            shake.Timer -= Time.deltaTime;
+            shake.Timer -= Time.unscaledDeltaTime;
             if (shake.Timer <= 0f)
             {
                 activeShakes.RemoveAt(i);
                 continue;
             }
 
+            shake.SampleTime += Time.unscaledDeltaTime * shake.Frequency;
             ApplyShake(shake);
         }
     }
@@ -180,6 +182,7 @@ public class ShakeSystem : MonoBehaviour
         shake.Frequency = Mathf.Max(0.001f, frequency);
         shake.SeedX = Random.value * 100f;
         shake.SeedY = Random.value * 100f;
+        shake.SampleTime = 0f;
     }
 
     private ShakeState FindShake(Transform target, ShakeSpace space)
@@ -198,10 +201,9 @@ public class ShakeSystem : MonoBehaviour
     {
         float normalizedTime = shake.Duration > 0f ? Mathf.Clamp01(shake.Timer / shake.Duration) : 0f;
         float damper = normalizedTime * normalizedTime;
-        float sampleTime = Time.time * shake.Frequency;
         Vector2 offset = new Vector2(
-            (Mathf.PerlinNoise(shake.SeedX, sampleTime) - 0.5f) * 2f,
-            (Mathf.PerlinNoise(shake.SeedY, sampleTime) - 0.5f) * 2f) * (shake.Strength * damper);
+            (Mathf.PerlinNoise(shake.SeedX, shake.SampleTime) - 0.5f) * 2f,
+            (Mathf.PerlinNoise(shake.SeedY, shake.SampleTime) - 0.5f) * 2f) * (shake.Strength * damper);
 
         if (shake.Space == ShakeSpace.AnchoredUI && shake.RectTarget != null)
         {

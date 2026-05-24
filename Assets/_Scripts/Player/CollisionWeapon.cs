@@ -24,6 +24,7 @@ public class CollisionWeapon : MonoBehaviour, IPlayerWeapon
     [Header("References")]
     [SerializeField] private PlayerAttack playerAttack;
     [SerializeField] private Collider2D[] hitboxColliders;
+    [SerializeField] private GhostSlashSkill ghostSlashSkill;
 
     private bool _active = true;
     private float _lastAttackTime = -Mathf.Infinity;
@@ -34,6 +35,8 @@ public class CollisionWeapon : MonoBehaviour, IPlayerWeapon
     public float DamageMultiplier => damageMultiplier;
     public float ProcCoefficient => procCoefficient;
     public Sprite CurrentSprite => iconSprite;
+    public PlayerAttack PlayerAttack => playerAttack;
+    public LayerMask TargetLayers => targetLayers;
 
     private void Awake()
     {
@@ -47,6 +50,9 @@ public class CollisionWeapon : MonoBehaviour, IPlayerWeapon
 
         if (hitboxColliders == null || hitboxColliders.Length == 0)
             hitboxColliders = ResolveHitboxColliders();
+
+        if (ghostSlashSkill == null)
+            ghostSlashSkill = GetComponent<GhostSlashSkill>();
     }
 
     public void SetWeaponActive(bool active)
@@ -58,6 +64,8 @@ public class CollisionWeapon : MonoBehaviour, IPlayerWeapon
             _previousOverlaps.Clear();
             _currentOverlaps.Clear();
         }
+
+        ghostSlashSkill?.SetSkillActive(active);
     }
 
     private void FixedUpdate()

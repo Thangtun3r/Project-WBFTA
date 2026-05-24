@@ -29,6 +29,7 @@ namespace _Scripts
         private Vector3 _currentVelocity = Vector3.zero;
         private Vector3 _velocityDamp = Vector3.zero;
         private MouseFollower _mouseFollower;
+        private int _freezeRequests;
 
         private void Awake()
         {
@@ -68,8 +69,22 @@ namespace _Scripts
             speedMultiplier += amount;
         }
 
+        public void SetMovementFrozen(bool frozen)
+        {
+            _freezeRequests = frozen ? _freezeRequests + 1 : Mathf.Max(0, _freezeRequests - 1);
+
+            if (_freezeRequests > 0)
+            {
+                _currentVelocity = Vector3.zero;
+                _velocityDamp = Vector3.zero;
+            }
+        }
+
         private void Update()
         {
+            if (_freezeRequests > 0)
+                return;
+
             Vector2 combinedInput = CalculateInput();
             float effectiveSpeedMultiplier = inventory != null && inventory.ItemContext != null
                 ? inventory.ItemContext.CalculatePlayerStat(PlayerStatType.MoveSpeedMultiplier, speedMultiplier)

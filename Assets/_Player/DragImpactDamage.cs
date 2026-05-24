@@ -62,6 +62,7 @@ public class DragImpactDamage : MonoBehaviour
         
         // Shake the assigned HUD/object:
         OnScreenEffect.Instance?.ShakeHUD();
+        OnScreenEffect.Instance?.PlayImpactFrame();
 
         if (logImpact)
         {
