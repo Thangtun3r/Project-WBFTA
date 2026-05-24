@@ -17,6 +17,7 @@ public class CollisionWeapon : MonoBehaviour, IPlayerWeapon
     [SerializeField] private float damageMultiplier = 1f;
     [SerializeField] private float procCoefficient = 1f;
     [SerializeField] private float attackGraceTime = 0.005f;
+    [SerializeField] private float repeatHitInterval = 0.15f;
 
     [Header("Icon")]
     [SerializeField] private Sprite iconSprite;
@@ -27,10 +28,11 @@ public class CollisionWeapon : MonoBehaviour, IPlayerWeapon
     [SerializeField] private GhostSlashSkill ghostSlashSkill;
 
     private bool _active = true;
+    private bool _damageSuspended;
     private float _lastAttackTime = -Mathf.Infinity;
     private readonly Collider2D[] _overlapResults = new Collider2D[32];
-    private readonly HashSet<Collider2D> _previousOverlaps = new HashSet<Collider2D>();
     private readonly HashSet<Collider2D> _currentOverlaps = new HashSet<Collider2D>();
+    private readonly Dictionary<IDamagable, float> _lastTargetHitTimes = new Dictionary<IDamagable, float>();
 
     public float DamageMultiplier => damageMultiplier;
     public float ProcCoefficient => procCoefficient;
@@ -60,17 +62,22 @@ public class CollisionWeapon : MonoBehaviour, IPlayerWeapon
         _active = active;
 
         if (!_active)
-        {
-            _previousOverlaps.Clear();
-            _currentOverlaps.Clear();
-        }
+            ClearHitState();
 
         ghostSlashSkill?.SetSkillActive(active);
     }
 
+    public void SetDamageSuspended(bool suspended)
+    {
+        _damageSuspended = suspended;
+
+        if (_damageSuspended)
+            ClearHitState();
+    }
+
     private void FixedUpdate()
     {
-        if (!_active || detectionMethod != AttackDetectionMethod.Trigger)
+        if (!_active || _damageSuspended || detectionMethod != AttackDetectionMethod.Trigger)
             return;
 
         ProcessTriggerHitboxes();
@@ -78,7 +85,7 @@ public class CollisionWeapon : MonoBehaviour, IPlayerWeapon
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!_active || detectionMethod != AttackDetectionMethod.Collision) return;
+        if (!_active || _damageSuspended || detectionMethod != AttackDetectionMethod.Collision) return;
         if (collision == null || collision.collider == null) return;
 
         Vector2 hitPoint = collision.contactCount > 0
@@ -90,7 +97,7 @@ public class CollisionWeapon : MonoBehaviour, IPlayerWeapon
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!_active || detectionMethod != AttackDetectionMethod.Trigger) return;
+        if (!_active || _damageSuspended || detectionMethod != AttackDetectionMethod.Trigger) return;
         if (collision == null) return;
 
         HandleHit(collision, collision.transform.position);
@@ -103,10 +110,26 @@ public class CollisionWeapon : MonoBehaviour, IPlayerWeapon
         if (Time.time - _lastAttackTime < attackGraceTime) return;
 
         IDamagable damagable = collider.GetComponent<IDamagable>() ?? collider.GetComponentInParent<IDamagable>();
+        if (damagable == null || !CanHitTarget(damagable)) return;
+
         if (playerAttack.DealDamage(damagable, hitPoint, damageMultiplier, procCoefficient, gameObject))
         {
             _lastAttackTime = Time.time;
+            _lastTargetHitTimes[damagable] = Time.unscaledTime;
         }
+    }
+
+    private bool CanHitTarget(IDamagable target)
+    {
+        float interval = Mathf.Max(0f, repeatHitInterval);
+        return !_lastTargetHitTimes.TryGetValue(target, out float lastHitTime)
+            || Time.unscaledTime >= lastHitTime + interval;
+    }
+
+    private void ClearHitState()
+    {
+        _currentOverlaps.Clear();
+        _lastTargetHitTimes.Clear();
     }
 
     private void ProcessTriggerHitboxes()
@@ -139,16 +162,13 @@ public class CollisionWeapon : MonoBehaviour, IPlayerWeapon
                 if (candidate == null || candidate == hitbox)
                     continue;
 
-                if (_currentOverlaps.Add(candidate) && !_previousOverlaps.Contains(candidate))
+                if (_currentOverlaps.Add(candidate))
                 {
                     HandleHit(candidate, candidate.ClosestPoint(hitbox.bounds.center));
                 }
             }
         }
 
-        _previousOverlaps.Clear();
-        foreach (Collider2D collider in _currentOverlaps)
-            _previousOverlaps.Add(collider);
     }
 
     private Collider2D[] ResolveHitboxColliders()

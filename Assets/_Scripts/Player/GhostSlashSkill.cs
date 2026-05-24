@@ -14,6 +14,7 @@ public class GhostSlashSkill : MonoBehaviour
     [SerializeField] private SpriteRenderer sourceSpriteRenderer;
     [SerializeField] private GhostSlashRunner ghostRunnerPrefab;
     [SerializeField] private Movement playerMovement;
+    [SerializeField] private TrailRenderer slowTimeTrailRenderer;
 
     [Header("Input")]
     [SerializeField] private KeyCode triggerKey = KeyCode.Q;
@@ -41,6 +42,9 @@ public class GhostSlashSkill : MonoBehaviour
     [SerializeField] private float trailTime = 0.2f;
     [SerializeField] private float trailStartWidth = 0.45f;
     [SerializeField] private float trailEndWidth = 0.05f;
+    [SerializeField] private bool enableTrailDuringSlowTime = true;
+    [SerializeField] private bool clearSlowTimeTrailOnRestore = true;
+    [SerializeField] private Ease slowTimeTrailRetractEase = Ease.InQuad;
 
     [Header("Slow Time Post Processing")]
     [SerializeField] private Volume slowTimeVolume;
@@ -60,10 +64,15 @@ public class GhostSlashSkill : MonoBehaviour
     private bool _timeScaleOverrideActive;
     private Tween _restoreTween;
     private Tween _saturationTween;
+    private Tween _slowTimeTrailTween;
     private float _nextReadyUnscaledTime;
     private float _previousTimeScale = 1f;
     private float _previousFixedDeltaTime = 0.02f;
     private bool _movementFrozen;
+    private bool _slowTimeTrailActive;
+    private bool _previousTrailRendererEnabled;
+    private bool _previousTrailRendererEmitting;
+    private float _previousSlowTimeTrailTime;
     private ColorAdjustments _colorAdjustments;
     private bool _colorAdjustmentsResolved;
     private float _defaultSaturation;
@@ -81,6 +90,9 @@ public class GhostSlashSkill : MonoBehaviour
 
         if (playerMovement == null)
             playerMovement = GetComponent<Movement>() ?? GetComponentInParent<Movement>();
+
+        if (slowTimeTrailRenderer == null)
+            slowTimeTrailRenderer = GetComponentInChildren<TrailRenderer>(true);
 
         CacheColorAdjustments();
     }
@@ -106,8 +118,12 @@ public class GhostSlashSkill : MonoBehaviour
         _restoreTween = null;
         _saturationTween?.Kill();
         _saturationTween = null;
+        _slowTimeTrailTween?.Kill();
+        _slowTimeTrailTween = null;
 
         ReleaseMovementFreeze();
+        ResumeCollisionWeaponDamage();
+        RestoreSlowTimeTrail();
         OnScreenEffect.Instance?.ClearImpactFrame();
 
         RestoreSlowTimeSaturationImmediate();
@@ -132,6 +148,8 @@ public class GhostSlashSkill : MonoBehaviour
         _recordedPath.Clear();
         TryRecordCurrentPoint(force: true);
 
+        SuspendCollisionWeaponDamage();
+        EnableSlowTimeTrail();
         ApplySlowTime();
 
         float recordStartTime = Time.unscaledTime;
@@ -142,12 +160,14 @@ public class GhostSlashSkill : MonoBehaviour
         }
 
         TryRecordCurrentPoint(force: true);
+        StopRecordingSlowTimeTrail();
 
         if (_recordedPath.Count >= 2)
         {
             BuildReplayPath();
             bool replayCompleted = false;
             ApplyMovementFreeze();
+            RetractSlowTimeTrail(replayDuration);
             TriggerReplayStartEffects();
             SpawnGhostRunner(replayDuration, () => replayCompleted = true);
 
@@ -157,11 +177,15 @@ public class GhostSlashSkill : MonoBehaviour
             OnScreenEffect.Instance?.ClearImpactFrame();
             ReleaseMovementFreeze();
             yield return RestoreTimeScaleGradually();
+            ResumeCollisionWeaponDamage();
+            RestoreSlowTimeTrail();
         }
         else
         {
             OnScreenEffect.Instance?.ClearImpactFrame();
             RestoreTimeScale();
+            ResumeCollisionWeaponDamage();
+            RestoreSlowTimeTrail();
         }
 
         _nextReadyUnscaledTime = Time.unscaledTime + cooldown;
@@ -347,6 +371,85 @@ public class GhostSlashSkill : MonoBehaviour
 
         playerMovement?.SetMovementFrozen(false);
         _movementFrozen = false;
+    }
+
+    private void SuspendCollisionWeaponDamage()
+    {
+        collisionWeapon?.SetDamageSuspended(true);
+    }
+
+    private void ResumeCollisionWeaponDamage()
+    {
+        collisionWeapon?.SetDamageSuspended(false);
+    }
+
+    private void EnableSlowTimeTrail()
+    {
+        if (!enableTrailDuringSlowTime || slowTimeTrailRenderer == null || _slowTimeTrailActive)
+            return;
+
+        _previousTrailRendererEnabled = slowTimeTrailRenderer.enabled;
+        _previousTrailRendererEmitting = slowTimeTrailRenderer.emitting;
+        _previousSlowTimeTrailTime = slowTimeTrailRenderer.time;
+        _slowTimeTrailActive = true;
+
+        _slowTimeTrailTween?.Kill();
+        _slowTimeTrailTween = null;
+        slowTimeTrailRenderer.time = _previousSlowTimeTrailTime;
+        slowTimeTrailRenderer.Clear();
+        slowTimeTrailRenderer.enabled = true;
+        slowTimeTrailRenderer.emitting = true;
+    }
+
+    private void RetractSlowTimeTrail(float duration)
+    {
+        if (!_slowTimeTrailActive || slowTimeTrailRenderer == null)
+            return;
+
+        StopRecordingSlowTimeTrail();
+        _slowTimeTrailTween?.Kill();
+
+        float retractDuration = Mathf.Max(0f, duration);
+        if (retractDuration <= Mathf.Epsilon)
+        {
+            slowTimeTrailRenderer.time = 0f;
+            return;
+        }
+
+        _slowTimeTrailTween = DOTween.To(
+                () => slowTimeTrailRenderer.time,
+                value => slowTimeTrailRenderer.time = Mathf.Max(0f, value),
+                0f,
+                retractDuration)
+            .SetEase(slowTimeTrailRetractEase)
+            .SetUpdate(true)
+            .OnKill(() => _slowTimeTrailTween = null)
+            .OnComplete(() => _slowTimeTrailTween = null);
+    }
+
+    private void StopRecordingSlowTimeTrail()
+    {
+        if (!_slowTimeTrailActive || slowTimeTrailRenderer == null)
+            return;
+
+        slowTimeTrailRenderer.emitting = false;
+    }
+
+    private void RestoreSlowTimeTrail()
+    {
+        if (!_slowTimeTrailActive || slowTimeTrailRenderer == null)
+            return;
+
+        _slowTimeTrailTween?.Kill();
+        _slowTimeTrailTween = null;
+        slowTimeTrailRenderer.time = _previousSlowTimeTrailTime;
+        slowTimeTrailRenderer.emitting = _previousTrailRendererEmitting;
+        slowTimeTrailRenderer.enabled = _previousTrailRendererEnabled;
+
+        if (clearSlowTimeTrailOnRestore && !_previousTrailRendererEmitting)
+            slowTimeTrailRenderer.Clear();
+
+        _slowTimeTrailActive = false;
     }
 
     private void ApplySlowTime()

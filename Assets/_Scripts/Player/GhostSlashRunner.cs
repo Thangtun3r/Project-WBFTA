@@ -29,9 +29,11 @@ public class GhostSlashRunner : MonoBehaviour
     [SerializeField] private int afterimageCount = 5;
     [SerializeField] private float afterimageTrailLength = 0.18f;
     [SerializeField] private float afterimageAlphaMultiplier = 0.65f;
+    [Header("Damage")]
+    [SerializeField] private float repeatHitInterval = 0.08f;
 
     private readonly Collider2D[] _overlapResults = new Collider2D[32];
-    private readonly HashSet<IDamagable> _hitTargets = new HashSet<IDamagable>();
+    private readonly Dictionary<IDamagable, float> _lastTargetHitTimes = new Dictionary<IDamagable, float>();
     private readonly List<SpriteRenderer> _afterimageRenderers = new List<SpriteRenderer>();
 
     private IReadOnlyList<RecordedPoint> _path;
@@ -155,7 +157,7 @@ public class GhostSlashRunner : MonoBehaviour
         float movementDuration = CalculateMovementDuration(replayDuration, fadeInTime, fadeOutTime, totalLength, maxMovementSpeed);
         float[] cumulativeLengths = BuildCumulativeLengths(replayPath);
 
-        _hitTargets.Clear();
+        _lastTargetHitTimes.Clear();
         transform.position = new Vector3(replayPath[0].Position.x, replayPath[0].Position.y, transform.position.z);
         UpdateAfterimages(0f, cumulativeLengths, totalLength, replayPath);
 
@@ -225,12 +227,20 @@ public class GhostSlashRunner : MonoBehaviour
                     continue;
 
                 IDamagable target = hit.GetComponent<IDamagable>() ?? hit.GetComponentInParent<IDamagable>();
-                if (target == null || !_hitTargets.Add(target))
+                if (target == null || !CanHitTarget(target))
                     continue;
 
                 _playerAttack.DealDamage(target, samplePoint, _damageMultiplier, _procCoefficient, _damageSource);
+                _lastTargetHitTimes[target] = Time.unscaledTime;
             }
         }
+    }
+
+    private bool CanHitTarget(IDamagable target)
+    {
+        float interval = Mathf.Max(0f, repeatHitInterval);
+        return !_lastTargetHitTimes.TryGetValue(target, out float lastHitTime)
+            || Time.unscaledTime >= lastHitTime + interval;
     }
 
     private static float CalculateTotalLength(IReadOnlyList<RecordedPoint> path)

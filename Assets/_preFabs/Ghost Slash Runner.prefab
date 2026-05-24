@@ -146,14 +146,15 @@ MonoBehaviour:
   spriteRenderer: {fileID: 429666999844994272}
   trailRenderer: {fileID: 1843234531996041930}
   hitCollider: {fileID: 4916101923163255238}
-  fadeInDuration: 0.05
+  fadeInDuration: 0
   fadeOutDuration: 0.2
-  maxMovementSpeed: 250
+  maxMovementSpeed: 150
   useSplineReplay: 1
   splineSubdivisions: 10
   afterimageCount: 25
   afterimageTrailLength: 0.1
-  afterimageAlphaMultiplier: 0.65
+  afterimageAlphaMultiplier: 0.5
+  repeatHitInterval: 0.08
 --- !u!96 &1843234531996041930
 TrailRenderer:
   serializedVersion: 4
