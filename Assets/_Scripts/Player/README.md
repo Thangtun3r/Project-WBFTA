@@ -10,3 +10,4 @@ Manages the core functionality, stats, and behaviors of the player character.
 - **`PlayerStatMachine.cs`**: Responsible for calculating real-time combat stats (e.g., dynamically computing critical hit chance and base damage multipliers based on `PlayerConfig`).
 - **`PlayerVisual.cs`**: Manages visual elements like animations, sprite flipping, or damage feedback.
 - **`Cursor.cs`**: Handles custom mouse aiming, crosshair locking, or pointer visual updates.
+- **`SniperCursorWeapon.cs`**: Places Point A on press, shows Point B while dragging, stretches visuals along the cursor pullback direction, and drives the sniper charge display.

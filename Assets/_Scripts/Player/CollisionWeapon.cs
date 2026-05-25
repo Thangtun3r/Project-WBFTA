@@ -32,6 +32,7 @@ public class CollisionWeapon : MonoBehaviour, IPlayerWeapon
     private float _lastAttackTime = -Mathf.Infinity;
     private readonly Collider2D[] _overlapResults = new Collider2D[32];
     private readonly HashSet<Collider2D> _currentOverlaps = new HashSet<Collider2D>();
+    private readonly HashSet<Collider2D> _detectedOverlaps = new HashSet<Collider2D>();
     private readonly Dictionary<IDamagable, float> _lastTargetHitTimes = new Dictionary<IDamagable, float>();
 
     public float DamageMultiplier => damageMultiplier;
@@ -97,10 +98,7 @@ public class CollisionWeapon : MonoBehaviour, IPlayerWeapon
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!_active || _damageSuspended || detectionMethod != AttackDetectionMethod.Trigger) return;
-        if (collision == null) return;
-
-        HandleHit(collision, collision.transform.position);
+        // Trigger hits are handled by overlap polling so targets must leave and re-enter to be damaged again.
     }
 
     private void HandleHit(Collider2D collider, Vector2 hitPoint)
@@ -129,12 +127,13 @@ public class CollisionWeapon : MonoBehaviour, IPlayerWeapon
     private void ClearHitState()
     {
         _currentOverlaps.Clear();
+        _detectedOverlaps.Clear();
         _lastTargetHitTimes.Clear();
     }
 
     private void ProcessTriggerHitboxes()
     {
-        _currentOverlaps.Clear();
+        _detectedOverlaps.Clear();
 
         if (hitboxColliders == null)
             return;
@@ -162,13 +161,30 @@ public class CollisionWeapon : MonoBehaviour, IPlayerWeapon
                 if (candidate == null || candidate == hitbox)
                     continue;
 
-                if (_currentOverlaps.Add(candidate))
+                if (_detectedOverlaps.Add(candidate) && !_currentOverlaps.Contains(candidate))
                 {
                     HandleHit(candidate, candidate.ClosestPoint(hitbox.bounds.center));
                 }
             }
         }
+        
+        _currentOverlaps.RemoveWhere(RemoveExitedOverlap);
+        _currentOverlaps.UnionWith(_detectedOverlaps);
+    }
 
+    private bool RemoveExitedOverlap(Collider2D collider)
+    {
+        if (collider != null && _detectedOverlaps.Contains(collider))
+            return false;
+
+        if (collider != null)
+        {
+            IDamagable damagable = collider.GetComponent<IDamagable>() ?? collider.GetComponentInParent<IDamagable>();
+            if (damagable != null)
+                _lastTargetHitTimes.Remove(damagable);
+        }
+
+        return true;
     }
 
     private Collider2D[] ResolveHitboxColliders()

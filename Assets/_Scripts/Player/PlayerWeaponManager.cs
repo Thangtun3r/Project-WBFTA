@@ -9,6 +9,7 @@ public class PlayerWeaponManager : MonoBehaviour
     [SerializeField] private MonoBehaviour slashWeapon;
     [SerializeField] private MonoBehaviour dragWeapon;
     [SerializeField] private MonoBehaviour penWeapon;
+    [SerializeField] private MonoBehaviour sniperWeapon;
     [SerializeField] private int startingWeaponIndex;
 
     [Header("Weapon Icon")]
@@ -17,9 +18,13 @@ public class PlayerWeaponManager : MonoBehaviour
     private IPlayerWeapon[] _weapons;
     private int _currentWeaponIndex = -1;
     private Sprite _lastAppliedSprite;
+    private Quaternion _defaultWeaponSpriteLocalRotation;
 
     private void Awake()
     {
+        if (weaponSpriteRenderer != null)
+            _defaultWeaponSpriteLocalRotation = weaponSpriteRenderer.transform.localRotation;
+
         ResolveLegacySlots();
         _weapons = ResolveWeaponModules();
     }
@@ -37,6 +42,7 @@ public class PlayerWeaponManager : MonoBehaviour
         HandleNumberKeySelection();
 
         UpdateWeaponSprite();
+        UpdateWeaponIconRotation();
     }
 
     public void SelectWeapon(int index)
@@ -83,13 +89,16 @@ public class PlayerWeaponManager : MonoBehaviour
 
         if (penWeapon == null)
             penWeapon = FindFirstObjectByType<CurveDamageProcessor>();
+
+        if (sniperWeapon == null)
+            sniperWeapon = FindFirstObjectByType<SniperCursorWeapon>();
     }
 
     private IPlayerWeapon[] ResolveWeaponModules()
     {
         MonoBehaviour[] sourceModules = weaponModules != null && weaponModules.Length > 0
             ? weaponModules
-            : new[] { slashWeapon, dragWeapon, penWeapon };
+            : new[] { slashWeapon, dragWeapon, penWeapon, sniperWeapon };
 
         IPlayerWeapon[] resolvedWeapons = new IPlayerWeapon[sourceModules.Length];
         for (int i = 0; i < sourceModules.Length; i++)
@@ -128,5 +137,20 @@ public class PlayerWeaponManager : MonoBehaviour
             weaponSpriteRenderer.sprite = currentSprite;
             _lastAppliedSprite = currentSprite;
         }
+    }
+
+    private void UpdateWeaponIconRotation()
+    {
+        if (weaponSpriteRenderer == null || _weapons == null || _currentWeaponIndex < 0 || _currentWeaponIndex >= _weapons.Length)
+            return;
+
+        if (_weapons[_currentWeaponIndex] is IPlayerWeaponIconRotation rotator
+            && rotator.TryGetIconRotation(out Quaternion rotation))
+        {
+            weaponSpriteRenderer.transform.rotation = rotation;
+            return;
+        }
+
+        weaponSpriteRenderer.transform.localRotation = _defaultWeaponSpriteLocalRotation;
     }
 }

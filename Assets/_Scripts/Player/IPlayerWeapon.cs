@@ -7,3 +7,8 @@ public interface IPlayerWeapon
     Sprite CurrentSprite { get; }
     void SetWeaponActive(bool active);
 }
+
+public interface IPlayerWeaponIconRotation
+{
+    bool TryGetIconRotation(out Quaternion rotation);
+}
