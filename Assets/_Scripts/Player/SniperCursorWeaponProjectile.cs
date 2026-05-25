@@ -24,6 +24,15 @@ public class SniperCursorWeaponProjectile : MonoBehaviour
     [SerializeField] private bool disableHitboxUntilLaunch = true;
     [SerializeField] private bool damageEachTargetOnce = true;
     [SerializeField] private bool destroyOnDamage;
+    [Header("Screen Ricochet")]
+    [SerializeField] private bool screenRicochetEnabled;
+    [SerializeField] private int screenRicochetBounces = 2;
+    [SerializeField] private float screenRicochetViewportPadding = 0.02f;
+    [SerializeField] private float screenRicochetCooldown = 0.03f;
+    [SerializeField] private bool pauseDuringRicochetBend;
+    [SerializeField] private bool disableHitboxDuringRicochetBend = true;
+    [SerializeField] private float ricochetIncomingShrinkDuration = 0.08f;
+    [SerializeField] private float ricochetOutgoingExpandDuration = 0.08f;
     [Header("Lifetime")]
     [SerializeField] private float lifetime = 5f;
     [Header("Point B Extension")]
@@ -44,6 +53,12 @@ public class SniperCursorWeaponProjectile : MonoBehaviour
     private float _launchCharge01 = 1f;
     private bool _hasLaunched;
     private Vector2 _launchDirection;
+    private Rigidbody2D _rigidbody;
+    private Camera _ricochetCamera;
+    private int _remainingScreenRicochets;
+    private float _nextScreenRicochetTime;
+    private Coroutine _ricochetBendRoutine;
+    private bool _isRicochetBending;
     private readonly HashSet<IDamagable> _damagedTargets = new HashSet<IDamagable>();
 
     public float CurrentDistance => _currentDistance;
@@ -55,6 +70,7 @@ public class SniperCursorWeaponProjectile : MonoBehaviour
         CacheRenderers();
         CacheHitbox();
         EnsureEndpointTransforms();
+        _rigidbody = GetComponent<Rigidbody2D>();
         SetHitboxActive(!disableHitboxUntilLaunch);
 
         if (playerAttack == null)
@@ -62,6 +78,25 @@ public class SniperCursorWeaponProjectile : MonoBehaviour
             playerAttack = GetComponentInParent<PlayerAttack>()
                 ?? FindFirstObjectByType<PlayerAttack>();
         }
+    }
+
+    private void Update()
+    {
+        if (_hasLaunched)
+            UpdateScreenRicochet();
+    }
+
+    private void OnDisable()
+    {
+        if (_ricochetBendRoutine != null)
+        {
+            StopCoroutine(_ricochetBendRoutine);
+            _ricochetBendRoutine = null;
+        }
+
+        _isRicochetBending = false;
+        if (_hasLaunched)
+            SetHitboxActive(true);
     }
 
     public void StretchBetween(Vector3 targetPointA, Vector3 targetPointB, float rotationOffset)
@@ -207,17 +242,25 @@ public class SniperCursorWeaponProjectile : MonoBehaviour
         transform.SetParent(parent, true);
     }
 
+    public void ConfigureScreenRicochet(Camera ricochetCamera, int bounces)
+    {
+        _ricochetCamera = ricochetCamera != null ? ricochetCamera : Camera.main;
+        _remainingScreenRicochets = Mathf.Max(0, bounces);
+        screenRicochetEnabled = _remainingScreenRicochets > 0;
+    }
+
     public void Launch(Vector2 direction)
     {
         transform.SetParent(null, true);
         RefreshFromEndpoints();
         _launchCharge01 = _targetDistance > 0f ? Mathf.Clamp01(_currentDistance / _targetDistance) : 1f;
+        PrepareScreenRicochetLaunch();
         BeginDamage();
 
         Vector2 velocity = direction.sqrMagnitude > 0f ? direction.normalized * speed : Vector2.zero;
         _launchDirection = velocity.sqrMagnitude > 0f ? velocity.normalized : Vector2.zero;
-        if (TryGetComponent(out Rigidbody2D rb))
-            rb.linearVelocity = velocity;
+        if (_rigidbody != null)
+            _rigidbody.linearVelocity = velocity;
 
         Destroy(gameObject, lifetime);
     }
@@ -246,14 +289,224 @@ public class SniperCursorWeaponProjectile : MonoBehaviour
 
         SetEndpointLineImmediate(worldPointA, launchPointB);
         RefreshFromEndpoints();
+        PrepareScreenRicochetLaunch();
         BeginDamage();
 
         Vector2 velocity = direction.sqrMagnitude > 0f ? direction.normalized * speed : Vector2.zero;
         _launchDirection = velocity.sqrMagnitude > 0f ? velocity.normalized : Vector2.zero;
-        if (TryGetComponent(out Rigidbody2D rb))
-            rb.linearVelocity = velocity;
+        if (_rigidbody != null)
+            _rigidbody.linearVelocity = velocity;
 
         Destroy(gameObject, lifetime);
+    }
+
+    private void PrepareScreenRicochetLaunch()
+    {
+        if (!screenRicochetEnabled)
+            return;
+
+        if (_remainingScreenRicochets <= 0)
+            _remainingScreenRicochets = Mathf.Max(0, screenRicochetBounces);
+
+        screenRicochetEnabled = _remainingScreenRicochets > 0;
+        if (screenRicochetEnabled && _ricochetCamera == null)
+            _ricochetCamera = Camera.main;
+    }
+
+    private void UpdateScreenRicochet()
+    {
+        if (!screenRicochetEnabled || _remainingScreenRicochets <= 0 || _isRicochetBending)
+            return;
+        if (Time.time < _nextScreenRicochetTime)
+            return;
+        if (_ricochetCamera == null)
+            _ricochetCamera = Camera.main;
+        if (_ricochetCamera == null)
+            return;
+
+        Vector2 velocity = GetCurrentVelocity();
+        if (velocity.sqrMagnitude <= 0.0001f)
+            return;
+
+        Vector2 incomingDirection = velocity.normalized;
+        Vector3 leadingPoint = GetLeadingPoint(incomingDirection);
+        Vector3 nextLeadingPoint = leadingPoint + (Vector3)(velocity * Time.deltaTime);
+        Vector3 viewportPoint = _ricochetCamera.WorldToViewportPoint(nextLeadingPoint);
+        float padding = Mathf.Clamp(screenRicochetViewportPadding, 0f, 0.49f);
+        bool hitX = viewportPoint.x <= padding || viewportPoint.x >= 1f - padding;
+        bool hitY = viewportPoint.y <= padding || viewportPoint.y >= 1f - padding;
+
+        if (!hitX && !hitY)
+            return;
+
+        Vector2 reflected = incomingDirection;
+        if (hitX) reflected.x *= -1f;
+        if (hitY) reflected.y *= -1f;
+        if (reflected.sqrMagnitude <= 0.0001f)
+            return;
+
+        Vector3 bouncePoint = GetPreciseViewportBouncePoint(leadingPoint, nextLeadingPoint, padding, hitX, hitY);
+        OffsetProjectileLeadingPointTo(leadingPoint, bouncePoint);
+        Vector2 outgoingDirection = reflected.normalized;
+        Vector2 ricochetVelocity = outgoingDirection * velocity.magnitude;
+        if (pauseDuringRicochetBend)
+            BeginRicochetBend(bouncePoint, incomingDirection, outgoingDirection, ricochetVelocity);
+        else
+            SetLaunchVelocity(ricochetVelocity);
+
+        OnScreenEffect.Instance?.ShakeHUD();
+        _remainingScreenRicochets--;
+        _nextScreenRicochetTime = Time.time + Mathf.Max(0f, screenRicochetCooldown);
+
+        if (_remainingScreenRicochets <= 0)
+            screenRicochetEnabled = false;
+    }
+
+    private Vector2 GetCurrentVelocity()
+    {
+        if (_rigidbody != null)
+            return _rigidbody.linearVelocity;
+
+        return _launchDirection.sqrMagnitude > 0f
+            ? _launchDirection.normalized * speed
+            : Vector2.zero;
+    }
+
+    private void SetLaunchVelocity(Vector2 velocity)
+    {
+        _launchDirection = velocity.sqrMagnitude > 0f ? velocity.normalized : Vector2.zero;
+        if (_rigidbody != null)
+            _rigidbody.linearVelocity = velocity;
+
+        if (_launchDirection.sqrMagnitude > 0f)
+            transform.rotation = Quaternion.Euler(
+                0f,
+                0f,
+                Mathf.Atan2(_launchDirection.y, _launchDirection.x) * Mathf.Rad2Deg);
+    }
+
+    private Vector3 GetLeadingPoint(Vector2 direction)
+    {
+        EnsureEndpointTransforms();
+        float pointADot = Vector2.Dot((Vector2)pointA.position, direction);
+        float pointBDot = Vector2.Dot((Vector2)pointB.position, direction);
+        return pointBDot >= pointADot ? pointB.position : pointA.position;
+    }
+
+    private Vector3 GetPreciseViewportBouncePoint(
+        Vector3 leadingPoint,
+        Vector3 nextLeadingPoint,
+        float padding,
+        bool hitX,
+        bool hitY)
+    {
+        Vector3 startViewport = _ricochetCamera.WorldToViewportPoint(leadingPoint);
+        Vector3 endViewport = _ricochetCamera.WorldToViewportPoint(nextLeadingPoint);
+        Vector3 deltaViewport = endViewport - startViewport;
+        float t = 1f;
+
+        if (hitX && Mathf.Abs(deltaViewport.x) > 0.0001f)
+        {
+            float edgeX = endViewport.x <= padding ? padding : 1f - padding;
+            t = Mathf.Min(t, Mathf.Clamp01((edgeX - startViewport.x) / deltaViewport.x));
+        }
+
+        if (hitY && Mathf.Abs(deltaViewport.y) > 0.0001f)
+        {
+            float edgeY = endViewport.y <= padding ? padding : 1f - padding;
+            t = Mathf.Min(t, Mathf.Clamp01((edgeY - startViewport.y) / deltaViewport.y));
+        }
+
+        Vector3 bounceWorld = Vector3.Lerp(leadingPoint, nextLeadingPoint, t);
+        Vector3 bounceViewport = _ricochetCamera.WorldToViewportPoint(bounceWorld);
+        bounceViewport.x = Mathf.Clamp(bounceViewport.x, padding, 1f - padding);
+        bounceViewport.y = Mathf.Clamp(bounceViewport.y, padding, 1f - padding);
+
+        Vector3 preciseWorld = _ricochetCamera.ViewportToWorldPoint(bounceViewport);
+        preciseWorld.z = leadingPoint.z;
+        return preciseWorld;
+    }
+
+    private void OffsetProjectileLeadingPointTo(Vector3 currentLeadingPoint, Vector3 targetLeadingPoint)
+    {
+        transform.position += targetLeadingPoint - currentLeadingPoint;
+    }
+
+    private void BeginRicochetBend(
+        Vector3 bendPoint,
+        Vector2 incomingDirection,
+        Vector2 outgoingDirection,
+        Vector2 resumeVelocity)
+    {
+        if (_ricochetBendRoutine != null)
+            StopCoroutine(_ricochetBendRoutine);
+
+        _ricochetBendRoutine = StartCoroutine(RicochetBendRoutine(
+            bendPoint,
+            incomingDirection.normalized,
+            outgoingDirection.normalized,
+            resumeVelocity));
+    }
+
+    private System.Collections.IEnumerator RicochetBendRoutine(
+        Vector3 bendPoint,
+        Vector2 incomingDirection,
+        Vector2 outgoingDirection,
+        Vector2 resumeVelocity)
+    {
+        _isRicochetBending = true;
+        SetLaunchVelocity(Vector2.zero);
+        if (disableHitboxDuringRicochetBend)
+            SetHitboxActive(false);
+
+        float length = Mathf.Max(0.0001f, _currentDistance);
+        yield return AnimateRicochetSegment(
+            bendPoint - (Vector3)(incomingDirection * length),
+            bendPoint,
+            true,
+            ricochetIncomingShrinkDuration);
+
+        yield return AnimateRicochetSegment(
+            bendPoint,
+            bendPoint + (Vector3)(outgoingDirection * length),
+            false,
+            ricochetOutgoingExpandDuration);
+
+        SetEndpointLineImmediate(bendPoint, bendPoint + (Vector3)(outgoingDirection * length));
+        RefreshFromEndpoints();
+        if (disableHitboxDuringRicochetBend)
+            SetHitboxActive(true);
+
+        SetLaunchVelocity(resumeVelocity);
+        _isRicochetBending = false;
+        _ricochetBendRoutine = null;
+    }
+
+    private System.Collections.IEnumerator AnimateRicochetSegment(
+        Vector3 startPoint,
+        Vector3 endPoint,
+        bool shrinkToEnd,
+        float duration)
+    {
+        duration = Mathf.Max(0.0001f, duration);
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            float t = Mathf.Clamp01(elapsed / duration);
+            ApplyRicochetSegmentFrame(startPoint, endPoint, shrinkToEnd, t);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        ApplyRicochetSegmentFrame(startPoint, endPoint, shrinkToEnd, 1f);
+    }
+
+    private void ApplyRicochetSegmentFrame(Vector3 startPoint, Vector3 endPoint, bool shrinkToEnd, float t)
+    {
+        Vector3 frameStart = shrinkToEnd ? Vector3.Lerp(startPoint, endPoint, t) : startPoint;
+        Vector3 frameEnd = shrinkToEnd ? endPoint : Vector3.Lerp(startPoint, endPoint, t);
+        SetEndpointLineImmediate(frameStart, frameEnd);
+        RefreshFromEndpoints();
     }
 
     private void SetEndpointLineImmediate(Vector3 worldPointA, Vector3 worldPointB)

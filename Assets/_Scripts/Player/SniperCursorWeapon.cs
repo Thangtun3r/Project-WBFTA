@@ -25,6 +25,8 @@ public class SniperCursorWeapon : MonoBehaviour, IPlayerWeapon, IPlayerWeaponIco
     [SerializeField] private float procCoefficient = 1f;
     [SerializeField] private Sprite iconSprite;
     [SerializeField] private float iconRotationOffset;
+    [Header("Special Skill")]
+    [SerializeField] private SniperRicochetSkill ricochetSkill;
     [Header("Editor Preview")]
     [SerializeField] private bool previewInEditor;
     [SerializeField] private Vector3 previewPointA;
@@ -68,6 +70,8 @@ public class SniperCursorWeapon : MonoBehaviour, IPlayerWeapon, IPlayerWeaponIco
     {
         _camera = Camera.main;
         _mouseFollower = FindFirstObjectByType<MouseFollower>();
+        if (ricochetSkill == null)
+            ricochetSkill = GetComponent<SniperRicochetSkill>();
     }
     private void Update()
     {
@@ -88,6 +92,7 @@ public class SniperCursorWeapon : MonoBehaviour, IPlayerWeapon, IPlayerWeaponIco
         if (_active == active) return;
 
         _active = active;
+        ricochetSkill?.SetSkillActive(active);
         if (_active) return;
 
         if (_collapseRoutine != null)
@@ -164,6 +169,9 @@ public class SniperCursorWeapon : MonoBehaviour, IPlayerWeapon, IPlayerWeaponIco
         if (_stretchProjectile != null)
         {
             launchedStretch = _stretch;
+            if (ricochetSkill != null && ricochetSkill.TryGetActiveRicochetBounces(out int ricochetBounces))
+                _stretchProjectile.ConfigureScreenRicochet(_camera, ricochetBounces);
+
             _stretchProjectile.Launch(_releaseDirection);
             _stretch = null;
             _stretchProjectile = null;
