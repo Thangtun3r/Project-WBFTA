@@ -133,7 +133,7 @@ public class VideoCharging : MonoBehaviour
                 });
 
                 _pulseSequence.Append(chargeLoopVisual.transform.DOScale(_pulseTargetScale, pulseDuration).SetEase(Ease.OutQuad));
-                _pulseSequence.Join(chargeLoopVisual.DOFade(0f, pulseDuration).SetEase(Ease.InQuad));
+                _pulseSequence.Join(TweenSpriteAlpha(chargeLoopVisual, 0f, pulseDuration).SetEase(Ease.InQuad));
                 _pulseSequence.SetLoops(-1, LoopType.Restart);
             }
         }
@@ -144,7 +144,7 @@ public class VideoCharging : MonoBehaviour
                 _isFadingOut = true;
                 _pulseSequence.Kill();
                 _pulseSequence = DOTween.Sequence();
-                _pulseSequence.Join(chargeLoopVisual.DOFade(0f, 0.4f));
+                _pulseSequence.Join(TweenSpriteAlpha(chargeLoopVisual, 0f, 0.4f));
                 _pulseSequence.OnComplete(() => {
                     chargeLoopVisual.gameObject.SetActive(false);
                     _isFadingOut = false;
@@ -239,6 +239,22 @@ public class VideoCharging : MonoBehaviour
     {
         if (chargeFillImage != null)
             chargeFillImage.fillAmount = Mathf.Clamp01(_currentCharge / chargeDuration);
+    }
+
+    private static Tweener TweenSpriteAlpha(SpriteRenderer spriteRenderer, float targetAlpha, float duration)
+    {
+        return DOTween.To(
+            () => spriteRenderer.color.a,
+            value =>
+            {
+                if (spriteRenderer == null) return;
+
+                Color color = spriteRenderer.color;
+                color.a = value;
+                spriteRenderer.color = color;
+            },
+            targetAlpha,
+            duration);
     }
 
     private void OnDestroy() => _pulseSequence?.Kill();

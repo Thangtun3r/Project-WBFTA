@@ -12,7 +12,7 @@ public class ReviveBySacrificingAttachedItemLogic : ItemModifier, IPlayerDeathHa
 
     public IReadOnlyList<string> RequiredParameterKeys => RequiredKeys;
 
-    public bool TryHandlePlayerDeath(PlayerHealth playerHealth)
+    public bool TryHandlePlayerDeath(IPlayerHealthController playerHealth)
     {
         if (Owner == null || Owner.AttachedItem == null || Context == null || playerHealth == null)
         {

@@ -17,7 +17,7 @@ public class HealthOrb : Collectible, IWorldObjectSpawner // Added the interface
   
     public override void OnCollected(GameObject collector)
     {
-        PlayerHealth playerHealth = collector.GetComponent<PlayerHealth>();
+        IPlayerHealthController playerHealth = collector.GetComponent<IPlayerHealthController>();
         if (playerHealth != null)
         {
             playerHealth.Heal(0f, healAmount);

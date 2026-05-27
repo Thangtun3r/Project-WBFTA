@@ -1,0 +1,20 @@
+{
+    "name": "WBFTA.GameSystem",
+    "rootNamespace": "",
+    "references": [
+        "WBFTA.Shared",
+        "WBFTA.Enemy",
+        "Unity.TextMeshPro",
+        "Unity.RenderPipelines.Universal.Runtime",
+        "UnityEngine.UI"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

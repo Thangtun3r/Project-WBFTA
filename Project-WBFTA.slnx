@@ -1,5 +1,11 @@
 ﻿<Solution>
   <Project Path="Assembly-CSharp.csproj" />
+  <Project Path="WBFTA.GameSystem.csproj" />
+  <Project Path="WBFTA.ItemSystem.csproj" />
+  <Project Path="WBFTA.Enemy.csproj" />
   <Project Path="Assembly-CSharp-firstpass.csproj" />
-  <Project Path="Assembly-CSharp-Editor.csproj" />
+  <Project Path="WBFTA.Shared.csproj" />
+  <Project Path="WBFTA.Player.csproj" />
+  <Project Path="WBFTA.ItemSystem.Editor.csproj" />
+  <Project Path="WBFTA.GameSystem.Editor.csproj" />
 </Solution>

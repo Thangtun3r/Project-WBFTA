@@ -4,7 +4,6 @@ public class FloatingDamagePool : MonoBehaviour
 {
     public static FloatingDamagePool Instance { get; private set; }
 
-    [SerializeField] private PlayerAttack player;
     [SerializeField] private FloatingDamageText prefab;
     [SerializeField] private int poolSize = 30;
 
@@ -22,13 +21,6 @@ public class FloatingDamagePool : MonoBehaviour
             pool.Enqueue(obj);
         }
     }
-
-    private void OnEnable()
-    
-    {
-        
-    } 
-    private void OnDisable() => player.OnHitTarget -= SpawnDamage;
 
     public void SpawnDamage(Vector2 hitPoint, float actualDamage, bool isCrit) // Changed to PUBLIC
     {

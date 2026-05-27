@@ -18,8 +18,8 @@ public class UseHealthAsTriggerDamageLogic : ItemModifier, IItemTriggerPreproces
             return;
         }
 
-        PlayerHealth playerHealth = context.Owner != null
-            ? context.Owner.GetComponent<PlayerHealth>() ?? context.Owner.GetComponentInParent<PlayerHealth>()
+        IPlayerHealthController playerHealth = context.Owner != null
+            ? context.Owner.GetComponent<IPlayerHealthController>() ?? context.Owner.GetComponentInParent<IPlayerHealthController>()
             : null;
         if (playerHealth == null)
         {

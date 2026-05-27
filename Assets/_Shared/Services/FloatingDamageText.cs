@@ -32,7 +32,7 @@ public class FloatingDamageText : MonoBehaviour
         transform.DOMove(targetPos, duration).SetEase(Ease.OutQuart);
 
         // Fade and Disable
-        textElement.DOFade(0, duration)
+        DOTween.To(() => textElement.alpha, value => textElement.alpha = value, 0f, duration)
             .SetEase(Ease.InQuad)
             .OnComplete(() => gameObject.SetActive(false));
     }

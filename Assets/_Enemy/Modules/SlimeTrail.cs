@@ -53,8 +53,18 @@ namespace _Scripts.Enemy.Modules
                 spriteRenderer.DOKill();
                 spriteRenderer.color = _baseColor;
 
+                Color fadeTarget = _baseColor;
+                fadeTarget.a = 0f;
+
                 // Wait for the lifetime, then fade to 0 alpha, then deactivate
-                spriteRenderer.DOFade(0f, fadeDuration)
+                DOTween.To(
+                        () => spriteRenderer.color,
+                        value =>
+                        {
+                            if (spriteRenderer != null) spriteRenderer.color = value;
+                        },
+                        fadeTarget,
+                        fadeDuration)
                     .SetDelay(lifetime)
                     .OnComplete(() => gameObject.SetActive(false));
             }
@@ -79,11 +89,11 @@ namespace _Scripts.Enemy.Modules
             if (!_isInitialized) return;
 
             // Example hazard logic:
-            // Replace with your actual Player health check or damage interface
+            // Prefer IDamagable so Enemy stays independent from Player.
             /*
-            if (other.CompareTag("Player") && other.TryGetComponent(out PlayerHealth health))
+            if (other.CompareTag("Player") && other.TryGetComponent(out IDamagable target))
             {
-                health.TakeDamage(_damage);
+                target.TakeDamage(_damage);
             }
             */
         }

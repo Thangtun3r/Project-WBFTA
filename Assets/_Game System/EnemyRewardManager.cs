@@ -1,4 +1,5 @@
 using UnityEngine;
+using _Scripts.Enemy;
 
 public class EnemyRewardManager : MonoBehaviour
 {
@@ -20,6 +21,27 @@ public class EnemyRewardManager : MonoBehaviour
         Instance = this;
     }
 
+    private void OnEnable()
+    {
+        BaseEnemy.OnEnemyKilled += HandleEnemyKilled;
+    }
+
+    private void OnDisable()
+    {
+        BaseEnemy.OnEnemyKilled -= HandleEnemyKilled;
+    }
+
+    private void HandleEnemyKilled(BaseEnemy enemy)
+    {
+        if (enemy == null)
+        {
+            return;
+        }
+
+        int tier = enemy.Config != null ? enemy.Config.tier : 1;
+        HandleReward(tier, enemy.CurrentLevel);
+    }
+
     /// <summary>
     /// Calculates reward using Tier (Type), Level (Specific Strength), and World Difficulty (Inflation).
     /// </summary>
@@ -28,7 +50,7 @@ public class EnemyRewardManager : MonoBehaviour
     public void HandleReward(int enemyTier, int enemyLevel)
     {
         // 1. Get the Inflation Factor from your GameManager
-        float inflation = GameManager.Instance.DifficultyCoefficient;
+        float inflation = GameManager.Instance != null ? GameManager.Instance.DifficultyCoefficient : 1f;
 
         // 2. Combine all three factors:
         // (Base * Tier * Level) = The 'Physical' value of the enemy

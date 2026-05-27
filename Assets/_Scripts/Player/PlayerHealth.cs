@@ -22,7 +22,7 @@ public struct PlayerHealthState
     public float ReservedNormalized => BaseMaxHealth > 0f ? Mathf.Clamp01(ReservedHealth / BaseMaxHealth) : 0f;
 }
 
-public class PlayerHealth : MonoBehaviour, IDamagable
+public class PlayerHealth : MonoBehaviour, IDamagable, IPlayerHealthController, IPlayerItemHealthGrantReceiver
 {
     public static event Action<float, float, bool> OnHealthChanged;
     public static event Action<PlayerHealthState, bool> OnHealthStateChanged;

@@ -11,7 +11,7 @@ public class GlobalEventManager : MonoBehaviour
     public event Action<GameObject, IDamagable, float, bool, float> HandleOnHit;
     public event Action<BaseEnemy, float, bool> OnEnemyKilledWithStats;
 
-    public PlayerStatMachine PlayerStats { get; set; }
+    public IPlayerCombatStatSource PlayerStats { get; set; }
 
     private void Awake()
     {
@@ -51,15 +51,7 @@ public class GlobalEventManager : MonoBehaviour
         }
         else
         {
-            var playerScript = FindAnyObjectByType<Player>();
-            if (playerScript != null)
-            {
-                ownerObj = playerScript.gameObject;
-            }
-            else
-            {
-                return;
-            }
+            return;
         }
 
         HandleOnHit?.Invoke(ownerObj, target, damage, isCrit, Mathf.Max(0f, procCoefficient));

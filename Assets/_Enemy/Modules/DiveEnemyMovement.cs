@@ -94,7 +94,9 @@ namespace _Scripts.Enemy.Modules
                     }
                     if (_visualSpriteRenderer != null)
                     {
-                        _visualSpriteRenderer.DOColor(flashColor, flashSpeed).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
+                        TweenSpriteColor(_visualSpriteRenderer, flashColor, flashSpeed)
+                            .SetEase(Ease.InOutSine)
+                            .SetLoops(-1, LoopType.Yoyo);
                     }
                     break;
 
@@ -250,6 +252,18 @@ namespace _Scripts.Enemy.Modules
         private void ApplyMovement()
         {
             transform.position += (Vector3)_currentVelocity * Time.deltaTime;
+        }
+
+        private static Tweener TweenSpriteColor(SpriteRenderer spriteRenderer, Color targetColor, float duration)
+        {
+            return DOTween.To(
+                () => spriteRenderer.color,
+                value =>
+                {
+                    if (spriteRenderer != null) spriteRenderer.color = value;
+                },
+                targetColor,
+                duration);
         }
 
         public void Stop() => _currentVelocity = Vector2.zero;

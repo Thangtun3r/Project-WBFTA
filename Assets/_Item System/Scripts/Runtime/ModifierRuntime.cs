@@ -78,7 +78,7 @@ public class ModifierRuntime : IItemStatProvider, IPlayerStatProvider, IItemPara
         }
     }
 
-    public bool TryHandlePlayerDeath(PlayerHealth playerHealth)
+    public bool TryHandlePlayerDeath(IPlayerHealthController playerHealth)
     {
         return _logic is IPlayerDeathHandler handler && handler.TryHandlePlayerDeath(playerHealth);
     }

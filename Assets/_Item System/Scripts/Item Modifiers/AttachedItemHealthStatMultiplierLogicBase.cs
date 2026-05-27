@@ -32,7 +32,7 @@ public abstract class AttachedItemHealthStatMultiplierLogicBase : ItemModifier, 
             return 1f;
         }
 
-        PlayerHealth playerHealth = ownerObject.GetComponent<PlayerHealth>() ?? ownerObject.GetComponentInParent<PlayerHealth>();
+        IPlayerHealthController playerHealth = ownerObject.GetComponent<IPlayerHealthController>() ?? ownerObject.GetComponentInParent<IPlayerHealthController>();
         return playerHealth != null ? playerHealth.NormalizedHealth : 1f;
     }
 }

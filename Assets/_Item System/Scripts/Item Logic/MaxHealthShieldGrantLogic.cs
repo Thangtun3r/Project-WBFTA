@@ -22,7 +22,7 @@ public class MaxHealthShieldGrantLogic : ItemLogicBase, IItemEventListener
 
     public override void Dispose()
     {
-        PlayerHealth playerHealth = GetPlayerHealth();
+        IPlayerItemHealthGrantReceiver playerHealth = GetPlayerHealth();
         if (playerHealth != null)
         {
             playerHealth.RemoveItemHealthGrant(Owner);
@@ -31,7 +31,7 @@ public class MaxHealthShieldGrantLogic : ItemLogicBase, IItemEventListener
 
     private void RefreshGrant()
     {
-        PlayerHealth playerHealth = GetPlayerHealth();
+        IPlayerItemHealthGrantReceiver playerHealth = GetPlayerHealth();
         if (playerHealth == null || Owner == null)
         {
             return;
@@ -48,14 +48,14 @@ public class MaxHealthShieldGrantLogic : ItemLogicBase, IItemEventListener
             : 0.2f;
     }
 
-    private PlayerHealth GetPlayerHealth()
+    private IPlayerItemHealthGrantReceiver GetPlayerHealth()
     {
         if (Owner == null || Owner.OwnerObject == null)
         {
             return null;
         }
 
-        return Owner.OwnerObject.GetComponent<PlayerHealth>() ??
-               Owner.OwnerObject.GetComponentInParent<PlayerHealth>();
+        return Owner.OwnerObject.GetComponent<IPlayerItemHealthGrantReceiver>() ??
+               Owner.OwnerObject.GetComponentInParent<IPlayerItemHealthGrantReceiver>();
     }
 }

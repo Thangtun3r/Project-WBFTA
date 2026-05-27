@@ -146,7 +146,7 @@ public class ItemSystemContext
         return query.FinalWeight;
     }
 
-    public bool TryHandlePlayerDeath(PlayerHealth playerHealth)
+    public bool TryHandlePlayerDeath(IPlayerHealthController playerHealth)
     {
         PublishEvent(new ItemEvent
         {

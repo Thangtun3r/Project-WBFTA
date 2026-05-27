@@ -1,7 +1,7 @@
 using UnityEngine;
 using _Scripts;
 
-public class PlayerStatMachine : MonoBehaviour
+public class PlayerStatMachine : MonoBehaviour, IPlayerCombatStatSource
 {
     [SerializeField] private PlayerConfig config;
     [SerializeField] private PlayerInventory inventory;

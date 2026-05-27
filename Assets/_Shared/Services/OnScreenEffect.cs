@@ -93,7 +93,7 @@ public class OnScreenEffect : MonoBehaviour
         if (uiTargetToShake != null)
         {
             uiTargetToShake.DOComplete();
-            uiTargetToShake.DOShakeAnchorPos(duration, strength).SetUpdate(true);
+            uiTargetToShake.DOShakePosition(duration, strength).SetUpdate(true);
         }
     }
 

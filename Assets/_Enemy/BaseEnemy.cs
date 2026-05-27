@@ -121,8 +121,6 @@ namespace _Scripts.Enemy
             OnEnemyDeath_Local?.Invoke();
             _fsm?.ForceState(EnemyFSM.EnemyState.Dead);
             _status?.ApplyStatus(EnemyStatusType.Dead);
-            RewardPlayer(config.tier, currentLevel);
-
             OnEnemyDeath?.Invoke(this);
             OnEnemyKilled?.Invoke(this);
             Invoke(nameof(DeactivateObject), deathReturnDelay);
@@ -137,11 +135,6 @@ namespace _Scripts.Enemy
                 gameObject.SetActive(false);
         }
 
-        // Stubs for your logic
         public virtual Transform GetTransform() => transform;
-        protected virtual void RewardPlayer(int tier, int level)
-        {
-            EnemyRewardManager.Instance?.HandleReward(tier, level);
-        } 
     }
 }

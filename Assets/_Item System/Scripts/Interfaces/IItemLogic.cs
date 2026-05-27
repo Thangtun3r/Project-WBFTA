@@ -43,7 +43,35 @@ public interface IItemDropWeightProvider
 
 public interface IPlayerDeathHandler
 {
-    bool TryHandlePlayerDeath(PlayerHealth playerHealth);
+    bool TryHandlePlayerDeath(IPlayerHealthController playerHealth);
+}
+
+public interface IPlayerCombatStatSource
+{
+    float GetCalculatedAttackDamage();
+    bool WasLastAttackCrit();
+}
+
+public interface IPlayerHealthController
+{
+    float CurrentHealth { get; }
+    float MaxHealth { get; }
+    float NormalizedHealth { get; }
+    void Heal(float rawAmount = 0f, float percentageAmount = 0f);
+    void Revive(float normalizedHealth, float invincibilityDuration = 0f);
+}
+
+public interface IPlayerItemHealthGrantReceiver
+{
+    void SetItemHealthGrant(
+        ItemRuntime sourceItem,
+        float bonusMaxHealth = 0f,
+        float bonusMaxShield = 0f,
+        float bonusMaxShieldPercentOfMaxHealth = 0f,
+        float bonusMaxOverheal = 0f,
+        float reservedHealthPercent = 0f);
+
+    void RemoveItemHealthGrant(ItemRuntime sourceItem);
 }
 
 public interface ICritRateLogic

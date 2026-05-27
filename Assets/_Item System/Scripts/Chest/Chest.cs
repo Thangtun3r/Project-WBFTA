@@ -116,8 +116,8 @@ public class Chest : MonoBehaviour
         if (spriteRenderer != null)
         {
             DOTween.Sequence()
-                .Append(spriteRenderer.DOColor(Color.red, 0.1f))
-                .Append(spriteRenderer.DOColor(Color.white, 0.1f));
+                .Append(TweenSpriteColor(spriteRenderer, Color.red, 0.1f))
+                .Append(TweenSpriteColor(spriteRenderer, Color.white, 0.1f));
         }
 
         // Changed OnTerminate to OnKill
@@ -188,5 +188,17 @@ public class Chest : MonoBehaviour
         target.DOScale(originalScale, 0.2f).SetEase(Ease.OutSine);
         target.DORotate(Vector3.zero, 0.2f).SetEase(Ease.OutSine);
         target.DOLocalMove(originalPosition, 0.2f).SetEase(Ease.OutSine);
+    }
+
+    private static Tweener TweenSpriteColor(SpriteRenderer spriteRenderer, Color targetColor, float duration)
+    {
+        return DOTween.To(
+            () => spriteRenderer.color,
+            value =>
+            {
+                if (spriteRenderer != null) spriteRenderer.color = value;
+            },
+            targetColor,
+            duration);
     }
 }

@@ -1,0 +1,16 @@
+{
+    "name": "WBFTA.Enemy",
+    "rootNamespace": "",
+    "references": [
+        "WBFTA.Shared"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
