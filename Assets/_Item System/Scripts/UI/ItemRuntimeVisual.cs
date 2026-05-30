@@ -10,8 +10,11 @@ public class ItemRuntimeVisual : MonoBehaviour
     [SerializeField] private TMP_Text stackText;
     [SerializeField] private GameObject modifierRoot;
     [SerializeField] private TMP_Text modifierCountText;
+    [SerializeField] private AttachGridSlot attachTargetSlot;
 
     private ItemRuntime runtime;
+
+    public ItemRuntime Runtime => runtime;
 
     private void Awake()
     {
@@ -28,6 +31,7 @@ public class ItemRuntimeVisual : MonoBehaviour
     {
         if (runtime == null)
         {
+            RefreshAttachTargetSlot();
             RefreshModifierRoot(false);
             return;
         }
@@ -56,6 +60,7 @@ public class ItemRuntimeVisual : MonoBehaviour
 
         int modifierCount = runtime.Modifiers != null ? runtime.Modifiers.Count : 0;
         RefreshModifierRoot(modifierCount > 0);
+        RefreshAttachTargetSlot();
 
         if (modifierCountText != null)
         {
@@ -68,6 +73,14 @@ public class ItemRuntimeVisual : MonoBehaviour
         if (modifierRoot != null)
         {
             modifierRoot.SetActive(hasModifiers);
+        }
+    }
+
+    private void RefreshAttachTargetSlot()
+    {
+        if (attachTargetSlot != null)
+        {
+            attachTargetSlot.Bind(runtime);
         }
     }
 }

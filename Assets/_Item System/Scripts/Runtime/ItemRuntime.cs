@@ -47,10 +47,9 @@ public class ItemRuntime
             return null;
         }
 
-        ModifierRuntime existingModifier = FindModifier(definition);
-        if (existingModifier != null)
+        if (_modifiers.Count > 0)
         {
-            return existingModifier;
+            return null;
         }
 
         ModifierRuntime modifier = new ModifierRuntime();
