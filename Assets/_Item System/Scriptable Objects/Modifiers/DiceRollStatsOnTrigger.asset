@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ModifierDefinition
   modifierId: DiceRollStatsOnTrigger
   modifierName: Gambler's Core
-  description: Before the attached item triggers, roll 1-6. Odd rolls make its stats 0.5x; even rolls make them 1.5x for that trigger.
+  description: Before this item triggers, roll 1-6. Odd rolls set its stats to {param:Dice.OddMultiplier|x}; even rolls set them to {param:Dice.EvenMultiplier|x} for that trigger.
   rarity: 2
   procCoefficient: 1
   logicClassName: DiceRollStatsOnTriggerLogic

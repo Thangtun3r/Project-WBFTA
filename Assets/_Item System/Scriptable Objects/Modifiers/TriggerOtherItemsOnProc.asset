@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ModifierDefinition
   modifierId: TriggerOtherItemsOnProc
   modifierName: Trigger Relay
-  description: When the attached item triggers, request triggers on your other items too.
+  description: When this item triggers, also trigger your other items.
   rarity: 2
   procCoefficient: 1
   logicClassName: TriggerOtherItemsOnOwnerTriggerLogic

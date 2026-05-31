@@ -18,7 +18,7 @@ MonoBehaviour:
   itemRarity: 0
   icon: {fileID: -679923405180981515, guid: 1e3cd892d215b4e439814480388eda64, type: 3}
   isModifiable: 1
-  description: On hit, has a chance to fire a piercing spike toward the target. Damage scales with stacks.
+  description: Hits have a {item:ProcChance|percent} chance to fire a piercing spike for {item:DamageMultiplier|percent} damage at {param:PiercingSpike.LaunchSpeed} speed.
   logicClassName: PiercingSpikeLogic
   effectPrefab: {fileID: 0}
   itemStats:

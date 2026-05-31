@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ModifierDefinition
   modifierId: TriggerOnPlayerDamaged
   modifierName: Pain Echo
-  description: When you take damage, this item has a 10% chance to trigger from your position.
+  description: Taking damage has a {modifier:procCoefficient|percent} chance to trigger this item.
   rarity: 1
   procCoefficient: 0.1
   logicClassName: TriggerAttachedItemOnPlayerDamagedLogic

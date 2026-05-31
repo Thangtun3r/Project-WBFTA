@@ -18,7 +18,7 @@ MonoBehaviour:
   itemRarity: 0
   icon: {fileID: -787129682, guid: 47f06d5dec1de604fa01354180cc9d29, type: 3}
   isModifiable: 1
-  description: Increases maximum health. Additional stacks add the same health bonus again.
+  description: Increase maximum health by {player:MaxHealth}.
   logicClassName: MaxHealthIncreaseLogic
   effectPrefab: {fileID: 0}
   itemStats: []

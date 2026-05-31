@@ -18,7 +18,7 @@ MonoBehaviour:
   itemRarity: 0
   icon: {fileID: -318162755, guid: 47f06d5dec1de604fa01354180cc9d29, type: 3}
   isModifiable: 1
-  description: Increases critical hit chance. Additional stacks add more critical chance.
+  description: Gain {player:CritChance|percent} critical strike chance.
   logicClassName: CritRateLogic
   effectPrefab: {fileID: 0}
   itemStats: []

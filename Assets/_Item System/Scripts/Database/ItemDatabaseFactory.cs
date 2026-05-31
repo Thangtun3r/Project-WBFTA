@@ -202,6 +202,8 @@ public class ItemDatabaseFactory : MonoBehaviour
         {
             Debug.LogWarning($"ItemDatabaseFactory: Item '{itemId}' definition is missing description.");
         }
+
+        DescriptionTokenResolver.Validate(definition);
     }
 
     private void ValidateLogicClassName(string itemId, string className)

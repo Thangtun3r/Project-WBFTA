@@ -18,7 +18,7 @@ MonoBehaviour:
   itemRarity: 0
   icon: {fileID: -595408111101229921, guid: 1e3cd892d215b4e439814480388eda64, type: 3}
   isModifiable: 1
-  description: On enemy kill, has a high chance to spawn a black hole projectile that deals repeated damage based on the killing hit.
+  description: Killing an enemy has a {item:ProcChance|percent} chance to spawn a black hole at the kill location, dealing repeated damage for {item:DamageMultiplier|percent} of the killing blow. Recharges every {item:Cooldown} seconds.
   logicClassName: BlackHoleLogic
   effectPrefab: {fileID: 0}
   itemStats:

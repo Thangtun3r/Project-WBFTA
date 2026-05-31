@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ModifierDefinition
   modifierId: ScaleStatsWithCurrentHealth
   modifierName: Vital Momentum
-  description: Scale the attached item's runtime stats and parameters from 0.1x to 2x based on current health.
+  description: Scale this item's stats from {param:HealthScale.MinimumMultiplier|x} at low health up to {param:HealthScale.MaximumMultiplier|x} at full health.
   rarity: 2
   procCoefficient: 1
   logicClassName: ScaleStatsWithCurrentHealthLogic

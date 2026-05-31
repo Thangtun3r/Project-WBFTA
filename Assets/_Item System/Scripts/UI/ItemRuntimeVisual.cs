@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class ItemRuntimeVisual : MonoBehaviour
 {
+    private const float LiveRefreshInterval = 0.25f;
+
     [SerializeField] private Image iconImage;
     [SerializeField] private TMP_Text nameText;
     [SerializeField] private TMP_Text descriptionText;
@@ -13,12 +15,24 @@ public class ItemRuntimeVisual : MonoBehaviour
     [SerializeField] private AttachGridSlot attachTargetSlot;
 
     private ItemRuntime runtime;
+    private float _nextDescriptionRefreshTime;
 
     public ItemRuntime Runtime => runtime;
 
     private void Awake()
     {
         RefreshModifierRoot(false);
+    }
+
+    private void Update()
+    {
+        if (runtime == null || descriptionText == null || Time.unscaledTime < _nextDescriptionRefreshTime)
+        {
+            return;
+        }
+
+        _nextDescriptionRefreshTime = Time.unscaledTime + LiveRefreshInterval;
+        descriptionText.text = DescriptionTokenResolver.Resolve(runtime);
     }
 
     public void SetData(ItemRuntime itemRuntime)
@@ -50,7 +64,8 @@ public class ItemRuntimeVisual : MonoBehaviour
 
         if (descriptionText != null)
         {
-            descriptionText.text = definition != null ? definition.description : string.Empty;
+            descriptionText.text = definition != null ? DescriptionTokenResolver.Resolve(runtime) : string.Empty;
+            _nextDescriptionRefreshTime = Time.unscaledTime + LiveRefreshInterval;
         }
 
         if (stackText != null)

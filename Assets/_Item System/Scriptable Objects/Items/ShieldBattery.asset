@@ -18,8 +18,7 @@ MonoBehaviour:
   itemRarity: 0
   icon: {fileID: 6522159722824397994, guid: 47f06d5dec1de604fa01354180cc9d29, type: 3}
   isModifiable: 1
-  description: Grants max shield equal to 20% of current max health per stack while
-    held. Shield regenerates instead of normal health.
+  description: Gain a shield equal to {param:ShieldGrant.MaxHealthPercent|percent} of maximum health per stack. Shield regenerates instead of health.
   logicClassName: MaxHealthShieldGrantLogic
   effectPrefab: {fileID: 0}
   itemStats: []

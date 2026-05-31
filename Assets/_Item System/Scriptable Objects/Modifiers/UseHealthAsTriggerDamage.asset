@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ModifierDefinition
   modifierId: UseHealthAsTriggerDamage
   modifierName: Vital Catalyst
-  description: Before the attached item triggers, replace trigger damage with current health divided by 10.
+  description: Before this item triggers, replace its damage with your current health divided by {param:HealthDamage.Divisor}.
   rarity: 2
   procCoefficient: 1
   logicClassName: UseHealthAsTriggerDamageLogic

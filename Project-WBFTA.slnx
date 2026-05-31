@@ -6,6 +6,7 @@
   <Project Path="Assembly-CSharp-firstpass.csproj" />
   <Project Path="WBFTA.Shared.csproj" />
   <Project Path="WBFTA.Player.csproj" />
+  <Project Path="WBFTA.ItemSystem.EditModeTests.csproj" />
   <Project Path="WBFTA.ItemSystem.Editor.csproj" />
   <Project Path="WBFTA.GameSystem.Editor.csproj" />
 </Solution>

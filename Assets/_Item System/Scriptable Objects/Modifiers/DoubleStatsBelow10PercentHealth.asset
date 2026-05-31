@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ModifierDefinition
   modifierId: DoubleStatsBelow10PercentHealth
   modifierName: Last Stand Lens
-  description: If your health is below 10%, the attached item's runtime stats and parameters are doubled.
+  description: While below {param:LowHealth.Threshold|percent} health, this item's stats are multiplied by {param:LowHealth.Multiplier|x}.
   rarity: 3
   procCoefficient: 1
   logicClassName: DoubleStatsBelowThresholdLogic

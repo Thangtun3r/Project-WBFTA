@@ -163,7 +163,7 @@ public class RuntimeItemGiverWindow : EditorWindow
                 }
 
                 data.name = entry.Definition.itemName;
-                data.description = entry.Definition.description;
+                data.description = DescriptionTokenResolver.Resolve(entry.Definition);
             }
 
             _cachedItems.Add(data);

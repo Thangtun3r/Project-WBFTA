@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ModifierDefinition
   modifierId: IncreaseAttachedItemDropChance
   modifierName: Familiar Weight
-  description: Increases the chance of finding the attached item by 10% per attached item stack.
+  description: Increase this item's drop weight by {modifier:procCoefficientTotal|percent} ({modifier:procCoefficientPerStack|percent} per attached stack).
   rarity: 0
   procCoefficient: 0.1
   logicClassName: IncreaseAttachedItemDropChanceLogic

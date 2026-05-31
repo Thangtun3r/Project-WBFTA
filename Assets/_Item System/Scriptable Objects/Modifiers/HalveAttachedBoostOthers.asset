@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ModifierDefinition
   modifierId: HalveAttachedBoostOthers
   modifierName: Power Redirect
-  description: Halves the attached item's runtime stats and parameters, then boosts your other items by 1.5x plus 0.1x per attached item stack.
+  description: Reduce this item's stats to {param:Tradeoff.AttachedMultiplier|x}. All other items gain {param:Tradeoff.OtherBaseMultiplier|x}, plus {param:Tradeoff.OtherPerStackMultiplier|x} for each additional attached stack.
   rarity: 2
   procCoefficient: 1
   logicClassName: HalveAttachedBoostOthersLogic

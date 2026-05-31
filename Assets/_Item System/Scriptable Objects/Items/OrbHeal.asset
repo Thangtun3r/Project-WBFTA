@@ -18,7 +18,7 @@ MonoBehaviour:
   itemRarity: 0
   icon: {fileID: -385291231, guid: 47f06d5dec1de604fa01354180cc9d29, type: 3}
   isModifiable: 1
-  description: On enemy kill, has a chance to spawn a healing orb. Heal amount scales with stacks.
+  description: Killing an enemy has a {item:ProcChance|percent} chance to spawn a healing orb for {param:HealOrb.HealAmount|percent} health.
   logicClassName: HealOrbOnKillLogic
   effectPrefab: {fileID: 0}
   itemStats:

@@ -160,6 +160,8 @@ public class ModifierDatabaseFactory : MonoBehaviour
         {
             Debug.LogWarning($"ModifierDatabaseFactory: Modifier '{modifierId}' definition is missing description.");
         }
+
+        DescriptionTokenResolver.Validate(definition);
     }
 
     private bool TryResolveLogicType(string modifierId, string className, out Type logicType)

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ModifierDefinition
   modifierId: ReviveBySacrificingAttachedItem
   modifierName: Second Contract
-  description: On death, sacrifice one stack of the attached item to revive. Revive health scales with attached item stacks.
+  description: On death, consume 1 stack of this item to revive with {param:Revive.BaseHealthPercent|percent} health, plus {param:Revive.PerStackHealthPercent|percent} per additional attached stack. Gain {param:Revive.InvincibilityDuration} seconds of invulnerability.
   rarity: 4
   procCoefficient: 1
   logicClassName: ReviveBySacrificingAttachedItemLogic

@@ -18,7 +18,7 @@ MonoBehaviour:
   itemRarity: 0
   icon: {fileID: 1331012838, guid: 47f06d5dec1de604fa01354180cc9d29, type: 3}
   isModifiable: 1
-  description: Increases movement speed. Additional stacks add the same speed bonus again.
+  description: Increase movement speed by {player:MoveSpeedMultiplier|percent}.
   logicClassName: SpeedBoostLogic
   effectPrefab: {fileID: 0}
   itemStats: []

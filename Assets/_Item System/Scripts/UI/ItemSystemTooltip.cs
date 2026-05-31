@@ -37,6 +37,9 @@ public class ItemSystemTooltip : MonoBehaviour
     [SerializeField] private float popDuration = 0.16f;
     [SerializeField] private Ease popEase = Ease.OutBack;
 
+    [Header("Live Values")]
+    [SerializeField] [Min(0.05f)] private float liveRefreshInterval = 0.25f;
+
     [Header("Text Colors")]
     [SerializeField] private Color statNameColor = new Color(0.56f, 0.84f, 1f);
     [SerializeField] private Color positiveValueColor = new Color(0.42f, 1f, 0.58f);
@@ -46,6 +49,10 @@ public class ItemSystemTooltip : MonoBehaviour
     private Vector3 _visibleScale = Vector3.one;
     private Tween _popTween;
     private object _currentSource;
+    private ItemDefinition _currentItemDefinition;
+    private ItemRuntime _currentItemRuntime;
+    private ModifierDefinition _currentModifierDefinition;
+    private float _nextLiveRefreshTime;
 
     private void Awake()
     {
@@ -79,6 +86,17 @@ public class ItemSystemTooltip : MonoBehaviour
         _popTween?.Kill();
     }
 
+    private void Update()
+    {
+        if (tooltipRoot == null || !tooltipRoot.gameObject.activeSelf || Time.unscaledTime < _nextLiveRefreshTime)
+        {
+            return;
+        }
+
+        _nextLiveRefreshTime = Time.unscaledTime + liveRefreshInterval;
+        RefreshCurrentText();
+    }
+
     public void Show(ItemDefinition definition, RectTransform sourceRect, object source = null)
     {
         if (definition == null)
@@ -87,11 +105,10 @@ public class ItemSystemTooltip : MonoBehaviour
         }
 
         _currentSource = source;
-        SetText(
-            string.IsNullOrWhiteSpace(definition.itemName) ? definition.name : definition.itemName,
-            definition.itemRarity,
-            definition.description,
-            BuildItemStats(definition));
+        _currentItemDefinition = definition;
+        _currentItemRuntime = null;
+        _currentModifierDefinition = null;
+        RefreshCurrentText();
         PositionAt(sourceRect);
         PlayPopTween();
     }
@@ -105,12 +122,10 @@ public class ItemSystemTooltip : MonoBehaviour
 
         ItemDefinition definition = runtime.Definition;
         _currentSource = source;
-        SetText(
-            string.IsNullOrWhiteSpace(definition.itemName) ? definition.name : definition.itemName,
-            definition.itemRarity,
-            definition.description,
-            BuildItemStats(definition));
-        SetExtendedModifiers(runtime.Modifiers);
+        _currentItemDefinition = definition;
+        _currentItemRuntime = runtime;
+        _currentModifierDefinition = null;
+        RefreshCurrentText();
         PositionAt(sourceRect);
         PlayPopTween();
     }
@@ -123,11 +138,10 @@ public class ItemSystemTooltip : MonoBehaviour
         }
 
         _currentSource = source;
-        SetText(
-            string.IsNullOrWhiteSpace(definition.modifierName) ? definition.name : definition.modifierName,
-            definition.rarity,
-            definition.description,
-            BuildModifierStats(definition));
+        _currentItemDefinition = null;
+        _currentItemRuntime = null;
+        _currentModifierDefinition = definition;
+        RefreshCurrentText();
         PositionAt(sourceRect);
         PlayPopTween();
     }
@@ -140,6 +154,9 @@ public class ItemSystemTooltip : MonoBehaviour
         }
 
         _currentSource = null;
+        _currentItemDefinition = null;
+        _currentItemRuntime = null;
+        _currentModifierDefinition = null;
         _popTween?.Kill();
         _popTween = null;
 
@@ -147,6 +164,49 @@ public class ItemSystemTooltip : MonoBehaviour
         {
             tooltipRoot.gameObject.SetActive(false);
         }
+    }
+
+    private void RefreshCurrentText()
+    {
+        _nextLiveRefreshTime = Time.unscaledTime + liveRefreshInterval;
+
+        if (_currentItemRuntime != null && _currentItemRuntime.Definition != null)
+        {
+            ItemDefinition definition = _currentItemRuntime.Definition;
+            SetText(
+                GetItemDisplayName(definition),
+                definition.itemRarity,
+                DescriptionTokenResolver.Resolve(_currentItemRuntime),
+                BuildItemStats(_currentItemRuntime));
+            SetExtendedModifiers(_currentItemRuntime.Modifiers);
+            return;
+        }
+
+        if (_currentItemDefinition != null)
+        {
+            SetText(
+                GetItemDisplayName(_currentItemDefinition),
+                _currentItemDefinition.itemRarity,
+                DescriptionTokenResolver.Resolve(_currentItemDefinition),
+                BuildItemStats(_currentItemDefinition));
+            return;
+        }
+
+        if (_currentModifierDefinition != null)
+        {
+            SetText(
+                string.IsNullOrWhiteSpace(_currentModifierDefinition.modifierName)
+                    ? _currentModifierDefinition.name
+                    : _currentModifierDefinition.modifierName,
+                _currentModifierDefinition.rarity,
+                DescriptionTokenResolver.Resolve(_currentModifierDefinition),
+                BuildModifierStats(_currentModifierDefinition));
+        }
+    }
+
+    private static string GetItemDisplayName(ItemDefinition definition)
+    {
+        return string.IsNullOrWhiteSpace(definition.itemName) ? definition.name : definition.itemName;
     }
 
     private void SetText(string displayName, ItemRarity rarity, string description, string stats)
@@ -211,13 +271,13 @@ public class ItemSystemTooltip : MonoBehaviour
                     .Append(modifierName)
                     .AppendLine("</b>");
 
-                string description = HighlightDescriptionValues(definition.description);
+                string description = HighlightDescriptionValues(DescriptionTokenResolver.Resolve(modifiers[i]));
                 if (!string.IsNullOrWhiteSpace(description))
                 {
                     infoBuilder.AppendLine(description);
                 }
 
-                infoBuilder.Append(BuildModifierStats(definition));
+                infoBuilder.Append(BuildModifierStats(modifiers[i]));
                 validModifierCount++;
             }
         }
@@ -346,6 +406,16 @@ public class ItemSystemTooltip : MonoBehaviour
         return builder.ToString();
     }
 
+    private string BuildItemStats(ItemRuntime runtime)
+    {
+        StringBuilder builder = new StringBuilder();
+        ItemDefinition definition = runtime.Definition;
+        AppendRuntimeItemStats(builder, runtime, definition.itemStats);
+        AppendRuntimePlayerStats(builder, runtime.StackSize, definition.playerStats);
+        AppendRuntimeParameters(builder, runtime, definition.parameters);
+        return builder.ToString();
+    }
+
     private string BuildModifierStats(ModifierDefinition definition)
     {
         StringBuilder builder = new StringBuilder();
@@ -353,6 +423,23 @@ public class ItemSystemTooltip : MonoBehaviour
         AppendModifierStats(builder, definition.playerStatModifiers);
         AppendModifierParameters(builder, definition.parameterModifiers);
         AppendParameters(builder, definition.parameters);
+
+        if (!Mathf.Approximately(definition.procCoefficient, 1f))
+        {
+            AppendLine(builder, "Proc Coefficient", FormatValue(definition.procCoefficient), positiveValueColor);
+        }
+
+        return builder.ToString();
+    }
+
+    private string BuildModifierStats(ModifierRuntime runtime)
+    {
+        ModifierDefinition definition = runtime.Definition;
+        StringBuilder builder = new StringBuilder();
+        AppendModifierStats(builder, definition.itemStatModifiers);
+        AppendModifierStats(builder, definition.playerStatModifiers);
+        AppendModifierParameters(builder, definition.parameterModifiers);
+        AppendRuntimeModifierParameters(builder, runtime, definition.parameters);
 
         if (!Mathf.Approximately(definition.procCoefficient, 1f))
         {
@@ -402,6 +489,36 @@ public class ItemSystemTooltip : MonoBehaviour
         }
     }
 
+    private void AppendRuntimeItemStats(StringBuilder builder, ItemRuntime runtime, IReadOnlyList<ItemStatEntry> entries)
+    {
+        if (entries == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < entries.Count; i++)
+        {
+            ItemStatEntry entry = entries[i];
+            float value = runtime.GetItemStat(entry.statType, entry.GetValue(runtime.StackSize));
+            AppendLine(builder, entry.statType.ToString(), FormatValue(value), GetValueColor(value));
+        }
+    }
+
+    private void AppendRuntimePlayerStats(StringBuilder builder, int stackSize, IReadOnlyList<PlayerStatEntry> entries)
+    {
+        if (entries == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < entries.Count; i++)
+        {
+            PlayerStatEntry entry = entries[i];
+            float value = entry.GetValue(stackSize);
+            AppendLine(builder, entry.statType.ToString(), FormatValue(value), GetValueColor(value));
+        }
+    }
+
     private void AppendParameters(StringBuilder builder, IReadOnlyList<ItemParameterEntry> entries)
     {
         if (entries == null)
@@ -419,6 +536,39 @@ public class ItemSystemTooltip : MonoBehaviour
             }
 
             AppendLine(builder, entry.key, value, parameterColor);
+        }
+    }
+
+    private void AppendRuntimeParameters(StringBuilder builder, ItemRuntime runtime, IReadOnlyList<ItemParameterEntry> entries)
+    {
+        if (entries == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < entries.Count; i++)
+        {
+            ItemParameterEntry entry = entries[i];
+            float value = runtime.GetParameter(entry.key, entry.GetValue(runtime.StackSize));
+            AppendLine(builder, entry.key, FormatValue(value), GetValueColor(value), parameterColor);
+        }
+    }
+
+    private void AppendRuntimeModifierParameters(
+        StringBuilder builder,
+        ModifierRuntime runtime,
+        IReadOnlyList<ItemParameterEntry> entries)
+    {
+        if (entries == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < entries.Count; i++)
+        {
+            ItemParameterEntry entry = entries[i];
+            float value = runtime.GetParameter(entry.key, entry.GetValue(runtime.AttachedItemStackSize));
+            AppendLine(builder, entry.key, FormatValue(value), GetValueColor(value), parameterColor);
         }
     }
 

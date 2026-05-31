@@ -172,6 +172,32 @@ Revive.BaseHealthPercent
 HealthDamage.Divisor
 ```
 
+## Dynamic Description Tokens
+
+Item and modifier descriptions can include data-driven tokens. Use explicit namespaces in assets:
+
+```text
+{item:ProcChance|percent}
+{item:DamageMultiplier|x}
+{player:MaxHealth}
+{param:HealOrb.HealAmount|percent}
+{modifier:procCoefficient|percent}
+```
+
+Supported namespaces:
+
+- `item`: an `ItemStatType` value.
+- `player`: this item's own `PlayerStatEntry` contribution.
+- `param`: an exact item or modifier parameter key.
+- `modifier`: a supported modifier field such as `procCoefficient`.
+- `modifier:procCoefficientTotal` resolves `procCoefficient * attached item stack count`.
+- `modifier:procCoefficientPerStack` resolves the per-stack coefficient value.
+- `modifier:attachedItemStack` and `modifier:attachedItemAdditionalStacks` resolve the current attached stack count.
+
+Supported formatters are `number` (the default), `percent`, and `x`. Short aliases such as `{ProcChance}` and `{HealOrb.HealAmount}` are supported, but explicit namespaces are preferred for asset authoring.
+
+Definition previews resolve first-stack authored values. Owned-item UI resolves live stack-scaled item stats and parameters after modifier providers are applied. Unknown or malformed tokens stay visible and log a deduplicated warning in editor or development builds.
+
 ## Player Stats
 
 Player-facing stats flow through `ItemSystemContext.CalculatePlayerStat`.

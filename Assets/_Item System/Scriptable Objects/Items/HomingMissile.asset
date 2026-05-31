@@ -18,7 +18,7 @@ MonoBehaviour:
   itemRarity: 0
   icon: {fileID: 9087092733456512731, guid: 1e3cd892d215b4e439814480388eda64, type: 3}
   isModifiable: 1
-  description: On hit, has a chance to launch a homing missile at the target for high damage. Damage scales strongly with stacks.
+  description: Hits have a {item:ProcChance|percent} chance to fire a homing missile for {item:DamageMultiplier|x} damage at {param:HomingMissile.LaunchSpeed} speed.
   logicClassName: HomingMissileLogic
   effectPrefab: {fileID: 0}
   itemStats:

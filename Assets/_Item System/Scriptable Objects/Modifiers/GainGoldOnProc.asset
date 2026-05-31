@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ModifierDefinition
   modifierId: GainGoldOnProc
   modifierName: Golden Echo
-  description: Whenever the attached item triggers, gain 1% of your current money.
+  description: When this item triggers, gain gold equal to {modifier:procCoefficientTotal|percent} of your current gold ({modifier:procCoefficientPerStack|percent} per attached stack).
   rarity: 2
   procCoefficient: 0.01
   logicClassName: GainGoldOnOwnerTriggerLogic

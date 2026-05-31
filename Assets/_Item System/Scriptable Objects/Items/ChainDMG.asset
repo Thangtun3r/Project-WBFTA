@@ -18,7 +18,7 @@ MonoBehaviour:
   itemRarity: 0
   icon: {fileID: 1855126492, guid: 47f06d5dec1de604fa01354180cc9d29, type: 3}
   isModifiable: 1
-  description: On hit, has a chance to chain damage from the target to nearby enemies. Bounce count and radius scale with stacks.
+  description: Hits have a {item:ProcChance|percent} chance to chain for {item:DamageMultiplier|percent} damage to up to {item:BounceCount} enemies within {item:Radius}m.
   logicClassName: ChainDamageLogic
   effectPrefab: {fileID: 4644107512293591449, guid: 653102e0f7972294bb4b6aa1d9e785c6, type: 3}
   itemStats:

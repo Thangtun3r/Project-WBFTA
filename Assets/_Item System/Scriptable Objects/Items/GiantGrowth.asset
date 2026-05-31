@@ -18,7 +18,7 @@ MonoBehaviour:
   itemRarity: 1
   icon: {fileID: 1331012838, guid: 47f06d5dec1de604fa01354180cc9d29, type: 3}
   isModifiable: 1
-  description: Increases player size and attack damage by 10% per stack.
+  description: Increase size and damage by {param:GiantGrowth.SizeMultiplierPerStack|percent} per stack.
   logicClassName: GiantGrowthLogic
   effectPrefab: {fileID: 0}
   itemStats: []
